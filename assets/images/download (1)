@@ -1,0 +1,60 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>ORAIRU JAMES</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>
+          <tbody><tr>
+            <th>Due Date</th>
+            <th>Amount Due</th>
+            <th>Status</th>
+            <th>Cheque Number</th>
+          </tr>
+         
+          <!-- ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in a month</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 2 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 3 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 4 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 5 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 6 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 7 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 8 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 9 months</span></td>
+            <td class="ng-binding">33208.33</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter --><tr ng-repeat="loanSchedule in loanSchedulesFilter" class="ng-scope">
+            <td><span am-time-ago="loanSchedule.dueDate">in 10 months</span></td>
+            <td class="ng-binding">33208.369999999995</td>
+            <td class="ng-binding">PENDING</td>
+            <td class="ng-binding"></td>
+          </tr><!-- end ngRepeat: loanSchedule in loanSchedulesFilter -->
+        </tbody></table></body></html>

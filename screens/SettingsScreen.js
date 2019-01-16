@@ -100,6 +100,28 @@ export default class SettingsScreen extends Component {
       color={tint || palette.icons}
       />
 		);
+		const learn = () =>
+		['Cooking', 'Coding', 'Piano', 'CRM']
+			.map((title, index) =>
+				<StaticCell
+					key={index}
+					title={title}
+					//disabled={!this.state.enabledRecommendations}
+					//accessory={this.state.selectedBook === index ? 'checkmark' : ''}
+					hideAccessorySeparator
+					onPress={this.onReminderTouched.bind(this, index)}
+				/>);
+				const canmentor = () =>
+				['Guitar', 'Fitness', 'Yoga']
+					.map((title, index) =>
+						<StaticCell
+							key={index}
+							title={title}
+							//disabled={!this.state.enabledRecommendations}
+							//accessory={this.state.selectedBook === index ? 'checkmark' : ''}
+							//hideAccessorySeparator
+							onPress={this.onReminderTouched.bind(this, index)}
+						/>);
 		const getBooks = () =>
 			['The Wealth of Nations', 'The Theory of Moral Sentiments', 'Lectures on Jurisprudence', 'Essays on Philosophical Subjects', 'The Essential Adam Smith']
 				.map((title, index) =>
@@ -126,8 +148,9 @@ export default class SettingsScreen extends Component {
 					barStyle={Platform.OS === 'android' || theme === 'dark' ? 'light-content' : 'dark-content'}
 				/>
 
-				<Table
-					accentColor={palette.accent}
+				<Table				
+				accentColor='#DF001D'
+				//	accentColor={palette.accent}
 					theme={theme}
 					blendAccent={false}
 					style={styles.container}
@@ -137,9 +160,9 @@ export default class SettingsScreen extends Component {
 					<Section>
 						<BioCell
 							title={this.state.name}
-							subtitle='Scottish economist, philosopher, and author.'
+							//subtitle='Scottish economist, philosopher, and author.'
 							photoSource={{ uri: this.state.moji }}
-							accessory='details'
+							//accessory='details'
 							onPress={this.onBioTouched}
 						/>
 
@@ -168,21 +191,30 @@ export default class SettingsScreen extends Component {
 							onPress={this.onContactTouched.bind(this, 'email')}
 							onLongPress={this.onContactLongTouched.bind(this, 'email')}
             	/>
-					</Section>
-
-					{/* <Section header={generalHeader} footer={generalFooter} separatorInsetLeft={54}>
-						<KeyValueCell
-							title='Books'
-							value='3 books'
-							iconComponent={getIcon('book')}
+					<KeyValueCell
+							title='Mentee Requests'
+							value='3'
+							iconComponent={getIcon('user-secret')}
 							accessory='disclosure'
 							customAction='www.google.com'
 							customActionType='openUrl'
 							customActionTrigger='onPress'
 							onPress={this.onWorksTouched.bind(this, 'books')}
-						/>
+					/>
+					</Section>
+					<Section header='I want to Learn'>
+					
 
-						<KeyValueCell
+						{learn()}
+					</Section>
+					<Section header='I can Mentor'>
+					
+
+					{canmentor()}
+				</Section>
+				{/*	<Section header={generalHeader} footer={generalFooter} separatorInsetLeft={54}>
+					
+					 	<KeyValueCell
 							title='Articles'
 							value='238 articles'
 							iconComponent={getIcon('article')}
@@ -212,7 +244,7 @@ export default class SettingsScreen extends Component {
 					<Section>
 						<TouchableCell
 							title='Log Out'
-							accentColor={'#B71C1C'}
+							accentColor={'#DF001D'}
 							onPress={this.onLogoutTouched}
 						/>
 					</Section>

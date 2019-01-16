@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View, Text, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView } from 'react-native';
+import { Platform, View, Text, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView, StatusBar } from 'react-native';
 import { Root, Icon, Header, Content, Item, Input, Form, Label, Picker, Toast, DatePicker } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo';
@@ -35,7 +35,7 @@ export default class Signup extends Component {
          { text: "I don't have a Snapchat Account",
 onPress: async() => {
           await AsyncStorage.setItem('state', JSON.stringify(this.state));
-          this.props.navigation.navigate('Main');
+          this.props.navigation.navigate('Categories');
         } },
         { text: 'I have a Snapchat Account', onPress: () => this.setState({ show }) }
       
@@ -44,7 +44,7 @@ onPress: async() => {
     );
   }
    await AsyncStorage.setItem('state', JSON.stringify(this.state));
-    this.props.navigation.navigate('Main');
+    this.props.navigation.navigate('Categories');
     if (this.state.terms == 'no') {
      return Toast.show({
         text: 'You have to Accept Terms and Conditions',
@@ -128,6 +128,8 @@ return (
 source={require('../assets/images/signup.jpg')}
         style={{ flex: 1, paddingHorizontal: 15 }}
       >  
+           <StatusBar hidden={false} />
+
  <LinearGradient
           colors={['rgba(223, 0, 29,0.8)', 'rgba(153, 113, 117, 0.6)']}
           style={styles.overlay}

@@ -69,7 +69,7 @@ export default class HomeScreen extends React.Component {
               </Left>
             </CardItem>
               <CardItem cardBody>
-            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 200, width: null, flex: 1 }} />
+            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 150, width: null, flex: 1 }} />
                         </CardItem>
             <CardItem >
             <Body>
@@ -85,7 +85,12 @@ export default class HomeScreen extends React.Component {
                   <Text>12 Likes</Text>
                 </Button>
               </Left>
-              
+              <Body>
+                <Button transparent>
+                  <Icon active name="chatbubbles" />
+                  <Text>100 Comments</Text>
+                </Button>
+              </Body>
              
             </CardItem>
           </Card>
@@ -101,7 +106,7 @@ export default class HomeScreen extends React.Component {
               </Left>
             </CardItem>
             <CardItem cardBody>
-            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 200, width: null, flex: 1 }} />
+            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 150, width: null, flex: 1 }} />
                         </CardItem>
             <CardItem >
             <Body>
@@ -117,7 +122,12 @@ export default class HomeScreen extends React.Component {
                   <Text>2 Likes</Text>
                 </Button>
               </Left>
-              
+              <Body>
+                <Button transparent>
+                  <Icon active name="chatbubbles" />
+                  <Text>4 Comments</Text>
+                </Button>
+              </Body>
              
             </CardItem>
           </Card>

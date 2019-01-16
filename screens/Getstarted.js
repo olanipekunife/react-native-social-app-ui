@@ -1,21 +1,27 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Image, ScrollView, Text, ImageBackground, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, StyleSheet, Dimensions, Image, ScrollView, ImageBackground, TouchableHighlight, TouchableOpacity, AsyncStorage, StatusBar } from 'react-native';
 import Carousel from 'react-native-carousel-view';
-import BrandButton from '../components/BrandButton';
+import { Button, Text } from 'native-base';
+import { Icon } from 'expo';
+import Buttonnextwhite from '../components/Buttonnextwhite';
 
 const Getstarted = ({ navigation }) => (
+
     <View style={styles.container}>
+     <StatusBar hidden />
       <Carousel
         width={Dimensions.get('window').width}
         height={Dimensions.get('window').height}
         delay={4000}
+        //hideIndicators
         inactiveIndicatorColor="grey"
-        indicatorAtBottom
-        indicatorSize={20}
-        indicatorColor="white"
+        //indicatorAtBottom
+        //indicatorSize={20}
+        indicatorColor="red"
       >
       <View style={styles.container}>
-      <View style={styles.top}>
+      <ImageBackground style={styles.container} source={require('../assets/images/bg3.jpg')} /> 
+      {/* <View style={styles.top}>
           <ImageBackground style={styles.container} source={require('../assets/images/onboard.jpg')} /> 
         </View>
       
@@ -29,10 +35,11 @@ const Getstarted = ({ navigation }) => (
             action={() => { navigation.navigate('Signup'); }}
             />
             </View>
-          </View>
+          </View> */}
         </View>
       <View style={styles.container}>
-      <View style={styles.top}>
+      <ImageBackground style={styles.container} resize source={require('../assets/images/bg1.jpg')} /> 
+      {/* <View style={styles.top}>
           <ImageBackground style={styles.container} source={require('../assets/images/onboard1.png')} /> 
         </View>
           <View style={styles.bottom}>
@@ -45,23 +52,28 @@ const Getstarted = ({ navigation }) => (
             action={() => { navigation.navigate('Signup'); }}
             />
             </View>
-          </View>
+          </View> */}
         </View>
      
       <View style={styles.container}>
-      <View style={styles.top}>
-          <ImageBackground style={styles.container} source={require('../assets/images/onboard4.png')} /> 
-        </View>
-          <View style={styles.bottom}>
-            <Text style={styles.contenttitle} >Private Chats</Text>
-            <Text style={styles.contenttitlesub}>lorem lorem </Text>
+      <View style={styles.top}>    
+        <ImageBackground style={styles.container} resizeMethod='scale' source={require('../assets/images/bg2.jpg')} /> 
 
-            <View >
-            <BrandButton
-            title='GET STARTED'
-            action={() => { navigation.navigate('Signup'); }}
-            />
-            </View>
+          {/* <ImageBackground style={styles.container} source={require('../assets/images/onboard4.png')} />  */}
+        </View>
+          <View style={[styles.bottom, { paddingHorizontal: 15, backgroundColor: 'grey', justifyContent: 'center' }]}>
+            {/* <Text style={styles.contenttitle} >Private Chats</Text>
+            <Text style={styles.contenttitlesub}>lorem lorem </Text> */}
+
+<TouchableOpacity
+style={styles.checkbox}
+                          onPress={() => navigation.navigate('Signup')
+                          }
+>
+                          <Buttonnextwhite /> 
+                  </TouchableOpacity>
+          
+            {/* </View> */}
           </View>
         </View>
       </Carousel>
@@ -77,17 +89,18 @@ container: {
 height: null
 },
 top: {
-  height: '50%',
+  height: '90%',
   backgroundColor: 'white',
 },
 bottom: {
-  height: '50%',
-  backgroundColor: '#db0036',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  flexDirection: 'column',
-  paddingTop: 30,
-  paddingHorizontal: 30
+  height: '10%',
+  //height: '50%',
+//  backgroundColor: '#db0036',
+  //justifyContent: 'flex-start',
+  //alignItems: 'center',
+  //flexDirection: 'column',
+  //paddingTop: 30,
+  //paddingHorizontal: 30
 },
 hold: {
   flex: 1
@@ -127,6 +140,9 @@ button1: {
   shadowOpacity: 0.8,
   shadowRadius: 8,
   marginTop: 15,
+},
+checkbox: {
+  alignItems: 'flex-end',
 },
 whiteloan: {
   color: '#f27700',

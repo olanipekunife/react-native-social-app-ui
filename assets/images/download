@@ -1,0 +1,21 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>ORAIRU</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>
+        <tbody><tr>
+          <th>Loan ID</th>
+          <th>Number of Installments</th>
+          <th>Paid</th>
+        <th>Late</th>
+        <th>Partailly Paid</th>
+        <th>Pending</th>
+        <th>Loan Created</th>
+        </tr>
+       
+        <!-- ngRepeat: repaymentreport in repaymentreports --><tr ng-repeat="repaymentreport in repaymentreports" class="ng-scope">
+            <td> <a ui-sref="dashboard.loan({loanId: repaymentreport.loanId, name: clientData.firstName + ' ' + clientData.lastName})" class="ng-binding" href="#!/app/loan/2000026/ORAIRU%20JAMES">2000026</a></td>
+            <td class="ng-binding">12</td>
+            <td class="ng-binding">0</td>
+            <td class="ng-binding">1</td>
+            <td class="ng-binding">0</td>
+            <td class="ng-binding">11</td>
+          <td><span am-time-ago="repaymentreport.created">2 months ago</span></td>
+         </tr><!-- end ngRepeat: repaymentreport in repaymentreports -->
+      </tbody></table></body></html>
