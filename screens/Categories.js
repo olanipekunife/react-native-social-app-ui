@@ -26,7 +26,7 @@ export default class Categories extends Component {
          style={{ flex: 1, paddingHorizontal: 15, justifyContent: 'center' }}
         >  
           <View style={styles.overlay} />
-   <Text style={styles.title}>Pick Categories</Text>
+   <Text style={styles.title}>Categories</Text>
        </ImageBackground>
        </View>
        <ScrollView style={styles.container}>
@@ -63,7 +63,7 @@ export default class Categories extends Component {
           horizontal
           showsHorizontalScrollIndicator={false}
         /></Card>
-          <Button full light iconRight onPress={()=>{this.props.navigation.navigate('Main')}}>
+          <Button full light iconRight onPress={() => { this.props.navigation.navigate('Main'); }}>
             <Text>LETS GO</Text>
             <Icon.Ionicons
         name='md-done-all'

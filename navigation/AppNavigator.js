@@ -9,22 +9,24 @@ import Signin from '../screens/Signin';
 import Categories from '../screens/Categories';
 
 const AppStack = createStackNavigator({ 
-  Getstarted: {
-    screen: Getstarted,
-  navigationOptions: {
-    header: null,
-  } }, 
+   Signup: {
+    screen: Signup
+   },
+    Categories,
   Signin: {
     screen: Signin
   }, 
-  Signup: {
-    screen: Signup },
-    Categories
-}
-// ,
-// {
-//   initialRouteName: 'Categories',
-// }
+Getstarted: {
+  screen: Getstarted,
+navigationOptions: {
+  header: null,
+} }, 
+
+},
+{
+    initialRouteName: 'Signup',
+  }
+
 );
 
 export default createSwitchNavigator({

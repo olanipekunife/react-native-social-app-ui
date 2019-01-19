@@ -10,16 +10,36 @@ import {
   AsyncStorage
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Container, Header, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Text, Card, CardItem, Button, Icon } from 'native-base';
+import { Container, Header, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab } from 'native-base';
 import { Bitmoji } from '../components/Bitmoji';
+import Colors from '../constants/Colors';
+import Micon from '../components/Micon';
 
-import { MonoText } from '../components/StyledText';
+import { Text } from '../components/Text';
 const json = require('../assets/categories.json');
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: 'News Feed',
+    headerStyle: {
+      backgroundColor: Colors.head,
+      elevation: 0, 
+    },
+    headerTintColor: Colors.sky2,
+    headerTitleStyle: {
+      fontFamily: 'gibson',
+      fontWeight: 'normal',
+    },
+    headerRight: (
+      <TouchableOpacity
+        onPress={() => alert('search!')}
+        style={{ marginRight: 20 }}
+      >
+        <Micon name='find-replace' />
+      </TouchableOpacity>
+    ),
+
+  });
   state = {
     active: false,
     bitmoji: 'https://via.placeholder.com/100'
@@ -33,18 +53,18 @@ export default class HomeScreen extends React.Component {
   }
   renderItem = ({ item }) => (
     <ListItem avatar>
-  
-               <Thumbnail source={{ uri: item.image }} />
-                 
-              </ListItem>
+
+      <Thumbnail source={{ uri: item.image }} />
+
+    </ListItem>
   );
   render() {
     return (
       <View style={styles.container}>
-     
-        
+
+
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <List>
+          {/* <List>
         <ListItem itemHeader style={{ paddingBottom: 10 }}>
               <Text>CATEGORIES</Text>
             </ListItem>
@@ -55,102 +75,84 @@ export default class HomeScreen extends React.Component {
           horizontal
           showsHorizontalScrollIndicator={false}
         />
-      </List>
-          <View style={styles.welcomeContainer}>
-          <Card style={{ marginVertical: 10 }}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{ uri: Bitmoji() }} />
-                <Body>
-                  {/* <Text>Joshua</Text>
-                  <Text note>Mentor</Text> */}
-                  <Text note>11h ago</Text>
-                </Body>
-              </Left>
-            </CardItem>
-              <CardItem cardBody>
-            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 150, width: null, flex: 1 }} />
-                        </CardItem>
-            <CardItem >
-            <Body>
-                <Text>
-                  Sample text Sample text Sample text Sample text Sample text 
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>12 Likes</Text>
-                </Button>
-              </Left>
-              <Body>
-                <Button transparent>
-                  <Icon active name="chatbubbles" />
-                  <Text>100 Comments</Text>
-                </Button>
-              </Body>
-             
-            </CardItem>
-          </Card>
-          <Card style={{ marginVertical: 10 }}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{ uri: Bitmoji() }} />
-                <Body>
-                  {/* <Text>Stephen</Text>
-                  <Text note>Mentor</Text> */}
-                  <Text note>11h ago</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem cardBody>
-            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 150, width: null, flex: 1 }} />
-                        </CardItem>
-            <CardItem >
-            <Body>
-                <Text>
-                  Sample text Sample text Sample text Sample text Sample text 
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>2 Likes</Text>
-                </Button>
-              </Left>
-              <Body>
-                <Button transparent>
-                  <Icon active name="chatbubbles" />
-                  <Text>4 Comments</Text>
-                </Button>
-              </Body>
-             
-            </CardItem>
-          </Card>
-          </View>
+      </List> */}
 
-       </ScrollView>
+          <Tabs tabContainerStyle={{ backgroundColor: Colors.head,elevation: 0, borderBottomWidth: 1, borderBottomColor: Colors.head }} tabBarUnderlineStyle={{ borderBottomWidth: 2, backgroundColor: Colors.sky, borderBottomColor: Colors.sky }} locked >
+
+            <Tab style={{ paddingTop: 20 }} tabStyle={{ backgroundColor: Colors.head }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.head }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
+              <View style={styles.welcomeContainer}>
+                <Card style={{ zIndex: 0 }}>
+                
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Profile')}} style={{ position: 'absolute', top: -20, left: -15, width: 40, height: 50, zIndex: 1}}>
+                  <Image style={{ flex:1 }} source={{ uri: Bitmoji() }} />
+                  </TouchableOpacity>
+                  {/*    <CardItem style={{ }}>
+       <Body>
+          <Text>Joshua</Text>
+          <Text note>Mentor</Text>
+         
+        </Body>
+    </CardItem> */}
+                  <CardItem cardBody>
+                    <Image source={require('../assets/images/news.jpeg')} style={{ height: 290, width: null, flex: 1 }} />
+                  </CardItem>
+
+                  <CardItem style={{ paddingBottom: 0 }}>
+                    <Left>
+                      <Button transparent>
+                      <Micon name='heart' size={18} color={Colors.tabIconSelected} />
+                        <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>12</Text>
+                      </Button>
+                      <Button transparent>
+                      <Micon size={18} name='comment-outline' color={Colors.tabIconSelected} />
+                        {/* <Text>100 Comments</Text> */}
+                      </Button>
+                     
+                    </Left>
+                    <Right>
+ <Text note>11h ago</Text>
+                    </Right>
+
+                  </CardItem>
+                  <CardItem style={{ paddingTop: 0 }}>
+                    <Body>
+                      <Text>
+                        Sample text Sample text Sample text Sample text Sample text
+        </Text>
+                    </Body>
+                  </CardItem>
+                </Card>
+              </View>
+            </Tab>
+            <Tab tabStyle={{ backgroundColor: Colors.head }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.head }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
+              {/* <Tab3 /> */}
+            </Tab>
+            <Tab tabStyle={{ backgroundColor: Colors.head }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.head }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Photography">
+              {/* <Tab3 /> */}
+            </Tab>
+          </Tabs>
+
+
+          {/* </View> */}
+
+        </ScrollView>
         <Fab
-            active={this.state.active}
-            direction="up"
-            containerStyle={{ }}
-            style={{ backgroundColor: '#992c39' }}
-            position="bottomRight"
-            onPress={() => this.setState({ active: !this.state.active })}
+          active={this.state.active}
+          direction="up"
+          containerStyle={{}}
+          style={{ backgroundColor: '#992c39' }}
+          position="bottomRight"
+          onPress={() => this.setState({ active: !this.state.active })}
         >
-            <Icon name="md-add" />
-            <Button style={{ backgroundColor: '#992c39' }} onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}>
-              <Icon name="md-paper" />
-            </Button>
-           
-          </Fab>
-      </View> 
-        
-       
+          <Icon name="md-add" />
+          <Button style={{ backgroundColor: '#992c39' }} onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}>
+            <Icon name="md-paper" />
+          </Button>
+
+        </Fab>
+      </View>
+
+
     );
   }
 
@@ -168,12 +170,12 @@ export default class HomeScreen extends React.Component {
           tools. {learnMoreButton}
         </Text>
       );
-    } 
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
+    }
+    return (
+      <Text style={styles.developmentModeText}>
+        You are not in development mode, your app will run at full speed.
         </Text>
-      );
+    );
   }
 
   _handleLearnMorePress = () => {
@@ -200,11 +202,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   contentContainer: {
-    paddingTop: 30,
+    // paddingTop: 20,
   },
   welcomeContainer: {
-   flex: 1,
-marginTop: 20
+    flex: 1,
+   // marginVertical: 5,
+    paddingHorizontal: 25
   },
   welcomeImage: {
     width: 100,

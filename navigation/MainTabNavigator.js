@@ -5,6 +5,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import News from '../screens/News';
+import Profile from '../screens/Profile';
 
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -13,6 +14,7 @@ const HomeStack = createStackNavigator({
   Home: HomeScreen,
 
   News,
+  Profile
 });
 
 HomeStack.navigationOptions = {
@@ -22,8 +24,8 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? 'ios-list'
-          : 'md-list'
+          ? 'ios-home'
+          : 'md-home'
       }
     />
   ),

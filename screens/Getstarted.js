@@ -4,23 +4,35 @@ import Carousel from 'react-native-carousel-view';
 import { Button, Text } from 'native-base';
 import { Icon } from 'expo';
 import Buttonnextwhite from '../components/Buttonnextwhite';
+import { LinearGradient } from 'expo';
+import Colors from '../constants/Colors';
 
 const Getstarted = ({ navigation }) => (
-
-    <View style={styles.container}>
-     <StatusBar hidden />
+<View style={[styles.container]}>
+     {/* <StatusBar hidden /> */}
+     {/* <LinearGradient
+          colors={[Colors.sky2, Colors.trans]}
+          style={styles.overlay}
+     /> */}
       <Carousel
         width={Dimensions.get('window').width}
         height={Dimensions.get('window').height}
         delay={4000}
         //hideIndicators
         inactiveIndicatorColor="grey"
-        //indicatorAtBottom
-        //indicatorSize={20}
-        indicatorColor="red"
+        indicatorAtBottom
+        indicatorSize={10}
+        indicatorColor="black"
+        indicatorSpace={5}
       >
-      <View style={styles.container}>
-      <ImageBackground style={styles.container} source={require('../assets/images/bg3.jpg')} /> 
+    
+      
+      <View style={[styles.container]}>
+     <LinearGradient
+          colors={[Colors.sky2, Colors.trans]}
+          style={styles.overlay}
+     />
+      <ImageBackground style={[styles.container, { marginTop: 50, marginBottom: 100, marginHorizontal: 20 }]} resizeMode='stretch' source={require('../assets/images/bg3.jpg')} /> 
       {/* <View style={styles.top}>
           <ImageBackground style={styles.container} source={require('../assets/images/onboard.jpg')} /> 
         </View>
@@ -38,7 +50,11 @@ const Getstarted = ({ navigation }) => (
           </View> */}
         </View>
       <View style={styles.container}>
-      <ImageBackground style={styles.container} resize source={require('../assets/images/bg1.jpg')} /> 
+      <LinearGradient
+          colors={[Colors.sky2, Colors.trans]}
+          style={styles.overlay}
+      />
+      <ImageBackground style={[styles.container, { marginTop: 50, marginBottom: 100, marginHorizontal: 20 }]} resizeMode='stretch' e source={require('../assets/images/bg1.jpg')} /> 
       {/* <View style={styles.top}>
           <ImageBackground style={styles.container} source={require('../assets/images/onboard1.png')} /> 
         </View>
@@ -56,32 +72,43 @@ const Getstarted = ({ navigation }) => (
         </View>
      
       <View style={styles.container}>
-      <View style={styles.top}>    
-        <ImageBackground style={styles.container} resizeMethod='scale' source={require('../assets/images/bg2.jpg')} /> 
+      <LinearGradient
+          colors={[Colors.sky2, Colors.trans]}
+          style={styles.overlay}
+      />
+      <View style={[styles.top, { paddingTop: 50, paddingBottom: 42, paddingHorizontal: 20 }]}>    
+        <ImageBackground style={[styles.container]} resizeMethod='scale' source={require('../assets/images/bg2.jpg')} /> 
 
           {/* <ImageBackground style={styles.container} source={require('../assets/images/onboard4.png')} />  */}
         </View>
-          <View style={[styles.bottom, { paddingHorizontal: 15, backgroundColor: 'grey', justifyContent: 'center' }]}>
+          <View style={[styles.bottom, { paddingHorizontal: 15, justifyContent: 'center' }]}>
             {/* <Text style={styles.contenttitle} >Private Chats</Text>
             <Text style={styles.contenttitlesub}>lorem lorem </Text> */}
 
 <TouchableOpacity
 style={styles.checkbox}
-                          onPress={() => navigation.navigate('Signup')
+                          onPress={() => navigation.navigate('Categories')
                           }
 >
                           <Buttonnextwhite /> 
                   </TouchableOpacity>
           
-            {/* </View> */}
+            </View>
           </View>
-        </View>
+
+
       </Carousel>
+      </View>
       
-      
-   </View>
   );
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
 container: {
   flex: 1,
   backgroundColor: '#fff',
@@ -90,7 +117,7 @@ height: null
 },
 top: {
   height: '90%',
-  backgroundColor: 'white',
+ // backgroundColor: 'white',
 },
 bottom: {
   height: '10%',

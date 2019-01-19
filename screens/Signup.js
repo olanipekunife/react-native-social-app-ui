@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, View, Text, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView, StatusBar } from 'react-native';
-import { Root, Icon, Header, Content, Item, Input, Form, Label, Picker, Toast, DatePicker } from 'native-base';
+import { Platform, View, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView, StatusBar } from 'react-native';
+import { Root, Icon, Header, Content, Item, Input, Form, Label, Picker, Toast, DatePicker, Button } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo';
 import axios from 'axios';
@@ -8,20 +8,26 @@ import BrandButton from '../components/BrandButton';
 import Checkbox from '../components/Checkbox';
 import { Bitmoji } from '../components/Bitmoji';
 import Buttonnextwhite from '../components/Buttonnextwhite';
+import { Text } from '../components/Text';
+import Micon from '../components/Micon';
+
 const json = require('../assets/countries.json');
 
 export default class Signup extends Component {
   static navigationOptions = {
-    title: 'Sign Up',
-    headerLeft: null,
-    headerStyle: {
-      backgroundColor: '#DF001D',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
+    header: null,
   };
+  // static navigationOptions = {
+  //   title: 'Sign Up',
+  //   headerLeft: null,
+  //   headerStyle: {
+  //     backgroundColor: '#DF001D',
+  //   },
+  //   headerTintColor: '#fff',
+  //   headerTitleStyle: {
+  //     fontWeight: 'bold',
+  //   },
+  // };
   state = { show: false, city: '', name: '', phone: '', password: '', Loading: true, terms: 'no', userCountry: '', userCountryCode: '', sex: 0, gender: 'Male', moji: 'https://placeimg.com/100/100/arch/sepia', date: '' }
  
 
@@ -35,7 +41,7 @@ export default class Signup extends Component {
          { text: "I don't have a Snapchat Account",
 onPress: async() => {
           await AsyncStorage.setItem('state', JSON.stringify(this.state));
-          this.props.navigation.navigate('Categories');
+          this.props.navigation.navigate('Getstarted');
         } },
         { text: 'I have a Snapchat Account', onPress: () => this.setState({ show }) }
       
@@ -44,7 +50,7 @@ onPress: async() => {
     );
   }
    await AsyncStorage.setItem('state', JSON.stringify(this.state));
-    this.props.navigation.navigate('Categories');
+    this.props.navigation.navigate('Getstarted');
     if (this.state.terms == 'no') {
      return Toast.show({
         text: 'You have to Accept Terms and Conditions',
@@ -124,49 +130,62 @@ return (
 }
     return (
 
-      <ImageBackground
-source={require('../assets/images/signup.jpg')}
-        style={{ flex: 1, paddingHorizontal: 15 }}
+      <View
+        style={{ flex: 1, paddingHorizontal: 20 }}
       >  
-           <StatusBar hidden={false} />
-
+           {/* <StatusBar hidden={false} /> */}
+           {/* <View style={styles.overlay} /> */}
  <LinearGradient
-          colors={['rgba(223, 0, 29,0.8)', 'rgba(153, 113, 117, 0.6)']}
+          colors={['rgb(96,195,255)', 'rgb(85,116,247)']}
           style={styles.overlay}
  />
  
         {/* <Loading modalVisible={this.state.modalVisible} /> */}
  
-        {/* <View style={{ justifyContent: 'flex-start' }}>
-          <TouchableOpacity
-style={styles.navigate}
-          onPress={() => goBack()}
-          >
-              <Icon active name='md-arrow-back' style={styles.icon} />
-          </TouchableOpacity>
-        </View> */}
+        <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
+         <Text style={{ color: '#fff', fontSize: 30 }}>Sign Up</Text>
+        </View>
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} enableOnAndroid keyboardOpeningTime={50} extraHeight={Platform.select({ android: 100 })} style={{ flex: 1, paddingBottom: 20 }}>
 
             <View style={styles.contentid}> 
-              {/* <Text style={styles.title}>
+             {/*  <Text style={styles.title}>
                     Sign Up
-              </Text> */}
+              </Text>
               <Text style={styles.titlesub}>
                     Create your Frensei account.
-              </Text>
-              <Item regular style={styles.inputorange}>
-                  {/* <Label style={styles.white}>Name</Label> */}
+              </Text> */}
+                <Item floatingLabel style={styles.inputorange}>
+              <Label style={{ color: '#fff', }}>Full Name</Label>
               <Input
-               placeholderTextColor="#fff"
-              placeholder="Name"
+              //  placeholderTextColor="#fff"
+              // placeholder="Name"
               autoCapitalize="words"
               selectionColor="#fff"
-              style={{ color: '#fff', fontSize: 13, height: 40 }}
+              style={{ color: '#fff', }}
               onChangeText={(name) => this.setState({ name })}
               value={this.state.name}
               />
             </Item>
-            <Item style={styles.inputorange}>
+            <Item picker style={styles.inputorange}>
+            {/* <Label style={{ color: '#fff',  }}>Country</Label> */}
+              <Picker
+              note
+            //  itemTextStyle={{  }}
+                mode="dropdown"
+               // iosIcon={<Icon name="ios-arrow-down-outline" />}
+                style={{ width: undefined, color: '#fff', marginLeft: -4 }}
+                textStyle={{ }}
+                placeholder="Country"
+                placeholderStyle={{ color: '#fff' }}
+                placeholderIconColor="#fff"
+                selectedValue={this.state.userCountryCode}
+                onValueChange={(itemValue, itemName) => this.setState({ userCountryCode: itemValue, userCountry: itemName })}
+              >
+               <Picker.Item label="Country" value='' />
+            {countries}
+              </Picker>
+            </Item>
+            {/* <Item style={styles.inputorange}>
             <DatePicker
              style={{ height: 40 }}
             defaultDate={new Date(1998, 4, 4)}
@@ -178,11 +197,11 @@ style={styles.navigate}
             animationType={'fade'}
             androidMode={'default'}
             placeHolderText="Date of Birth"
-            textStyle={{ color: '#fff', fontSize: 13 }}
+            textStyle={{ color: '#fff',  }}
             placeHolderTextStyle={{ color: '#fff' }}
             onDateChange={(newdate) => this.setState({ date: newdate.toString().substr(4, 12) })}
             />
-            </Item>
+            </Item> */}
             {/*<Item floatingLabel style={styles.inputorange}>
               <Label style={styles.white}>Phone Number</Label>
               <Input 
@@ -193,64 +212,49 @@ style={styles.navigate}
               value={this.state.phone}
               />
     </Item>*/}
-               {/* <Item floatingLabel style={styles.inputorange}>
-                  <Label style={styles.white}>Email</Label>
+               <Item floatingLabel style={styles.inputorange}>
+                  <Label style={{ color: '#fff', }}>Email</Label>
               <Input 
               autoCapitalize="none"
               selectionColor="#fff"
               keyboardType='email-address' 
-              style={{ color: '#fff' }}
+              style={{ color: '#fff', }}
               onChangeText={(email) => this.setState({ email })}
               value={this.state.email}
               />
-            </Item> */}
-             <Item regular style={styles.inputorange}>
-                  {/* <Label style={styles.white}>Email</Label> */}
+            </Item>
+             <Item floatingLabel style={styles.inputorange}>
+                  <Label style={{ color: '#fff', }}>Phone Number</Label>
               <Input 
               placeholderTextColor="#fff"
-              placeholder="Phone Number"
+             // placeholder="Phone Number"
               autoCapitalize="none" 
                keyboardType='numeric'
               selectionColor="#fff"
-              style={{ color: '#fff', fontSize: 13, height: 40 }}
+              style={{ color: '#fff', }}
               onChangeText={(phone) => this.setState({ phone })}
               value={this.state.phone}
               />
             </Item>
-            <Item regular style={styles.inputorange}>
-                  {/* <Label style={styles.white}>Email</Label> */}
+            {/* <Item regular style={styles.inputorange}>
+                  <Label style={styles.white}>Email</Label>
               <Input 
               placeholderTextColor="#fff"
               placeholder="City"
               autoCapitalize="none"
               selectionColor="#fff"
-              style={{ color: '#fff', fontSize: 13, height: 40 }}
+              style={{ color: '#fff', , height: 40 }}
               onChangeText={(city) => this.setState({ city })}
               value={this.state.city}
               />
-            </Item>
-              <Item picker style={styles.inputorange}>
-              <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down-outline" />}
-                style={{ width: undefined, color: '#fff', height: 40 }}
-                textStyle={{ fontSize: 13 }}
-                placeholder="Country"
-                placeholderStyle={{ color: '#fff' }}
-                placeholderIconColor="#fff"
-                selectedValue={this.state.userCountryCode}
-                onValueChange={(itemValue, itemName) => this.setState({ userCountryCode: itemValue, userCountry: itemName })}
-              >
-               <Picker.Item label="Country" value='' />
-            {countries}
-              </Picker>
-            </Item>
-            <Item picker style={styles.inputorange}>
+            </Item> */}
+           
+            {/* <Item picker style={styles.inputorange}>
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="ios-arrow-down-outline" />}
                 style={{ width: undefined, color: '#fff', height: 40 }} 
-                 textStyle={{ fontSize: 13 }}
+                 textStyle={{  }}
                 placeholder="Gender"
                 placeholderStyle={{ color: '#fff' }}
                 placeholderIconColor="#fff"
@@ -261,22 +265,22 @@ style={styles.navigate}
             <Picker.Item label='Male' value='0' />
             <Picker.Item label='Female' value='1' />
               </Picker>
-            </Item>
+            </Item> */}
           
            
-              <Item regular style={styles.inputorange}>
-                  {/* <Label style={styles.white}>Password</Label> */}
+          <Item floatingLabel style={styles.inputorange}>
+                  <Label style={{ color: '#fff', }}>Password</Label>
               <Input
               placeholderTextColor="#fff"
-              placeholder="Password"
-              style={{ color: '#fff', fontSize: 13, height: 40 }}
+             // placeholder="Password"
+              style={{ color: '#fff', }}
               selectionColor="#fff"
               secureTextEntry
               onChangeText={(password) => this.setState({ password })}
               value={this.state.password}
               />
             </Item>
-            <View style={styles.inputorange}>
+            {/* <View style={styles.inputorange}>
             <Checkbox
               name="agree"
               checked={(this.state.terms == 'yes')}
@@ -284,7 +288,7 @@ style={styles.navigate}
               style={{ backgroundColor: '#db0036', color: '#fff', marginRight: 10, borderRadius: 50, borderWidth: 0, height: 50, width: 50, fontSize: 10, paddingTop: 10 }}
               onChange={(name, checked, yn) => { this.setState({ terms: yn }); }}
             />
-            </View>
+            </View> */}
             {/* <View style={{ flexDirection: 'row', justifyContent: 'center', height: 120 }}>
             <Image style={{ width: 100, height: 100, alignSelf: 'center', paddingTop: 30, paddingBottom: 10 }} source={{ uri: this.state.moji }} />  
             </View> */}
@@ -310,7 +314,11 @@ style={styles.navigate}
               </View> */}
            
                          <View style={styles.hold}>
-                    <View style={styles.inner}>
+                         <Button iconLeft block onPress={() => this.signup(true)} light style={{ width: null, flex: 1 }}>
+                         <Micon name='square-edit-outline' color='rgb(85,116,247)' />
+            <Text style={{ color: 'rgb(85,116,247)' }}>REGISTER</Text>
+                         </Button>
+                    {/* <View style={styles.inner}>
                           <TouchableOpacity 
                             onPress={() => this.props.navigation.navigate('Signin')}
                           >
@@ -328,14 +336,14 @@ style={styles.checkbox}
                           <Buttonnextwhite /> 
                   </TouchableOpacity>
        
-                    </View>
+                    </View> */}
                     
               </View> 
           </View>
 
 
         </KeyboardAwareScrollView>
-      </ImageBackground>
+      </View>
 
     );
   }
@@ -347,6 +355,15 @@ const styles = StyleSheet.create({
     width: null,
     height: null,
   },
+  // overlay: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   right: 0,
+  //   bottom: 0,
+  //   left: 0,
+  //   backgroundColor: '#000',
+  //   opacity: 0.5
+  // },
   overlay: {
     position: 'absolute',
     top: 0,
@@ -366,30 +383,31 @@ const styles = StyleSheet.create({
       marginBottom: 15
      },
      contentid: {
-      flex: 7
+      marginTop: 10
        },
        title: {
-        fontSize: 30,
+        fontSize: 25,
         color: 'white',
         fontWeight: '500',
-         paddingLeft: 1,
+         marginTop: 30,
       },
       titlesub: {
-        fontSize: 13,
+        
         color: 'white',
         fontWeight: '400',
         letterSpacing: 1,
         marginTop: 25,
         marginBottom: 15,
-         paddingLeft: 1, 
+        // paddingLeft: 1, 
       },
 
       white: {
         color: 'white',
       },
       hold: {
+        flex: 1,
         flexDirection: 'row',
-        marginVertical: 5,
+        marginBottom: 5,
         },
       inner: {
         width: 50,

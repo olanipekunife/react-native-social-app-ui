@@ -10,20 +10,20 @@ export default class ProfileCards extends Component {
  componentDidMount() {
   const cards = [
     {
-      text: 'Sample text Sample text Sample text Sample text Sample text ',
-      name: 'Emotional Intelligence',
+      text: 'I have been trying to play the guitar for 1 year. I need motivation and consistent guidance. I want to get better really quickly. I am a mature beginner',
+      name: 'Angelina Costa',
       image: require('../assets/images/carde.jpeg'),
       thumbnail: Bitmoji()
     },
     {
-        text: 'Sample text Sample text Sample text Sample text Sample text ',
-        name: 'Guitar Lessons',
-        image: require('../assets/images/cardg.jpg'),
+        text: 'I have been trying to play the guitar for 1 year. I need motivation and consistent guidance. I want to get better really quickly. I am a mature beginner',
+        name: 'Melinda Jones',
+        image: require('../assets/images/cardg.jpeg'),
         thumbnail: Bitmoji()
       },
       {
-        text: 'Sample text Sample text Sample text Sample text Sample text ',
-        name: 'Coding',
+        text: 'I have been trying to play the guitar for 1 year. I need motivation and consistent guidance. I want to get better really quickly. I am a mature beginner',
+        name: 'Julius Berger',
         image: require('../assets/images/cardp.jpeg'),
         thumbnail: Bitmoji()
       },
@@ -41,10 +41,11 @@ export default class ProfileCards extends Component {
         <Container>
       <Header style={{ paddingTop: Constants.statusBarHeight + 25, paddingBottom: Constants.statusBarHeight, backgroundColor: '#DF001D' }}>
       <Left>
-            <Button transparent onPress={() => { this.props.navigation.navigate('Home') ;}}>
+            <Button transparent onPress={() => { this.props.emptyChoice(null); }}>
             <Icon.Ionicons
         name='md-arrow-back'
         color='#fff'
+        size={30}
             />
             </Button>
           </Left>
@@ -63,10 +64,10 @@ export default class ProfileCards extends Component {
             // console.log(sc);
             // this.setState({ cards: });
             // console.log(this.state);
- Alert.alert(
-            'Request Sent',
-            'Connection Request Sent Successfully to the Sensei'
-          ); 
+//  Alert.alert(
+//             'Request Sent',
+//             'Connection Request Sent Successfully to the Sensei'
+//           ); 
 }}
             dataSource={this.state.cards}
             renderEmpty={() =>
@@ -75,21 +76,21 @@ export default class ProfileCards extends Component {
               </View>}
             renderItem={item =>
               <Card style={{ elevation: 3 }}>
+                
+                <CardItem cardBody>
+                  <Image style={{ height: 250, flex: 1 }} source={item.image} />
+                </CardItem>
                 <CardItem>
-                  <Left>
-                    <Thumbnail source={{ uri: item.thumbnail }} />
-                    <Body>
+                  <Body>
+                    {/* <Thumbnail source={{ uri: item.thumbnail }} /> */}
                       <Text>{item.name}</Text>
                       {/* <Text note></Text> */}
-                    </Body>
-                  </Left>
-                </CardItem>
-                <CardItem cardBody>
-                  <Image style={{ height: 300, flex: 1 }} source={item.image} />
+                  </Body>
                 </CardItem>
                 <CardItem>
-              
+              <Body>
                   <Text>{item.text}</Text>
+                  </Body>
                 </CardItem>
               </Card>
             }

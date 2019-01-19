@@ -20,9 +20,12 @@ mediaTypes: 'Images'
 this.setState({ imageBrowserOpen: false });
 console.log(result);
  }
+ setChoice = (choice) => {
+   this.setState({ choice });
+ }
   render() {
     if (this.state.choice) {
-      return <ProfileCards type={this.state.choice} />;
+      return <ProfileCards type={this.state.choice} emptyChoice={this.setChoice} />;
     } 
     return (
       <View style={styles.container}>
@@ -84,7 +87,7 @@ source={require('../assets/images/learn.jpeg')} style={{ flex: 1, height: null, 
       </CardItem>
       <CardItem>
       <Button full light onPress={this.topic} style={{ flex: 1, }}>
-      <Text>Mental State</Text>
+      <Text>Guitar</Text>
     </Button>
        </CardItem>
        <CardItem>

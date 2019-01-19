@@ -22,6 +22,7 @@ export default class App extends React.Component {
       return (
         <Root style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          {/* <StatusBar hidden /> */}
           <AppNavigator />
         </Root>
       );
@@ -31,7 +32,7 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/carde.jpeg'),
         require('./assets/images/cardp.jpeg'),
-                require('./assets/images/cardg.jpg'),
+                require('./assets/images/cardg.jpeg'),
         require('./assets/images/mentor.jpeg'),  
         require('./assets/images/learn.jpeg'),
         require('./assets/images/teach.jpeg'),
@@ -41,7 +42,7 @@ export default class App extends React.Component {
       //  ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        gibson: require('./assets/fonts/Gibson-Regular.ttf'),
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
 
       }),

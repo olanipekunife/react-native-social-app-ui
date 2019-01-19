@@ -160,7 +160,7 @@ export default class SettingsScreen extends Component {
 					<Section>
 						<BioCell
 							title={this.state.name}
-							//subtitle='Scottish economist, philosopher, and author.'
+							subtitle='Nigeria'
 							photoSource={{ uri: this.state.moji }}
 							//accessory='details'
 							onPress={this.onBioTouched}
