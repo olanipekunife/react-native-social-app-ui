@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { Platform, View, StyleSheet, Image, KeyboardAvoidingView, Alert, ImageBackground, AsyncStorage, TouchableHighlight, TouchableOpacity } from 'react-native';
-import { Container, Header, Button, Item, Input, Icon, Text, Label, Toast, Textarea, Card, CardItem, Left, Body, Thumbnail } from 'native-base';
+import { Container, Header, Button, Item, Input, Icon, Text, Label, Toast, Textarea, Card, CardItem, Left, Body, Thumbnail, Tabs, Tab, TabHeading } from 'native-base';
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Colors from '../constants/Colors';
+import Micon from '../components/Micon';
+
 export default class News extends Component {
     static navigationOptions = ({ navigation }) => ({
-            headerTitle: `${navigation.getParam('name')} Feed`,
+            headerTitle: 'New Post',
             headerStyle: {
-              backgroundColor: '#DF001D'
+              backgroundColor: Colors.sky, elevation: 0, 
+
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
-              fontWeight: 'bold',
+              fontFamily: 'gibson',
+              fontWeight: 'normal',
             },
+           
           
         });
   render() {
@@ -21,82 +27,17 @@ export default class News extends Component {
         <View
         style={styles.container}
         >
-             
-            <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} enableOnAndroid keyboardOpeningTime={50} extraHeight={Platform.select({ android: 10 })} style={{ flex: 1, paddingBottom: 20 }}>
-            <View >
-                       <Textarea rowSpan={5} bordered placeholder="Say your mind" />
-                      </View>
-            <View style={{ marginTop: 10 }}>
-                            <Button rounded block style={{ backgroundColor: '#992c39' }} onPress={this.signIn}>
-        <Text>Post</Text>
-    </Button>
-                                 
-                            </View>
-                            <View style={styles.welcomeContainer}>
-          <Card style={{ marginVertical: 10 }}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{ uri: navigation.getParam('uri') }} />
-                <Body>
-                  <Text note>11h ago</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem cardBody>
-            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 200, width: null, flex: 1 }} />
-                        </CardItem>
-            <CardItem >
-            <Body>
-          
-                <Text>
-                  Sample text Sample text Sample text Sample text 
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>122 Likes</Text>
-                </Button>
-              </Left>
-              
-             
-            </CardItem>
-          </Card>
-          <Card style={{ marginVertical: 10 }}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{ uri: navigation.getParam('uri') }} />
-                <Body>
-                  <Text note>11h ago</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem cardBody>
-            <Image source={require('../assets/images/frensei.jpeg')} style={{ height: 200, width: null, flex: 1 }} />
-                        </CardItem>
-            <CardItem >
-            <Body>
-         
-                <Text>
-                  Sample text Sample text Sample text Sample text Sample text S
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>12 Likes</Text>
-                </Button>
-              </Left>
-              
-             
-            </CardItem>
-          </Card>
-          </View>
-            </KeyboardAwareScrollView>
+                <Tabs tabContainerStyle={{ backgroundColor: Colors.sky, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.noticeText }} locked >
+
+<Tab style={{ paddingTop: 20 }} tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={ <TabHeading style={{flexDirection:'column',backgroundColor: Colors.sky, justifyContent:'space-around',}}><Micon name='camera' color='#fff' /><Text style={{fontSize:12,color: '#fff',textAlign: 'center', fontWeight: 'normal'}}>Photo</Text></TabHeading>} />
+<Tab tabStyle={{ backgroundColor: Colors.sky,borderBottomWidth: 1 }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{flexDirection:'column',backgroundColor: Colors.sky, justifyContent:'space-around',}}><Micon name='play' color='#fff' /><Text style={{fontSize:12,color: '#fff',textAlign: 'center', fontWeight: 'normal'}}>Video</Text></TabHeading>}>
+  {/* <Tab3 /> */}
+</Tab>
+<Tab tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={ <TabHeading  style={{flexDirection:'column',backgroundColor: Colors.sky, justifyContent:'space-around'}}><Micon name='wifi' color='#fff' /><Text style={{fontSize:12,color: '#fff',textAlign: 'center', fontWeight: 'normal'}}>Link</Text></TabHeading>}>
+  {/* <Tab3 /> */}
+</Tab>
+</Tabs>
+           
            
             </View>
     );
@@ -105,7 +46,6 @@ export default class News extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 15,
         backgroundColor: '#fff'
     },
     welcomeContainer: {

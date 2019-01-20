@@ -314,7 +314,7 @@ return (
               </View> */}
            
                          <View style={styles.hold}>
-                         <Button iconLeft block onPress={() => this.signup(true)} light style={{ width: null, flex: 1 }}>
+                         <Button iconLeft block onPress={() => this.signup(true)} light style={{ flex: 1 }}>
                          <Micon name='square-edit-outline' color='rgb(85,116,247)' />
             <Text style={{ color: 'rgb(85,116,247)' }}>REGISTER</Text>
                          </Button>

@@ -23,6 +23,8 @@ export default class App extends React.Component {
         <Root style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {/* <StatusBar hidden /> */}
+          <StatusBar barStyle="light-content" />
+
           <AppNavigator />
         </Root>
       );
@@ -42,7 +44,7 @@ export default class App extends React.Component {
       //  ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        gibson: require('./assets/fonts/Gibson-Regular.ttf'),
+        gibson: require('./assets/fonts/Gibson-Regular.otf'),
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
 
       }),

@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'News Feed',
     headerStyle: {
-      backgroundColor: Colors.head,
+      backgroundColor: Colors.noticeText,
       elevation: 0, 
     },
     headerTintColor: Colors.sky2,
@@ -77,13 +77,14 @@ export default class HomeScreen extends React.Component {
         />
       </List> */}
 
-          <Tabs tabContainerStyle={{ backgroundColor: Colors.head,elevation: 0, borderBottomWidth: 1, borderBottomColor: Colors.head }} tabBarUnderlineStyle={{ borderBottomWidth: 2, backgroundColor: Colors.sky, borderBottomColor: Colors.sky }} locked >
+          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText,elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.sky, borderBottomColor: Colors.sky }} locked >
 
-            <Tab style={{ paddingTop: 20 }} tabStyle={{ backgroundColor: Colors.head }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.head }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
+            <Tab style={{ paddingTop: 20 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
               <View style={styles.welcomeContainer}>
                 <Card style={{ zIndex: 0 }}>
                 
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Profile')}} style={{ position: 'absolute', top: -20, left: -15, width: 40, height: 50, zIndex: 1}}>
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Profile')}} style={{ position: 'absolute', top: -20, left: -15, width: 40, height: 50, zIndex: 1, borderWidth: 1,
+    borderColor: '#ccc',borderRadius:5, backgroundColor:'#ccc'}}>
                   <Image style={{ flex:1 }} source={{ uri: Bitmoji() }} />
                   </TouchableOpacity>
                   {/*    <CardItem style={{ }}>
@@ -116,7 +117,7 @@ export default class HomeScreen extends React.Component {
                   </CardItem>
                   <CardItem style={{ paddingTop: 0 }}>
                     <Body>
-                      <Text>
+                      <Text style={{ lineHeight: 20,}}>
                         Sample text Sample text Sample text Sample text Sample text
         </Text>
                     </Body>
@@ -124,10 +125,10 @@ export default class HomeScreen extends React.Component {
                 </Card>
               </View>
             </Tab>
-            <Tab tabStyle={{ backgroundColor: Colors.head }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.head }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
+            <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
               {/* <Tab3 /> */}
             </Tab>
-            <Tab tabStyle={{ backgroundColor: Colors.head }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.head }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Photography">
+            <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Photography">
               {/* <Tab3 /> */}
             </Tab>
           </Tabs>
@@ -140,14 +141,14 @@ export default class HomeScreen extends React.Component {
           active={this.state.active}
           direction="up"
           containerStyle={{}}
-          style={{ backgroundColor: '#992c39' }}
+          style={{ backgroundColor: Colors.sky, opacity:0.8 }}
           position="bottomRight"
-          onPress={() => this.setState({ active: !this.state.active })}
+          onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}
         >
           <Icon name="md-add" />
-          <Button style={{ backgroundColor: '#992c39' }} onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}>
+          {/* <Button style={{ backgroundColor: '#992c39' }} onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}>
             <Icon name="md-paper" />
-          </Button>
+          </Button> */}
 
         </Fab>
       </View>
