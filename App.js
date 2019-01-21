@@ -1,7 +1,6 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet } from 'react-native';
+import { Platform, StatusBar, StyleSheet,View} from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import { Root } from 'native-base';
 import AppNavigator from './navigation/AppNavigator';
 
 export default class App extends React.Component {
@@ -20,13 +19,13 @@ export default class App extends React.Component {
       );
     } 
       return (
-        <Root style={styles.container}>
+        <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {/* <StatusBar hidden /> */}
           <StatusBar barStyle="light-content" />
 
           <AppNavigator />
-        </Root>
+        </View>
       );
   }
 

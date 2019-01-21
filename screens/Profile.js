@@ -105,7 +105,7 @@ onScrollEndDrag={event => {
               </Text> */}
           </TriggeringView>
           <View style={[styles.container, { paddingHorizontal: 22, marginTop: 15 }]}>
-          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.sky, borderBottomColor: Colors.sky }} locked >
+          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.sky }} locked >
 
 <Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={ <TabHeading style={{flexDirection:'column',backgroundColor: Colors.noticeText, justifyContent:'space-around'}}><Text style={{color: '#000',textAlign: 'center'}} >{" "}</Text><Text style={{fontSize:12,color: '#000',textAlign: 'center', fontWeight: 'normal'}}>About</Text></TabHeading>}>
 

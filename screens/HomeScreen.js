@@ -77,15 +77,25 @@ export default class HomeScreen extends React.Component {
         />
       </List> */}
 
-          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText,elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.sky, borderBottomColor: Colors.sky }} locked >
+          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.sky }} locked >
 
             <Tab style={{ paddingTop: 20 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
               <View style={styles.welcomeContainer}>
                 <Card style={{ zIndex: 0 }}>
                 
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Profile')}} style={{ position: 'absolute', top: -20, left: -15, width: 40, height: 50, zIndex: 1, borderWidth: 1,
-    borderColor: '#ccc',borderRadius:5, backgroundColor:'#ccc'}}>
-                  <Image style={{ flex:1 }} source={{ uri: Bitmoji() }} />
+                <TouchableOpacity
+onPress={() => { this.props.navigation.navigate('Profile'); }} style={{ position: 'absolute',
+top: -20,
+left: -15,
+width: 40,
+height: 50,
+zIndex: 1,
+borderWidth: 1,
+    borderColor: '#ccc', 
+borderRadius: 5,
+backgroundColor: '#ccc' }}
+                >
+                  <Image style={{ flex: 1 }} source={{ uri: Bitmoji() }} />
                   </TouchableOpacity>
                   {/*    <CardItem style={{ }}>
        <Body>
@@ -117,7 +127,7 @@ export default class HomeScreen extends React.Component {
                   </CardItem>
                   <CardItem style={{ paddingTop: 0 }}>
                     <Body>
-                      <Text style={{ lineHeight: 20,}}>
+                      <Text style={{ lineHeight: 20, }}>
                         Sample text Sample text Sample text Sample text Sample text
         </Text>
                     </Body>
@@ -141,11 +151,11 @@ export default class HomeScreen extends React.Component {
           active={this.state.active}
           direction="up"
           containerStyle={{}}
-          style={{ backgroundColor: Colors.sky, opacity:0.8 }}
+          style={{ backgroundColor: Colors.sky, opacity: 0.8 }}
           position="bottomRight"
           onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}
         >
-          <Icon name="md-add" />
+          <Micon name="square-edit-outline" />
           {/* <Button style={{ backgroundColor: '#992c39' }} onPress={() => this.props.navigation.navigate('News', { name: 'Joshua', uri: this.state.bitmoji })}>
             <Icon name="md-paper" />
           </Button> */}

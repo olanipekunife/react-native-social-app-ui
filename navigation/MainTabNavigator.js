@@ -13,7 +13,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
 
-  News,
+  
   Profile
 });
 
@@ -62,8 +62,8 @@ SettingsStack.navigationOptions = {
     />
   ),
 };
-
-export default createBottomTabNavigator({
+//you can just export this
+ const TabNavigator =  createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
@@ -74,3 +74,14 @@ export default createBottomTabNavigator({
 }
 }
 );
+
+
+export default createStackNavigator({
+  TabNavigator: {
+    screen: TabNavigator,
+  navigationOptions: {
+    header: null,
+  } }, 
+  News,
+    /* any other route you want to render above the tab bar */
+});
