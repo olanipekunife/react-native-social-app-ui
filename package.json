@@ -24,6 +24,7 @@
     "react-native-js-tableview": "^2.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-star-rating": "^1.1.0",
+    "react-native-thumbnail-video": "^0.1.1",
     "react-navigation": "^2.18.2",
     "underscore": "^1.9.1"
   },

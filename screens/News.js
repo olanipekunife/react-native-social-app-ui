@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Platform, View, StyleSheet, Image, KeyboardAvoidingView, Alert, ImageBackground, AsyncStorage, TouchableHighlight, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native';
-import { Container, Header, Button, Item, Input, Icon, Text, Label, Toast, Textarea, Footer, FooterTab, Left, Body, Thumbnail, Tabs, Tab, TabHeading } from 'native-base';
+import { Container, Header, Button, Item, Input, Icon, Label, Toast, Textarea, Footer, FooterTab, Left, Body, Thumbnail, Tabs, Tab, TabHeading } from 'native-base';
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Colors from '../constants/Colors';
 import Micon from '../components/Micon';
 import Newphotopost from '../components/Newphotopost';
 import Newvideopost from '../components/Newvideopost';
+import { Text } from '../components/Text';
 
 export default class News extends Component {
     static navigationOptions = ({ navigation }) => ({
@@ -41,7 +42,7 @@ export default class News extends Component {
         <View
         style={styles.container}
         >
-                <Tabs tabContainerStyle={{ backgroundColor: Colors.sky, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.sky, borderBottomColor: Colors.noticeText }} locked >
+                <Tabs tabContainerStyle={{ backgroundColor: Colors.sky, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.sky, borderBottomColor: Colors.noticeText }} >
 
 <Tab tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around', }}><Micon name='camera' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Photo</Text></TabHeading>}>
 <Newphotopost />

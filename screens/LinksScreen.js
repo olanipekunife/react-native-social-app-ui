@@ -1,13 +1,30 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, ImageBackground, NativeModulesStatic, Modal, ActivityIndicator, Platform, TouchableOpacity } from 'react-native';
-import { Text, ListItem, Left, Right, Radio, Card, CardItem, Body, Textarea, Button, Toast } from 'native-base';
+import { Text as Ntext, ListItem, Left, Right, Radio, Card, CardItem, Body, Textarea, Button, Toast } from 'native-base';
+import { Header } from 'react-navigation';
+
 import { Icon, ImagePicker } from 'expo';
 import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Colors from '../constants/Colors';
+import { Text } from '../components/Text';
+
 export default class LinksScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+  // static navigationOptions = {
+  //   header: null,
+  // };
+  // static navigationOptions = ({ navigation }) => ({
+  //   headerTitle: 'Pick a Lane',
+  //   headerStyle: {
+  //     backgroundColor: Colors.noticeText,
+  //     elevation: 0, 
+  //   },
+  //   headerTintColor: Colors.sky2,
+  //   headerTitleStyle: {
+  //     fontFamily: 'gibson',
+  //     fontWeight: 'normal',
+  //   },
+  // });
  state = { choice: null, showmore: false, photos: [], imageBrowserOpen: false, mentor: false, mentee: false }
  topic = async() => {
   this.setState({ showmore: true });
@@ -29,25 +46,41 @@ console.log(result);
     } 
     return (
       <View style={styles.container}>
-      <TouchableOpacity style={{ flex: 2, padding: 10 }} onPress={() => this.setState({ mentor: !this.state.mentor })}>
-       <ImageBackground
-source={require('../assets/images/teach.jpeg')} style={{ flex: 1, height: null, width: null }}
+      <Text style={{ marginTop: Header.HEIGHT - 20, textAlign: 'center', color: Colors.sky, fontSize: 20 }}>Pick a Lane</Text>
+      <TouchableOpacity style={{ flex: 0.425, paddingHorizontal: 20, marginTop: 30 }} onPress={() => this.setState({ mentor: !this.state.mentor })}>
+       <View
+style={{ flex: 1,
+borderColor: '#ccc',
+borderWidth: 1, 
+elevation: 2,
+justifyContent: 'space-around' }}
        >  
+       <Text style={{ textAlign: 'center', fontSize: 30 }}>MENTOR</Text>
+       <Ntext style={{ textAlign: 'center', fontFamily: 'Highlander', fontSize: 30 }}>Teach What You Know</Ntext>
          {/* <View style={styles.overlay} />
 <View>
   <Text style={styles.title}>Find Friends who will be your Sensei : they will guide, motivate and sometimes teach. It is free of cost! In return, all you need to do is teach someone new something you know!</Text>
 </View> */}
-      </ImageBackground>
+      </View>
       </TouchableOpacity>
-      <TouchableOpacity style={{ flex: 2, padding: 10 }} onPress={() => this.setState({ mentee: !this.state.mentee })}>
-      <ImageBackground
-source={require('../assets/images/learn.jpeg')} style={{ flex: 1, height: null, width: null }}
+      <View style={{ flex: 0.15, justifyContent: 'center' }}>
+<Ntext style={{ textAlign: 'center', fontFamily: 'Highlander', fontSize: 25, color: '#ccc' }}>TO</Ntext>
+      </View>
+      <TouchableOpacity style={{ flex: 0.425, paddingHorizontal: 20, marginBottom: 30 }} onPress={() => this.setState({ mentee: !this.state.mentee })}>
+      <View
+style={{ flex: 1,
+borderColor: '#ccc',
+borderWidth: 1, 
+elevation: 2,
+justifyContent: 'space-around' }}
       >  
+        <Text style={{ textAlign: 'center', fontSize: 30 }}>MENTEE</Text>
+       <Ntext style={{ textAlign: 'center', fontFamily: 'Highlander', fontSize: 30 }}>LEARN WHAT YOU DONT</Ntext>
          {/* <View style={styles.overlay} />
 <View>
   <Text style={styles.title}>Find Friends who will be your Sensei : they will guide, motivate and sometimes teach. It is free of cost! In return, all you need to do is teach someone new something you know!</Text>
 </View> */}
-      </ImageBackground>
+      </View>
       </TouchableOpacity>
       {/* <View style={{ flex: 2 }}>
       <ListItem>

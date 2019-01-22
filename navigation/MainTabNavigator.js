@@ -63,7 +63,7 @@ SettingsStack.navigationOptions = {
   ),
 };
 //you can just export this
- const TabNavigator =  createBottomTabNavigator({
+ const TabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
