@@ -6,6 +6,8 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import News from '../screens/News';
 import Profile from '../screens/Profile';
+import Mentor from '../screens/Mentor';
+import Mentee from '../screens/Mentee';
 
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -34,6 +36,16 @@ HomeStack.navigationOptions = {
 const LinksStack = createStackNavigator({
   Links: {
     screen: LinksScreen,
+  navigationOptions: {
+    header: null,
+  } }, 
+  Mentor: {
+    screen: Mentor,
+  navigationOptions: {
+    header: null,
+  } }, 
+  Mentee: {
+    screen: Mentee,
   navigationOptions: {
     header: null,
   } }, 
