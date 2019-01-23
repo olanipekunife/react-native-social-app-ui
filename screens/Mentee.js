@@ -2,12 +2,14 @@ import React from 'react';
 import { ScrollView, StyleSheet, View, ImageBackground, NativeModulesStatic, Modal, ActivityIndicator, Platform, TouchableOpacity, Image } from 'react-native';
 import { Text as Ntext, ListItem, Left, Right, Radio, Card, CardItem, Body, Textarea, Button, DeckSwiper, Content } from 'native-base';
 import { Header } from 'react-navigation';
+import Micon from '../components/Micon';
 
-import { Icon, ImagePicker } from 'expo';
+import { LinearGradient, ImagePicker } from 'expo';
 import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Colors from '../constants/Colors';
 import { Bitmoji } from '../components/Bitmoji';
+import Layout from '../constants/Layout';
 
 import { Text } from '../components/Text';
 const cards = [
@@ -46,7 +48,7 @@ export default class Mentee extends React.Component {
   //     fontWeight: 'normal',
   //   },
   // });
-  state = { choice: null, showmore: false, photos: [], imageBrowserOpen: false, mentor: false, mentee: false }
+  state = {name:'Stephanie Cole', choice: null, showmore: false, photos: [], imageBrowserOpen: false, mentor: false, mentee: false }
   topic = async () => {
     this.setState({ showmore: true });
   }
@@ -66,15 +68,15 @@ export default class Mentee extends React.Component {
     //   return <ProfileCards type={this.state.choice} emptyChoice={this.setChoice} />;
     // }
     return (
-      <View style={styles.container}>
-        <Text style={{ marginTop: Header.HEIGHT - 20, textAlign: 'center', color: Colors.sky, fontSize: 20 }}>Pick your Frensei</Text>
+      <ScrollView style={styles.container}>
+        <Text style={{ marginTop: Header.HEIGHT - 20, marginBottom: 15, textAlign: 'center', color: Colors.sky, fontSize: 20 }}>Pick your Frensei</Text>
 
         {/* <TouchableOpacity style={{ flex: 0.425, paddingHorizontal: 20, marginTop: 30 }} onPress={() => this.setState({ mentor: !this.state.mentor })}> */}
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-        <View style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', height: 300  }} >
-        <View style={{ alignSelf:'center',width:'100%',height:230,backgroundColor:'#ccc' }} />
+        <View style={{ flex: 0.7, flexDirection: 'row' }}>
+        <View style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', height: Layout.window.height / 1.8 }} >
+        <View style={{ alignSelf: 'center', width: '100%', height: (Layout.window.height / 1.8) - 70, backgroundColor: '#ccc' }} />
         </View>
-        <View style={{ flex: 0.8 }}>
+        <View style={{ flex: 0.8, flexDirection: 'column' }}>
         <DeckSwiper
         style={{ flex: 1 }}
          ref={(c) => { this._deckSwiper = c; }}
@@ -100,27 +102,56 @@ export default class Mentee extends React.Component {
               <Card style={{ elevation: 3 }}>
                 {/* elevation: 3  */}
                 <CardItem cardBody>
-                  <Image style={{ height: 300, flex: 1 }} source={item.image} />
+                  <Image style={{ flex: 1, height: Layout.window.height / 1.8 }} source={item.image} />
                 </CardItem>
               </Card>
             }
         />
+       
          </View>
-         <View style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', height: 300  }} >
-        <View style={{ alignSelf:'center',width:'100%',height:230,backgroundColor:'#ccc' }} />
+         <View style={{ flex: 0.1, alignItems: 'center', justifyContent: 'center', height: Layout.window.height / 1.8 }} >
+        <View style={{ alignSelf: 'center', width: '100%', height: (Layout.window.height / 1.8) - 70, backgroundColor: '#ccc' }} />
         </View>
  
         </View> 
-         <View style={{ flexDirection: 'row', flex: 1, position: 'absolute', bottom: 50, left: 0, right: 0, justifyContent: 'space-between', padding: 15 }}>
-          <Button iconLeft onPress={() => this._deckSwiper._root.swipeLeft()}>
+        <View style={{ flex: 0.3, flexDirection: 'row' }}>
+        <View style={{ flex: 0.1}}/>
+        <View style={{ flex: 0.8}}>
+        <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+        <TouchableOpacity onPress={() => { this._deckSwiper._root.swipeLeft(); console.log(this._deckSwiper._root.state.selectedItem, 'left');  this.setState({name : this._deckSwiper._root.state.selectedItem.name})}}>
+        <Micon name='close' size={60}/>
+     </TouchableOpacity>
+     <TouchableOpacity onPress={() => { this._deckSwiper._root.swipeRight(); console.log(this._deckSwiper._root.state.selectedItem, 'right'); this.setState({name : this._deckSwiper._root.state.selectedItem.name}) }}>
+       
+       <Micon name='heart' size={60}/>
+     </TouchableOpacity>
+     </View>
+     <View style={{ flex: 1, flexDirection:'column'}}>
+     <LinearGradient
+                colors={[Colors.darkblue, Colors.sky2]}
+                start={[0, 1]}
+                end={[1, 0]}
+                style={{ height:50, marginBottom:4, borderRadius:5}}
+              >
+                <Button full onPress={() => alert('ok')} transparent style={{ flex: 1 }}>
+                  <Text style={{ color: '#fff', fontSize:20}}>{this.state.name}</Text>
+                </Button>
+              </LinearGradient>
+              <Text style={{fontSize:13, color: Colors.sky, textAlign:'center' }}>PHOTOGRAPHY</Text>
+              </View>
+     </View>
+     <View style={{ flex: 0.1}}/>
+        </View>
+         {/* <View style={{ flexDirection: 'row', flex: 1, position: 'absolute', bottom: 50, left: 0, right: 0, justifyContent: 'space-between', padding: 15 }}>
+          <Button iconLeft onPress={() => { this._deckSwiper._root.swipeLeft(); console.log(this._deckSwiper._root.state.selectedItem, 'left'); }}>
        
             <Text>Swipe Left</Text>
           </Button>
-          <Button iconRight onPress={() => this._deckSwiper._root.swipeRight()}>
+          <Button iconRight onPress={() => { this._deckSwiper._root.swipeRight(); console.log(this._deckSwiper._root.state.selectedItem, 'right'); }}>
             <Text>Swipe Right</Text>
           </Button>
-        </View>
-      </View>
+        </View> */}
+      </ScrollView>
     );
   }
 }
