@@ -7,12 +7,14 @@ import Getstarted from '../screens/Getstarted';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
 import Categories from '../screens/Categories';
+import MoreInfo from '../screens/MoreInfo';
 
 const AppStack = createStackNavigator({ 
    Signup: {
     screen: Signup
    },
     Categories,
+    MoreInfo,
   Signin: {
     screen: Signin
   }, 
@@ -36,6 +38,6 @@ export default createSwitchNavigator({
   Main: MainTabNavigator,
 },
 {
-  initialRouteName: 'Main',
+  initialRouteName: 'App',
 }
 );

@@ -4,12 +4,34 @@ import { List, Thumbnail, Text, ListItem, Left, Right, Radio, Card, CardItem, Bo
 import { Icon, ImagePicker } from 'expo';
 import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+
 const json = require('../assets/categories.json');
 
 export default class Categories extends Component {
     static navigationOptions = {
         header: null,
       };
+      state = {category:'Photography'}
+      
+      signup = ()=>{
+        // axios.post('https://entreprenuer.herokuapp.com/api/createUser', data).then((resp) => { 
+      //   Toast.show({
+      //     text: 'Congratulations!!. Details Saved. You will be notified when the application is ready to launch',
+      //     type: 'success',
+      //     duration: 4900
+      //   });
+      //   setTimeout(() => {
+      //     this.props.navigation.navigate('Landingpage');
+      //   }, 5000);
+      // }).catch((err) => {
+      //   Toast.show({
+      //     text: `An error occured. ${err.response}`,
+      //     type: 'danger',
+      //     duration: 3000
+      //   });
+      // });
+      }
       renderItem = ({ item }) => (
         <ListItem avatar style={{ flexDirection: 'column' }}>
       

@@ -7,6 +7,8 @@ import Colors from '../constants/Colors';
 import Micon from '../components/Micon';
 import Newphotopost from '../components/Newphotopost';
 import Newvideopost from '../components/Newvideopost';
+import Newlinkpost from '../components/Newlinkpost';
+
 import { Text } from '../components/Text';
 
 export default class News extends Component {
@@ -48,11 +50,12 @@ export default class News extends Component {
 <Newphotopost />
 
 </Tab>
-<Tab tabStyle={{ backgroundColor: Colors.sky, borderBottomWidth: 1 }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around', }}><Micon name='play' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Video</Text></TabHeading>}>
+{/* <Tab tabStyle={{ backgroundColor: Colors.sky, borderBottomWidth: 1 }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around', }}><Micon name='play' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Video</Text></TabHeading>}>
   <Newvideopost />
-</Tab>
-{/* <Tab tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around' }}><Micon name='wifi' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Link</Text></TabHeading>}>
 </Tab> */}
+ <Tab tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around' }}><Micon name='wifi' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Link</Text></TabHeading>}>
+ <Newlinkpost />
+</Tab> 
 </Tabs>
            
            

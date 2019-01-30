@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Platform, View, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView, StatusBar } from 'react-native';
-import { Root, Icon, Header, Content, Item, Input, Form, Label, Picker, Toast, DatePicker, Button } from 'native-base';
+import { Platform, View, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView, StatusBar, ToastAndroid } from 'react-native';
+import { Root, Icon, Header, Content, Item, Input, Form, Label, Picker, DatePicker, Button } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { LinearGradient } from 'expo';
+import { LinearGradient, Constants } from 'expo';
 import axios from 'axios';
 import BrandButton from '../components/BrandButton';
 import Checkbox from '../components/Checkbox';
@@ -10,6 +10,7 @@ import { Bitmoji } from '../components/Bitmoji';
 import Buttonnextwhite from '../components/Buttonnextwhite';
 import { Text } from '../components/Text';
 import Micon from '../components/Micon';
+import Colors from '../constants/Colors';
 
 const json = require('../assets/countries.json');
 
@@ -28,67 +29,39 @@ export default class Signup extends Component {
   //     fontWeight: 'bold',
   //   },
   // };
-  state = { show: false, city: '', name: '', phone: '', password: '', Loading: true, terms: 'no', userCountry: '', userCountryCode: '', sex: 0, gender: 'Male', moji: 'https://placeimg.com/100/100/arch/sepia', date: '' }
+  state = { show: false, city: '', name: '', phone: '', password: '', Loading: true, terms: 'yes', userCountry: '', userCountryCode: '', moji: 'https://via.placeholder.com/100', date: '' }
  
 
     signup = async (show = false) => {
    // console.log(this.state);
-  if (show) {
-  return Alert.alert(
-      'Continue to Snapchat',
-      'Continue to Snapchat to Upload Bitmoji?',
-      [ 
-         { text: "I don't have a Snapchat Account",
-onPress: async() => {
-          await AsyncStorage.setItem('state', JSON.stringify(this.state));
-          this.props.navigation.navigate('Getstarted');
-        } },
-        { text: 'I have a Snapchat Account', onPress: () => this.setState({ show }) }
-      
-      ],
-      { cancelable: false }
-    );
-  }
-   await AsyncStorage.setItem('state', JSON.stringify(this.state));
-    this.props.navigation.navigate('Getstarted');
-    if (this.state.terms == 'no') {
-     return Toast.show({
-        text: 'You have to Accept Terms and Conditions',
-        type: 'warning',
-        duration: 3000
-      });
-    }
-    if (this.state.name && this.state.date && this.state.password && this.state.userCountry) {
-      const data = {
-  ...this.state
-      };
-      Toast.show({
-        text: 'Loading... Please Wait',
-        duration: 4000
-      });
-    
-      // axios.post('https://entreprenuer.herokuapp.com/api/createUser', data).then((resp) => { 
-      //   Toast.show({
-      //     text: 'Congratulations!!. Details Saved. You will be notified when the application is ready to launch',
-      //     type: 'success',
-      //     duration: 4900
-      //   });
-      //   setTimeout(() => {
-      //     this.props.navigation.navigate('Landingpage');
-      //   }, 5000);
-      // }).catch((err) => {
-      //   Toast.show({
-      //     text: `An error occured. ${err.response}`,
-      //     type: 'danger',
-      //     duration: 3000
-      //   });
-      // });
+ 
+  
+    if (!!(this.state.name && this.state.phone && this.state.password && this.state.userCountry)) {
+      ToastAndroid.show('Loading... Please Wait', ToastAndroid.LONG);
+      if (show) {
+        if (this.state.terms == 'no') {
+          return ToastAndroid.show('You have to Accept Terms and Conditions', ToastAndroid.SHORT);
+         }
+      return Alert.alert(
+          'Continue to Snapchat',
+          'Continue to Snapchat to Upload Bitmoji?',
+          [ 
+             { text: "I don't have a Snapchat Account",
+    onPress: async() => {
+     
+            //  await AsyncStorage.setItem('state', JSON.stringify(this.state));
+              this.props.navigation.navigate('MoreInfo', this.state);
+            } },
+            { text: 'I have a Snapchat Account', onPress: () => this.setState({ show }) }
+          
+          ],
+          { cancelable: false }
+        );
+      }
+      // await AsyncStorage.setItem('state', JSON.stringify(this.state));
+        this.props.navigation.navigate('MoreInfo', this.state);
     } else {
-      Toast.show({
-        text: 'Please fill all Fields',
-        type: 'danger',
-        duration: 3000
-      });
+      ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
   }
 }
 urlchange = async(e) => {

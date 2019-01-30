@@ -87,7 +87,8 @@ const Getstarted = ({ navigation }) => (
 
 <TouchableOpacity
 style={styles.checkbox}
-                          onPress={() => navigation.navigate('Categories')
+
+                          onPress={() => navigation.navigate('Categories', { ...navigation.state.params.state })
                           }
 >
                           <Buttonnextwhite /> 
