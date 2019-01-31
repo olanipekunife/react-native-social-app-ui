@@ -79,9 +79,61 @@ export default class HomeScreen extends React.Component {
 
           <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.sky }} locked >
 
-            <Tab style={{ paddingTop: 20 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
+            <Tab style={{ paddingTop: 10 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
               <View style={styles.welcomeContainer}>
-                <Card style={{ zIndex: 0 }}>
+              <Card style={{ zIndex: 0, marginTop: 20 }}>
+                
+                <TouchableOpacity
+onPress={() => { this.props.navigation.navigate('Profile'); }} style={{ position: 'absolute',
+top: -20,
+left: -15,
+width: 40,
+height: 50,
+zIndex: 1,
+borderWidth: 1,
+    borderColor: '#ccc', 
+borderRadius: 5,
+backgroundColor: '#ccc' }}
+                >
+                  <Image style={{ flex: 1 }} source={{ uri: Bitmoji() }} />
+                  </TouchableOpacity>
+                  {/*    <CardItem style={{ }}>
+       <Body>
+          <Text>Joshua</Text>
+          <Text note>Mentor</Text>
+         
+        </Body>
+    </CardItem> */}
+                  <CardItem cardBody>
+                    <Image source={require('../assets/images/new1.jpg')} style={{ height: 290, width: null, flex: 1 }} />
+                  </CardItem>
+
+                  <CardItem style={{ paddingBottom: 0 }}>
+                    <Left>
+                      <Button transparent>
+                      <Micon name='heart' size={18} color={Colors.tabIconSelected} />
+                        <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>12</Text>
+                      </Button>
+                      <Button transparent>
+                      <Micon size={18} name='comment-outline' color={Colors.tabIconSelected} />
+                        {/* <Text>100 Comments</Text> */}
+                      </Button>
+                     
+                    </Left>
+                    <Right>
+ <Text note>11h ago</Text>
+                    </Right>
+
+                  </CardItem>
+                  <CardItem style={{ paddingTop: 0 }}>
+                    <Body>
+                      <Text style={{ lineHeight: 20, }}>
+                        Sample text Sample text Sample text Sample text Sample text
+        </Text>
+                    </Body>
+                  </CardItem>
+                </Card>
+                <Card style={{ zIndex: 0, marginTop: 20 }}>
                 
                 <TouchableOpacity
 onPress={() => { this.props.navigation.navigate('Profile'); }} style={{ position: 'absolute',

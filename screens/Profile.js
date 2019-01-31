@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity, AsyncStorage } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import StarRating from 'react-native-star-rating';
 import { LinearGradient } from 'expo';
 import { Header } from 'react-navigation';
-import { Container, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab ,TabHeading, } from 'native-base';
+import { Container, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab, TabHeading, } from 'native-base';
 import About from '../components/About';
 import Connections from '../components/Connections';
 import Posts from '../components/Posts';
@@ -23,9 +23,12 @@ class Profile extends Component {
   static navigationOptions = {
     header: null,
   };
-  constructor() {
-    super();
-    this.state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true };
+
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '' };
+ async componentDidMount() {
+    let user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user);
+    this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name });
   }
   
   render() {
@@ -48,7 +51,7 @@ onScrollEndDrag={event => {
   console.log(event.nativeEvent.contentOffset.y); 
 }}
           //fadeOutForeground
-          renderHeader={() => <Image blurRadius={this.state.blur} source={require('../assets/images/profile.jpeg')} style={styles.image} />}
+          renderHeader={() => <Image blurRadius={this.state.blur} source={{ uri: this.state.pic }} style={styles.image} />}
           renderFixedForeground={() => (
             <Animatable.View
               style={styles.navTitleView}
@@ -57,15 +60,16 @@ onScrollEndDrag={event => {
               }}
             >
               <Text style={styles.navTitle}>
-                Stephanie Cole, (2001)
+              {this.state.name}
                 </Text>
-              <Text note style={styles.keyword}>New York</Text>
+              <Text note style={styles.keyword}>{this.state.country}</Text>
             </Animatable.View>
           )}
           renderForeground={() => (
+            this.state.smallimg ? null :
             <View style={styles.titleContainer}>
-              <Text style={[styles.imageTitle, { marginVertical: 5 }]}>Stephanie Cole</Text>
-              <Text note style={styles.keyword}>New York</Text>
+              <Text style={[styles.imageTitle, { marginVertical: 5 }]}>{this.state.name}</Text>
+              <Text note style={styles.keyword}>{this.state.country}</Text>
               <StarRating
                 containerStyle={{ marginVertical: 5 }}
                 disabled
@@ -107,19 +111,19 @@ onScrollEndDrag={event => {
           <View style={[styles.container, { paddingHorizontal: 22, marginTop: 15 }]}>
           <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.sky }} locked >
 
-<Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={ <TabHeading style={{flexDirection:'column',backgroundColor: Colors.noticeText, justifyContent:'space-around'}}><Text style={{color: '#000',textAlign: 'center'}} >{" "}</Text><Text style={{fontSize:12,color: '#000',textAlign: 'center', fontWeight: 'normal'}}>About</Text></TabHeading>}>
+<Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{' '}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>About</Text></TabHeading>}>
 
 <About />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}
-<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson',textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2,  }} heading={ <TabHeading style={{flexDirection:'column',backgroundColor: Colors.noticeText, justifyContent:'space-around'}}><Text style={{color: '#000',textAlign: 'center'}} >4</Text><Text style={{fontSize:12,color: '#000',textAlign: 'center', fontWeight: 'normal'}}>Connections</Text></TabHeading>}>
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >4</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
  <Connections />
 </Tab>
-<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyleConnections={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{flexDirection:'column',backgroundColor: Colors.noticeText, justifyContent:'space-around'}}><Text style={{color: '#000',textAlign: 'center'}} >4</Text><Text style={{fontSize:12,color: '#000',textAlign: 'center', fontWeight: 'normal'}}>Interests</Text></TabHeading>}>
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyleConnections={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >4</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Interests</Text></TabHeading>}>
   {/* <Tab3 /> */}
 </Tab>
-<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{flexDirection:'column',backgroundColor: Colors.noticeText, justifyContent:'space-around'}}><Text style={{color: '#000',textAlign: 'center'}} >2</Text><Text style={{fontSize:12,color: '#000',textAlign: 'center', fontWeight: 'normal'}}>Posts</Text></TabHeading>}>
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >2</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Posts</Text></TabHeading>}>
 <Posts />
 </Tab>
 </Tabs>
@@ -143,7 +147,7 @@ onScrollEndDrag={event => {
             backgroundColor: '#ccc'
           }}
         >
-          <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: Bitmoji() }} />
+          <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: this.state.moji }} />
         </Animatable.View>}
         {this.state.smallimg && <Animatable.View
           ref={smallView => {
@@ -162,7 +166,7 @@ onScrollEndDrag={event => {
             backgroundColor: '#ccc'
           }}
         >
-          <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: Bitmoji() }} />
+          <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: this.state.moji }} />
         </Animatable.View>}
         <TouchableOpacity
           style={{
@@ -173,7 +177,7 @@ onScrollEndDrag={event => {
             top: Header.HEIGHT - 20,
             
           }}
-          onPress={() => { this.props.navigation.goBack(null) ;}}
+          onPress={() => { this.props.navigation.goBack(null); }}
         >
            <Micon name='arrow-left' style={{ flex: 1 }} color='#fff' />
         </TouchableOpacity>

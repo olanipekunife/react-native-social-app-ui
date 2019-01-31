@@ -38,6 +38,6 @@ export default createSwitchNavigator({
   Main: MainTabNavigator,
 },
 {
-  initialRouteName: 'App',
+  initialRouteName: 'Main',
 }
 );

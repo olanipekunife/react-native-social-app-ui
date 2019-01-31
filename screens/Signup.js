@@ -29,14 +29,11 @@ export default class Signup extends Component {
   //     fontWeight: 'bold',
   //   },
   // };
-  state = { show: false, city: '', name: '', phone: '', password: '', Loading: true, terms: 'yes', userCountry: '', userCountryCode: '', moji: 'https://via.placeholder.com/100', date: '' }
+  state = { show: false, city: '', name: '', phone: '', password: '', Loading: true, terms: 'yes', userCountry: '', userCountryCode: '', moji: 'https://via.placeholder.com/100' }
  
 
     signup = async (show = false) => {
-   // console.log(this.state);
- 
-  
-    if (!!(this.state.name && this.state.phone && this.state.password && this.state.userCountry)) {
+    if (this.state.name && this.state.phone && this.state.password && this.state.userCountry) {
       ToastAndroid.show('Loading... Please Wait', ToastAndroid.LONG);
       if (show) {
         if (this.state.terms == 'no') {
@@ -48,7 +45,6 @@ export default class Signup extends Component {
           [ 
              { text: "I don't have a Snapchat Account",
     onPress: async() => {
-     
             //  await AsyncStorage.setItem('state', JSON.stringify(this.state));
               this.props.navigation.navigate('MoreInfo', this.state);
             } },
@@ -152,7 +148,7 @@ return (
                 placeholderStyle={{ color: '#fff' }}
                 placeholderIconColor="#fff"
                 selectedValue={this.state.userCountryCode}
-                onValueChange={(itemValue, itemName) => this.setState({ userCountryCode: itemValue, userCountry: itemName })}
+                onValueChange={(itemValue, itemIndex) => this.setState({ userCountryCode: itemValue, userCountry: itemIndex === 0 ? itemIndex : json[itemIndex - 1].name })}
               >
                <Picker.Item label="Country" value='' />
             {countries}

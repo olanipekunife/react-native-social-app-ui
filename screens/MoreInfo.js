@@ -28,13 +28,13 @@ export default class MoreInfo extends Component {
   //     fontWeight: 'bold',
   //   },
   // };
-  state = { headline: '', bio: '', pic: '', load:false }
+  state = { headline: '', bio: '', pic: '', load: false }
  
   pickimage = async () => {
-    if (!(this.state.bio && this.state.headline)){ 
-      return ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT)
-    }else{
-      this.setState({load:true})
+    if (!(this.state.bio && this.state.headline)) { 
+      return ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
+    }
+      this.setState({ load: true });
        
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: 'Images',
@@ -44,12 +44,12 @@ export default class MoreInfo extends Component {
     if (result.cancelled) {
       ToastAndroid.show('You need to Pick an Image', ToastAndroid.LONG);
     } else {
-      this.setState({ pic: result });
+     // this.setState({ pic: result });
       const picdata = new FormData();
       picdata.append('file', {
         uri: result.uri,
         type: `image/${result.uri.split('.').pop()}`,
-        name: `${`${this.props.navigation.getParam('name')  }-${  this.props.navigation.getParam('phone')}`}.${result.uri.split('.').pop()}`
+        name: `${`${this.props.navigation.getParam('name')}-${this.props.navigation.getParam('phone')}`}.${result.uri.split('.').pop()}`
        });
       axios({
         url: 'http://192.168.8.101:4001/uploadpic',
@@ -59,19 +59,17 @@ export default class MoreInfo extends Component {
          'Content-Type': 'multipart/form-data',
         },
         data: picdata
-    }).then(({data}) => {
-      this.setState({pic:data.url},()=>{
-        this.props.navigation.navigate('Getstarted',  {...this.state,...this.props.navigation.state.params} );
-      })
+    }).then(({ data }) => {
+      this.setState({ pic: data.url }, () => {
+        this.props.navigation.navigate('Getstarted', { ...this.state, ...this.props.navigation.state.params });
+      });
 console.log(data);
       }).catch(err => {
         console.log(JSON.stringify(err));
       });
   //  }
     console.log(result);
-
   }
-}
   }
 //     signup = async () => {
 //    // console.log(this.state);
@@ -99,25 +97,24 @@ console.log(data);
            {/* <StatusBar hidden={false} /> */}
            {/* <View style={styles.overlay} /> */}
  <LinearGradient
-          colors={['rgb(96,195,255)', 'rgb(85,116,247)']}
+          colors={['rgb(85,116,247)', 'rgb(96,195,255)']}
           style={styles.overlay}
  />
  
         {/* <Loading modalVisible={this.state.modalVisible} /> */}
  
         <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
-         <Text style={{ color: '#fff', fontSize: 20, textAlign:'center', lineHeight: 25,}}>We would like Know More About you {this.props.navigation.getParam('name')} </Text>
+         <Text style={{ color: '#fff', fontSize: 20, textAlign: 'center', lineHeight: 25, }}>We would like Know More About you {this.props.navigation.getParam('name')} </Text>
         </View>
-        <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} enableOnAndroid keyboardOpeningTime={50} extraHeight={Platform.select({ android: 100 })} style={{ flex: 1, paddingBottom: 20 , paddingHorizontal: 20}}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} enableOnAndroid keyboardOpeningTime={50} extraHeight={Platform.select({ android: 100 })} style={{ flex: 1, paddingBottom: 20, paddingHorizontal: 20 }}>
 
             <View style={styles.contentid}> 
             <Item style={styles.inputorange}>
-                <Textarea placeholderTextColor='#fff' maxLength={50} style={{ color: '#fff', fontFamily: 'gibson', fontSize: 18 }}  onChangeText={(headline) => this.setState({ headline })} selectionColor='#fff' rowSpan={2} placeholder="Headline" />
+                <Textarea placeholderTextColor='#fff' maxLength={50} style={{ color: '#fff', fontFamily: 'gibson', fontSize: 18 }} onChangeText={(headline) => this.setState({ headline })} selectionColor={Colors.sky2} rowSpan={2} placeholder="Headline" />
             </Item>
                 <Item style={styles.inputorange}>
-                <Textarea placeholderTextColor='#fff' maxLength={150} style={{ color: '#fff', fontFamily: 'gibson', fontSize: 18 }}  onChangeText={(bio) => this.setState({ bio })} selectionColor='#fff' rowSpan={4} placeholder="Biography" />
+                <Textarea placeholderTextColor='#fff' maxLength={150} style={{ color: '#fff', fontFamily: 'gibson', fontSize: 18 }} onChangeText={(bio) => this.setState({ bio })} selectionColor={Colors.sky2} rowSpan={4} placeholder="Biography" />
             </Item>
-     
            
           
           </View>
@@ -126,8 +123,8 @@ console.log(data);
         </KeyboardAwareScrollView>
         <Footer style={{}}>
           <FooterTab style={{ backgroundColor: '#000' }}>
-         {this.state.load ?  <Button>
-              <ActivityIndicator style={{alignSelf:'center', textAlign:'center'}} size="small" color="#0000ff" />
+         {this.state.load ? <Button>
+              <ActivityIndicator style={{ alignSelf: 'center', textAlign: 'center' }} size="small" color={Colors.sky2} />
             </Button> : <Button vertical onPress={this.pickimage}>
               <Micon name='account' color='#fff' />
               <Text style={{ color: '#fff' }}>Upload your Picture</Text>
