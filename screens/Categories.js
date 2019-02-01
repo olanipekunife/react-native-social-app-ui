@@ -6,6 +6,7 @@ import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import Colors from '../constants/Colors';
+import Ip from '../constants/Ip';
 
 const json = require('../assets/categories.json');
 
@@ -18,7 +19,7 @@ export default class Categories extends Component {
   signup = () => {
     this.setState({ load: true });
     axios({
-      url: 'http://192.168.8.101:4001/signup',
+      url: `http://${Ip.ip}:4001/signup`,
       method: 'post',
       data: { ...this.props.navigation.state.params, ...this.state }
     }).then(async ({ data }) => {

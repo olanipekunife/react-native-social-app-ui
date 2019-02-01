@@ -11,7 +11,7 @@ import { Text } from '../components/Text';
 import Micon from '../components/Micon';
 import axios from 'axios';
 import Colors from '../constants/Colors';
-
+import Ip from '../constants/Ip';
 
 export default class MoreInfo extends Component {
   static navigationOptions = {
@@ -31,7 +31,7 @@ export default class MoreInfo extends Component {
   state = { headline: '', bio: '', pic: '', load: false }
  
   pickimage = async () => {
-    if (!(this.state.bio && this.state.headline)) { 
+    if (!this.state.bio || !this.state.headline) { 
       return ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
     }
       this.setState({ load: true });
@@ -52,7 +52,7 @@ export default class MoreInfo extends Component {
         name: `${`${this.props.navigation.getParam('name')}-${this.props.navigation.getParam('phone')}`}.${result.uri.split('.').pop()}`
        });
       axios({
-        url: 'http://192.168.8.101:4001/uploadpic',
+        url: `http://${Ip.ip}:4001/uploadpic/profile`,
         method: 'post',
         headers: {
          Accept: 'application/json',
