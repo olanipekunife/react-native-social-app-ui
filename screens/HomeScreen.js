@@ -7,15 +7,18 @@ import {
   FlatList,
   TouchableOpacity,
   View,
-  AsyncStorage
+  AsyncStorage,
+  Modal
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Container, Header, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab } from 'native-base';
+import { Container, Header, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab, Title, Footer, Input, Item, FooterTab } from 'native-base';
 import { Bitmoji } from '../components/Bitmoji';
 import Colors from '../constants/Colors';
 import Micon from '../components/Micon';
-
+import axios from 'axios';
 import { Text } from '../components/Text';
+import Ip from '../constants/Ip';
+import moment from 'moment';
 const json = require('../assets/categories.json');
 
 export default class HomeScreen extends React.Component {
@@ -42,13 +45,24 @@ export default class HomeScreen extends React.Component {
   });
   state = {
     active: false,
-    bitmoji: 'https://via.placeholder.com/100'
+    bitmoji: 'https://via.placeholder.com/100',
+    posts: [],
+    comment: null,
+    usercomment: ''
   }
   async componentDidMount() {
     const stat = await AsyncStorage.getItem('state');
-    console.log(stat);
-    this.setState({ bitmoji: JSON.parse(stat).moji });
-    console.log(JSON.parse(stat).moji);
+    //console.log(stat);
+    axios({
+      url: `http://${Ip.ip}:4001/post`,
+      method: 'get'
+        }).then(async ({ data }) => {
+          this.setState({ posts: data });
+
+     console.log(data);
+    }).catch(err => {
+      console.log(err.response);
+    });
     //navigation.getParam('itemId', 'NO-ID');
   }
   renderItem = ({ item }) => (
@@ -58,6 +72,23 @@ export default class HomeScreen extends React.Component {
 
     </ListItem>
   );
+  time = (createdAt) => {
+    if (moment().diff(moment(createdAt), 'minutes') <= 60) {
+      if (moment().diff(moment(createdAt), 'minutes') === 1) {
+        return `${moment().diff(moment(createdAt), 'minutes')} min ago`;
+      }
+      return `${moment().diff(moment(createdAt), 'minutes')} mins ago`;
+    } else if (moment().diff(moment(createdAt), 'hours') <= 24) {
+      if (moment().diff(moment(createdAt), 'hours') === 1) {
+        return `${moment().diff(moment(createdAt), 'hours')} hour ago`;
+      }
+      return `${moment().diff(moment(createdAt), 'hours')} hours ago`;
+    }
+    if (moment().diff(moment(createdAt), 'days') === 1) {
+      return `${moment().diff(moment(createdAt), 'days')} day ago`;
+    }
+      return `${moment().diff(moment(createdAt), 'days')} days ago`;
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -81,9 +112,10 @@ export default class HomeScreen extends React.Component {
 
             <Tab style={{ paddingTop: 10 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
               <View style={styles.welcomeContainer}>
-              <Card style={{ zIndex: 0, marginTop: 20 }}>
+              {this.state.posts.map(item => (
+    <Card key={item._id} style={{ zIndex: 0, marginTop: 20 }}>
                 
-                <TouchableOpacity
+    <TouchableOpacity
 onPress={() => { this.props.navigation.navigate('Profile'); }} style={{ position: 'absolute',
 top: -20,
 left: -15,
@@ -91,100 +123,96 @@ width: 40,
 height: 50,
 zIndex: 1,
 borderWidth: 1,
-    borderColor: '#ccc', 
+borderColor: '#ccc', 
 borderRadius: 5,
 backgroundColor: '#ccc' }}
-                >
-                  <Image style={{ flex: 1 }} source={{ uri: Bitmoji() }} />
-                  </TouchableOpacity>
-                  {/*    <CardItem style={{ }}>
-       <Body>
-          <Text>Joshua</Text>
-          <Text note>Mentor</Text>
+    >
+      <Image style={{ flex: 1 }} source={{ uri: item.user.moji }} />
+      </TouchableOpacity>
+      {/*    <CardItem style={{ }}>
+<Body>
+<Text>Joshua</Text>
+<Text note>Mentor</Text>
+
+</Body>
+</CardItem> */}
+      <CardItem cardBody>
+        <Image source={{ uri: item.media }} style={{ height: 290, width: null, flex: 1 }} />
+      </CardItem>
+
+      <CardItem style={{ paddingBottom: 0 }}>
+        <Left>
+          <Button transparent>
+          <Micon name='heart' size={18} color={Colors.tabIconSelected} />
+            <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>{item.likes.length}</Text>
+          </Button>
+          <Button transparent onPress={() => { this.setState({ comment: item._id }); }}>
+          <Micon size={18} name='comment-outline' color={Colors.tabIconSelected} />
+            {/* <Text>{item.comments.length}</Text> */}
+          </Button>
+          <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.comment === item._id}
+          onRequestClose={() => {
+          }}
+          >
+          <View style={{ flex: 1 }}>
+          <Header style={{ backgroundColor: '#fff' }}>
+          <Left>
+            <Button transparent onPress={() => this.setState({ comment: null })}>
+             <Micon color='#000' name='keyboard-backspace' />
+            </Button>
+          </Left>
+          <Body>
+            <Title style={{ color: '#000' }}>Comments</Title>
+          </Body>
          
+        </Header>
+        <ScrollView>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail source={{ uri: item.user.moji }} />
+              </Left>
+              <Body style={{ marginLeft: 0 }}>
+                <Text>{item.user.name}</Text>
+                <Text note>{item.text}</Text>
+              </Body>
+              <Right>
+                <Text note>{this.time(item.createdAt)}</Text>
+              </Right>
+            </ListItem>
+          </ScrollView>
+          {/* <View style={{ }}> */}
+            <Item style={{ position: 'absolute', bottom: 0, paddingHorizontal: 5 }}>
+            <Thumbnail small source={{ uri: item.user.moji }} />
+
+            <Input onChangeText={(usercomment) => this.setState({ usercomment })} value={this.state.usercomment} style={{ fontFamily: 'gibson', fontSize: 13 }} placeholder='Add a Comment' />
+            <Button transparent onPress={() => this.setState({ comment: null })}> 
+            <Micon color='#000' name='send' />
+               </Button>
+          </Item>
+          </View>
+          {/* </View> */}
+        </Modal>
+        </Left>
+        <Right>
+<Text note>{this.time(item.createdAt)}</Text>
+        </Right>
+
+      </CardItem>
+      <CardItem style={{ paddingTop: 0 }}>
+        <Body>
+          <Text style={{ lineHeight: 20, }}>
+           {item.text}
+</Text>
         </Body>
-    </CardItem> */}
-                  <CardItem cardBody>
-                    <Image source={require('../assets/images/new1.jpg')} style={{ height: 290, width: null, flex: 1 }} />
-                  </CardItem>
+      </CardItem>
+    </Card>
 
-                  <CardItem style={{ paddingBottom: 0 }}>
-                    <Left>
-                      <Button transparent>
-                      <Micon name='heart' size={18} color={Colors.tabIconSelected} />
-                        <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>12</Text>
-                      </Button>
-                      <Button transparent>
-                      <Micon size={18} name='comment-outline' color={Colors.tabIconSelected} />
-                        {/* <Text>100 Comments</Text> */}
-                      </Button>
-                     
-                    </Left>
-                    <Right>
- <Text note>11h ago</Text>
-                    </Right>
-
-                  </CardItem>
-                  <CardItem style={{ paddingTop: 0 }}>
-                    <Body>
-                      <Text style={{ lineHeight: 20, }}>
-                        Sample text Sample text Sample text Sample text Sample text
-        </Text>
-                    </Body>
-                  </CardItem>
-                </Card>
-                <Card style={{ zIndex: 0, marginTop: 20 }}>
-                
-                <TouchableOpacity
-onPress={() => { this.props.navigation.navigate('Profile'); }} style={{ position: 'absolute',
-top: -20,
-left: -15,
-width: 40,
-height: 50,
-zIndex: 1,
-borderWidth: 1,
-    borderColor: '#ccc', 
-borderRadius: 5,
-backgroundColor: '#ccc' }}
-                >
-                  <Image style={{ flex: 1 }} source={{ uri: Bitmoji() }} />
-                  </TouchableOpacity>
-                  {/*    <CardItem style={{ }}>
-       <Body>
-          <Text>Joshua</Text>
-          <Text note>Mentor</Text>
-         
-        </Body>
-    </CardItem> */}
-                  <CardItem cardBody>
-                    <Image source={require('../assets/images/news.jpeg')} style={{ height: 290, width: null, flex: 1 }} />
-                  </CardItem>
-
-                  <CardItem style={{ paddingBottom: 0 }}>
-                    <Left>
-                      <Button transparent>
-                      <Micon name='heart' size={18} color={Colors.tabIconSelected} />
-                        <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>12</Text>
-                      </Button>
-                      <Button transparent>
-                      <Micon size={18} name='comment-outline' color={Colors.tabIconSelected} />
-                        {/* <Text>100 Comments</Text> */}
-                      </Button>
-                     
-                    </Left>
-                    <Right>
- <Text note>11h ago</Text>
-                    </Right>
-
-                  </CardItem>
-                  <CardItem style={{ paddingTop: 0 }}>
-                    <Body>
-                      <Text style={{ lineHeight: 20, }}>
-                        Sample text Sample text Sample text Sample text Sample text
-        </Text>
-                    </Body>
-                  </CardItem>
-                </Card>
+              ))}
+          
+               
               </View>
             </Tab>
             <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
