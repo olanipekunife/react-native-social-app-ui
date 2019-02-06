@@ -9,8 +9,11 @@ import {
   View,
   AsyncStorage,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+
 import { WebBrowser } from 'expo';
 import { Container, Header, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab, Title, Footer, Input, Item, FooterTab } from 'native-base';
 import { Bitmoji } from '../components/Bitmoji';
@@ -48,7 +51,7 @@ export default class HomeScreen extends React.Component {
   });
   state = {
     active: false,
-    bitmoji: 'https://via.placeholder.com/100',
+    moji: 'https://via.placeholder.com/100',
     posts: [],
     comment: null,
     usercomment: '',
@@ -58,15 +61,15 @@ export default class HomeScreen extends React.Component {
   async componentDidMount() {
     this.setState({ load: true });
     const stat = JSON.parse(await AsyncStorage.getItem('user'));
-   
+
 
     axios({
       url: `http://${Ip.ip}:4001/post`,
       method: 'get'
     }).then(async ({ data }) => {
-      this.setState({ posts: data, userid: stat._id, load: false });
+      this.setState({ posts: data, userid: stat._id, load: false, moji: stat.moji });
 
-     console.log(data);
+      console.log(data);
     }).catch(err => {
       console.log(err.response);
     });
@@ -104,31 +107,54 @@ export default class HomeScreen extends React.Component {
       method: 'post',
       data: { postid, userid: this.state.userid, comment: this.state.usercomment }
     }).then(async ({ data }) => {
-            axios({
-              url: `http://${Ip.ip}:4001/post`,
-              method: 'get'
-            }).then(async ({ data }) => {
-              this.setState({ posts: data, load: false });
-        
-             console.log(data);
-            }).catch(err => {
-              console.log(err.response);
-            });
-     // this.setState({ posts: data, load: false });
+      axios({
+        url: `http://${Ip.ip}:4001/post`,
+        method: 'get'
+      }).then(async ({ data }) => {
+        this.setState({ posts: data, load: false });
+
+        console.log(data);
+      }).catch(err => {
+        console.log(err.response);
+      });
+      // this.setState({ posts: data, load: false });
+    }).catch(err => {
+      console.log(err.response);
+    });
+  }
+  like = (postid) => {
+    console.log(this.state.userid);
+    this.setState({ load: true });
+    axios({
+      url: `http://${Ip.ip}:4001/like`,
+      method: 'post',
+      data: { postid, userid: this.state.userid }
+    }).then(async ({ data }) => {
+      axios({
+        url: `http://${Ip.ip}:4001/post`,
+        method: 'get'
+      }).then(async ({ data }) => {
+        this.setState({ posts: data, load: false });
+
+        console.log(data);
+      }).catch(err => {
+        console.log(err.response);
+      });
+      // this.setState({ posts: data, load: false });
     }).catch(err => {
       console.log(err.response);
     });
   }
   renderSeparator = () => (
-      <View
-        style={{
-          height: 1,
-          width: '86%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '14%'
-        }}
-      />
-    );
+    <View
+      style={{
+        height: 1,
+        width: '86%',
+        backgroundColor: '#CED0CE',
+        marginLeft: '14%'
+      }}
+    />
+  );
   render() {
     return (
       <View style={styles.container}>
@@ -151,11 +177,17 @@ export default class HomeScreen extends React.Component {
 
             <Tab style={{ paddingTop: 10 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
               <View style={styles.welcomeContainer}>
-                {this.state.posts.map(item => (
+                {this.state.posts.map((item, i) => (
                   <Card key={item._id} style={{ zIndex: 0, marginTop: 20 }}>
 
+  
                     <TouchableOpacity
-                      onPress={() => { this.props.navigation.navigate('Profile'); }} style={{
+                      onPress={() => {
+                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length === 3 ? this.props.navigation.navigate('Profile') : Alert.alert(
+                          'You cannot View this Profile',
+                          'Please like this user post 3 times to unlock')
+                          ;
+                      }} style={{
                         position: 'absolute',
                         top: -20,
                         left: -15,
@@ -168,7 +200,9 @@ export default class HomeScreen extends React.Component {
                         backgroundColor: '#ccc'
                       }}
                     >
-                      <Image style={{ flex: 1 }} source={{ uri: item.user.moji }} />
+                     <Animatable.Image
+style={{ flex: 1 }} source={{ uri: item.user.moji }} animation='bounce' duration={1000} delay={1000}
+                     />
                     </TouchableOpacity>
                     {/*    <CardItem style={{ }}>
 <Body>
@@ -183,13 +217,18 @@ export default class HomeScreen extends React.Component {
 
                     <CardItem style={{ paddingBottom: 0 }}>
                       <Left>
-                        <Button transparent>
-                          <Micon name='heart' size={18} color={Colors.tabIconSelected} />
-                          <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>{item.likes.length}</Text>
-                        </Button>
+                        {this.state.load ?
+                          <Button transparent >
+                            <ActivityIndicator style={{ alignSelf: 'center', textAlign: 'center' }} size="small" color='#000' />
+                          </Button>
+                          : <Button transparent onPress={() => this.like(item._id)}>
+                            <Micon name='heart' size={20} color={item.likes.filter(iteem => iteem.userid.includes(this.state.userid)).length < 1 ? Colors.tabIconDefault : Colors.tabIconSelected} />
+                            <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>{item.likes.length}</Text>
+                          </Button>}
+
                         <Button transparent onPress={() => { this.setState({ comment: item._id }); }}>
                           {/* <Micon size={18} name='comment-outline'  /> */}
-                          <Text style={{color:Colors.tabIconSelected, paddingLeft:0}}>View {item.comments.length} Comments</Text>
+                          <Text style={{ color: Colors.tabIconSelected, paddingLeft: 0 }}>View {item.comments.length} Comments</Text>
                         </Button>
                         <Modal
                           animationType="slide"
@@ -213,7 +252,7 @@ export default class HomeScreen extends React.Component {
                             <ScrollView>
                               <ListItem avatar>
                                 <Left>
-                                  <Thumbnail small source={{ uri: item.user.moji }} />
+                                  <Thumbnail small resizeMode='contain' source={{ uri: item.user.moji }} />
                                 </Left>
                                 <Body>
                                   <Text>{item.user.name}</Text>
@@ -224,35 +263,35 @@ export default class HomeScreen extends React.Component {
                                 </Right>
                               </ListItem>
                               <List>
-                                    {item.comments.map(comment=>(
-   <ListItem avatar key={comment._id} style={{borderColor:'transparent'}}>
-                                            <Left>
-                                              <Thumbnail small source={{ uri: comment.userid.moji }} />
-                                            </Left>
-                                            <Body style={{borderColor:'transparent'}}>
-                                              <Text>{comment.userid.name}</Text>
-                                              <Text note>{comment.comment}</Text>
-                                            </Body>
-                                         
-                                          </ListItem>
+                                {item.comments.map(comment => (
+                                  <ListItem avatar key={comment._id} style={{ borderColor: 'transparent' }}>
+                                    <Left>
+                                      <Thumbnail small resizeMode='contain' source={{ uri: comment.userid.moji }} />
+                                    </Left>
+                                    <Body style={{ borderColor: 'transparent' }}>
+                                      <Text>{comment.userid.name}</Text>
+                                      <Text note>{comment.comment}</Text>
+                                    </Body>
 
-                                    ))}   
-          </List>
+                                  </ListItem>
+
+                                ))}
+                              </List>
                             </ScrollView>
                             {/* <View style={{ }}> */}
-                           
-                            <Item style={{ position: 'absolute', bottom: 0, paddingHorizontal: 5}}>
-                              <Thumbnail small source={{ uri: item.user.moji }} />
 
-                              <Input onChangeText={(usercomment) => this.setState({ usercomment })} value={this.state.usercomment} style={{ fontFamily: 'gibson', fontSize: 13 }} placeholder='Add a Comment' />
-                              {this.state.load ? 
-              <ActivityIndicator style={{ alignSelf: 'center', textAlign: 'center' }} size="small" color='#000' />
-         :  <Button transparent onPress={() => this.comment(item._id)}>
-         <Micon color='#000' name='send' />
-       </Button>}
-                            
+                            <Item style={{ position: 'absolute', bottom: 0, paddingHorizontal: 5 }}>
+                              <Thumbnail small resizeMode='contain' source={{ uri: this.state.moji }} />
+
+                              <Input editable={!this.state.load} onChangeText={(usercomment) => this.setState({ usercomment })} value={this.state.usercomment} style={{ fontFamily: 'gibson', fontSize: 13 }} returnKeyType='send' onSubmitEditing={() => { this.comment(item._id); }} placeholder='Add a Comment' />
+                              {this.state.load ?
+                                <ActivityIndicator style={{ alignSelf: 'center', textAlign: 'center' }} size="small" color='#000' />
+                                : <Button transparent onPress={() => this.comment(item._id)}>
+                                  <Micon color='#000' name='send' />
+                                </Button>}
+
                             </Item>
-                            
+
                           </View>
                           {/* </View> */}
                         </Modal>
@@ -264,7 +303,7 @@ export default class HomeScreen extends React.Component {
                     </CardItem>
                     <CardItem style={{ paddingTop: 0 }}>
                       <Body>
-                        <Text style={{ lineHeight: 20, }}>
+                        <Text style={{ lineHeight: 18, fontSize: 14 }}>
                           {item.text}
                         </Text>
                       </Body>

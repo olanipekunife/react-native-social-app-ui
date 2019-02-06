@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity, ImageBackground, Platform } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity, ImageBackground, Platform, AsyncStorage, ActivityIndicator, ToastAndroid } from 'react-native';
 import { LinearGradient } from 'expo';
 import { Header } from 'react-navigation';
 import { Container, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab, TabHeading, Textarea } from 'native-base';
@@ -7,6 +7,8 @@ import About from '../components/About';
 import Connections from '../components/Connections';
 import Posts from '../components/Posts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Ip from '../constants/Ip';
+import axios from 'axios';
 
 import { Text } from '../components/Text';
 import Micon from '../components/Micon';
@@ -14,6 +16,29 @@ import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header
 import Colors from '../constants/Colors';
 import { Bitmoji } from '../components/Bitmoji';
 export default class Mentor extends Component {
+    state={ text: '', category: 'photography', load: false, userid: '' }
+    async componentDidMount() {
+        this.setState({ load: true });
+        const stat = JSON.parse(await AsyncStorage.getItem('user'));
+        this.setState({ userid: stat._id, load: false });
+    
+        //navigation.getParam('itemId', 'NO-ID');
+      }
+    creatementor = () => {
+        this.setState({ load: true });
+        axios({
+          url: `http://${Ip.ip}:4001/mentor`,
+          method: 'post',
+          data: { ...this.state, user: this.state.userid }
+        }).then(async ({ data }) => {
+            this.setState({ load: false });
+    
+          console.log(data);
+          ToastAndroid.show('You are ready to receive requests from mentees now', ToastAndroid.SHORT);
+        }).catch(err => {
+          console.log(err.response);
+        });
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -36,7 +61,7 @@ export default class Mentor extends Component {
                     <View style={styles.overlay} />
                     <Text style={styles.name}>Stephanie Cole</Text>
                     <Text style={styles.work}>Photography</Text>
-                    <Button iconLeft onPress={() => this.signup(true)} light style={{ borderRadius: 5, alignSelf: 'center', padding: 20, marginVertical: 15 }}>
+                    <Button iconLeft light style={{ borderRadius: 5, alignSelf: 'center', padding: 20, marginVertical: 15 }}>
 
                         <Micon name='check' color='rgb(85,116,247)' />
                         <Text style={{ color: 'rgb(85,116,247)' }}>Mentor</Text>
@@ -48,13 +73,13 @@ export default class Mentor extends Component {
                         <Text style={{ fontWeight: 'bold', fontSize: 19 }}>Description</Text>
                     </View>
                     <View style={{ marginLeft: 10 }}>
-                        <Textarea maxLength={80} style={{ fontFamily: 'gibson', fontSize: 16, fontWeight: 'bold' }} rowSpan={3} placeholder="Tell us About your Skill" />
+                        <Textarea maxLength={80} style={{ fontFamily: 'gibson', fontSize: 16, fontWeight: 'bold' }} onChangeText={(text) => this.setState({ text })} rowSpan={3} placeholder="Tell us About your Skill" />
                     </View>
-                    <View style={{ flex: 1, backgroundColor: 'rgba(128, 202, 255, 0.1)', marginTop: 10, paddingTop: 20,justifyContent:'flex-end',height:'100%' }}>
+                    <View style={{ flex: 1, backgroundColor: 'rgba(128, 202, 255, 0.1)', marginTop: 10, paddingTop: 20, justifyContent: 'flex-end', height: '100%' }}>
                         <Text style={{ textAlign: 'center', }}>CATEGORIES</Text>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                         <View style={{ flex: 0.9, flexDirection: 'row', paddingVertical: 20, paddingHorizontal: 15 }}>
-                            <TouchableOpacity style={{ flexDirection: 'column', backgroundColor: '#fff', borderRadius: 5, paddingVertical: 15, paddingHorizontal: 15 , marginRight:10 , width:102 }}>
+                            <TouchableOpacity style={{ flexDirection: 'column', backgroundColor: '#fff', borderRadius: 5, paddingVertical: 15, paddingHorizontal: 15, marginRight: 10, width: 102 }}>
                                 <View style={{ flex: 1, alignItems: 'center' }}>
                                 <View style={{ width: 40, height: 40, borderWidth: 1, borderColor: '#ccc', borderRadius: 5, backgroundColor: '#ccc', marginVertical: 15 }}>
                                      <Image blurRadius={5} resizeMode='contain' style={{ flex: 1 }} source={{ uri: Bitmoji() }} />
@@ -67,8 +92,8 @@ export default class Mentor extends Component {
                                 </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'space-around', backgroundColor: '#fff', borderRadius: 5, paddingVertical: 15, paddingHorizontal: 15 , marginRight:10, width:102 }}>
-                                <View style={{ flex: 1, alignItems: 'center'}}>
+                            <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'space-around', backgroundColor: '#fff', borderRadius: 5, paddingVertical: 15, paddingHorizontal: 15, marginRight: 10, width: 102 }}>
+                                <View style={{ flex: 1, alignItems: 'center' }}>
                                 <View style={{ width: 40, height: 40, borderWidth: 1, borderColor: '#ccc', borderRadius: 5, backgroundColor: '#ccc', marginVertical: 15 }}>
                                      <Image blurRadius={5} resizeMode='contain' style={{ flex: 1 }} source={{ uri: Bitmoji() }} />
                                      </View>
@@ -80,9 +105,15 @@ export default class Mentor extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={{ flex: 0.1, justifyContent: 'center', alignItems: 'flex-start' }}>
-                         <Micon name='arrow-right'/>
-                        </TouchableOpacity>
+                        {this.state.load ?
+                           <TouchableOpacity style={{ flex: 0.1, justifyContent: 'center', alignItems: 'flex-start' }}>
+                           <ActivityIndicator style={{ alignSelf: 'center', textAlign: 'center' }} size="small" color='#000' />
+                          </TouchableOpacity>
+                        
+                          : <TouchableOpacity style={{ flex: 0.1, justifyContent: 'center', alignItems: 'flex-start' }} onPress={() => { this.creatementor(); }}>
+                          <Micon name='arrow-right' />
+                         </TouchableOpacity>}
+                     
                         </View>
                     </View>
                 </KeyboardAwareScrollView>
