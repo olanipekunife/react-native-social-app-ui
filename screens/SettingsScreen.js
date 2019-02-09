@@ -127,7 +127,7 @@ onScrollEndDrag={event => {
 
 <Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{' '}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>About</Text></TabHeading>}>
 
-<About bio={this.state.bio} head={this.state.headline}  />
+<About bio={this.state.bio} head={this.state.head}  />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}

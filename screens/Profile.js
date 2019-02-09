@@ -13,9 +13,8 @@ import { Text } from '../components/Text';
 import Micon from '../components/Micon';
 import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
 import Colors from '../constants/Colors';
-import { Bitmoji } from '../components/Bitmoji';
+import axios from 'axios'
 import Ip from '../constants/Ip';
-
 const star = require('../assets/images/star.png');
 const MIN_HEIGHT = 130;
 const MAX_HEIGHT = 350;
@@ -30,17 +29,17 @@ class Profile extends Component {
   let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
  const {data} = await axios({
-      url: `http://${Ip.ip}:4001/postbyuser/${this.props.navigation.getParams('user')}`,
+      url: `http://${Ip.ip}:4001/postbyuser/${this.props.navigation.getParam('user')}`,
       method: 'get'
     })
 
 
       console.log(data);
  const mentors =  await axios({
-  url: `http://${Ip.ip}:4001/mentor/${this.props.navigation.getParams('user')}`,
+  url: `http://${Ip.ip}:4001/mentor/${this.props.navigation.getParam('user')}`,
   method: 'get'
 })
-this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts:data, mentors:mentors.data,bio: user.bio, head: user.headline });
+this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.navigation.getParam('pic'), country: this.props.navigation.getParam('userCountry'), name: this.props.navigation.getParam('name'), posts:data, mentors:mentors.data,bio: this.props.navigation.getParam('bio'), head: this.props.navigation.getParam('headline') });
  console.log(mentors.data)
   }
   
@@ -126,7 +125,7 @@ onScrollEndDrag={event => {
 
 <Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{' '}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>About</Text></TabHeading>}>
 
-<About bio={this.state.bio} head={this.state.headline} />
+<About bio={this.state.bio} head={this.state.head} />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}

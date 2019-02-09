@@ -40,14 +40,14 @@ export default class HomeScreen extends React.Component {
       fontFamily: 'gibson',
       fontWeight: 'normal',
     },
-    headerRight: (
-      <TouchableOpacity
-        onPress={() => alert('search!')}
-        style={{ marginRight: 20 }}
-      >
-        <Micon name='find-replace' />
-      </TouchableOpacity>
-    ),
+    // headerRight: (
+    //   <TouchableOpacity
+    //     onPress={() => alert('search!')}
+    //     style={{ marginRight: 20 }}
+    //   >
+    //     <Micon name='find-replace' />
+    //   </TouchableOpacity>
+    // ),
 
   });
   state = {
@@ -180,10 +180,9 @@ export default class HomeScreen extends React.Component {
                 {this.state.posts.map((item, i) => (
                   <Card key={item._id} style={{ zIndex: 0, marginTop: 20 }}>
 
-  
                     <TouchableOpacity
                       onPress={() => {
-                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length === 3 ? this.props.navigation.navigate('Profile', {user:item.user._id}) : Alert.alert(
+                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length !== 3 ? this.props.navigation.navigate('Profile', {user:item.user._id, moji:item.user.moji, pic:item.user.pic,userCountry:item.user.userCountry, name:item.user.name,headline:item.user.headline,bio:item.user.bio}) : Alert.alert(
                           'You cannot View this Profile',
                           'Please like this user post 3 times to unlock')
                           ;
