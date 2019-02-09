@@ -11,6 +11,7 @@ import Mentee from '../screens/Mentee';
 
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import Requests from '../screens/Requests';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -56,11 +57,24 @@ LinksStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'}
+      name={Platform.OS === 'ios' ? 'ios-reorder' : 'md-reorder'}
     />
   ),
 };
 
+const RequestsStack = createStackNavigator({
+  Requests
+});
+
+RequestsStack.navigationOptions = {
+  tabBarLabel: 'Request',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'}
+    />
+  ),
+};
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -78,6 +92,7 @@ SettingsStack.navigationOptions = {
  const TabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  RequestsStack,
   SettingsStack,
 },
 {
