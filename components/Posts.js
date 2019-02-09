@@ -59,7 +59,7 @@ export default class Posts extends React.Component {
   render() {
     return (
         <View style={styles.welcomeContainer}>
-         {this.state.posts.map((item, i) => (
+         {this.props.posts.map((item, i) => (
                   <Card key={item._id} style={{ zIndex: 0, marginTop: 20 }}>
   
                
@@ -78,13 +78,13 @@ export default class Posts extends React.Component {
                     <CardItem style={{ paddingBottom: 0 }}>
                       <Left>
                         {<Button transparent>
-                            <Micon name='heart' size={20} color={Colors.tabIconSelected} />
-                            <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>{item.likes.length}</Text>
+                            <Micon name='heart' size={20} color={Colors.tabIconDefault} />
+                            <Text style={{ color: Colors.tabIconDefault, paddingLeft: 5 }}>{item.likes.length}</Text>
                           </Button>}
 
                         <Button transparent onPress={() => { this.setState({ comment: item._id }); }}>
-                          {/* <Micon size={18} name='comment-outline'  /> */}
-                          <Text style={{ color: Colors.tabIconSelected, paddingLeft: 0 }}>View {item.comments.length} Comments</Text>
+                          <Micon size={20} name='comment-outline'   color={Colors.tabIconDefault} />
+                          <Text style={{ color: Colors.tabIconDefault, paddingLeft: 0 }}> {item.comments.length}</Text>
                         </Button>
                         <Modal
                           animationType="slide"
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     flex: 1,
     // marginVertical: 5,
-    paddingHorizontal: 25
+  //  paddingHorizontal: 25
   },
   welcomeImage: {
     width: 100,

@@ -183,7 +183,7 @@ export default class HomeScreen extends React.Component {
   
                     <TouchableOpacity
                       onPress={() => {
-                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length === 3 ? this.props.navigation.navigate('Profile') : Alert.alert(
+                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length === 3 ? this.props.navigation.navigate('Profile', {user:item.user._id}) : Alert.alert(
                           'You cannot View this Profile',
                           'Please like this user post 3 times to unlock')
                           ;
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     flex: 1,
     // marginVertical: 5,
-    paddingHorizontal: 25
+    paddingHorizontal: 15
   },
   welcomeImage: {
     width: 100,
