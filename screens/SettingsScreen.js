@@ -1,265 +1,285 @@
-/* @flow */
-
 import React, { Component } from 'react';
-import { Platform, StyleSheet, StatusBar, View, AsyncStorage } from 'react-native';
-import Table, { Section, KeyValueCell, StaticCell, TouchableCell, BioCell, SwitchCell } from 'react-native-js-tableview';
-import { getColorPalette } from '../assets/colors';
-import { Icon } from 'expo';
+import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity, AsyncStorage } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import StarRating from 'react-native-star-rating';
+import { LinearGradient } from 'expo';
+import { Header } from 'react-navigation';
+import { Container, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Button, Icon, Tabs, Tab, TabHeading, } from 'native-base';
+import About from '../components/About';
+import Connections from '../components/Connections';
+import Posts from '../components/Posts';
 
+import { Text } from '../components/Text';
+import Micon from '../components/Micon';
+import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
+import Colors from '../constants/Colors';
+import { Bitmoji } from '../components/Bitmoji';
+import axios from 'axios'
+const star = require('../assets/images/star.png');
+const MIN_HEIGHT = 130;
+const MAX_HEIGHT = 350;
 
-export default class SettingsScreen extends Component {
-	static navigationOptions = ({ navigation }) => {
-		const { params = {} } = navigation.state;
-		const { theme = 'light', onToggleThemeTouched } = params;
-		const palette = getColorPalette(theme);
-
-		return {
-			title: `${navigation.getParam('name')} Profile`,
-		
-
-      headerTintColor: palette.headerText,
-      headerStyle: {
-        backgroundColor: '#DF001D'
-      },
-			// headerStyle: {
-			// 	backgroundColor: palette.header,
-			// 	...Platform.select({ ios: { borderBottomColor: palette.headerSeparator } }),
-			// },
-		};
+class SettingsScreen extends Component {
+  static navigationOptions = {
+    header: null,
   };
-  
- 
-	constructor(props) {
-		super(props);
 
-		const theme = 'light';
-  
-    
-		this.state = { theme, enabledRecommendations: false, selectedBook: 0, name: '', moji: 'https://via.placeholder.com/100', phone: '', email: '', birth: '' };
-		this.props.navigation.setParams({ theme, onToggleThemeTouched: this.onToggleThemeTouched });
-	}
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts:[], mentors:[] };
  async componentDidMount() {
-      const stat = await AsyncStorage.getItem('state');
-      this.props.navigation.setParams({ name: JSON.parse(stat).name });
-      this.setState({ name: JSON.parse(stat).name, moji: JSON.parse(stat).moji, phone: JSON.parse(stat).phone, city: JSON.parse(stat).city, birth: JSON.parse(stat).date });
-      //navigation.getParam('itemId', 'NO-ID');
-    }
-	onToggleThemeTouched = () => {
-		const theme = (this.state.theme === 'dark') ? 'light' : 'dark';
+    let user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user);
+ const post = await axios({
+      url: `http://${Ip.ip}:4001/postbyuser/${user._id}`,
+      method: 'get'
+    })
 
-		this.setState({ theme });
-		this.props.navigation.setParams({ theme, onToggleThemeTouched: this.onToggleThemeTouched });
-	};
+    this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts});
 
-	onBioTouched = () => {
-	};
+      console.log(data);
+ const mentors =  await axios({
+  url: `http://${Ip.ip}:4001/mentor/${user._id}`,
+  method: 'get'
+})
+this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors});
+ console.log(mentors)
+  }
+  
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <HeaderImageScrollView
+        showsVerticalScrollIndicator={false}
+          bounces={false}
+          maxHeight={MAX_HEIGHT}
+          minHeight={MIN_HEIGHT}
+          maxOverlayOpacity={0.6}
+          minOverlayOpacity={0.3}
+          onScroll={() => { this.state.stopscrollthide ? this.setState({ smallimg: false }) : null; this.state.stopscrollbhide ? this.setState({ maximg: false }) : null; }}
+          onScrollBeginDrag={event => {
+            // this.state.smallimg || this.state.maximg ? this.setState({ maximg: false, smallimg: false }) : null;
+            console.log(event.nativeEvent.contentOffset.y, 'begin');
+}}
+// onScroll={() => { this.state.smallimg || this.state.maximg ? this.setState({ maximg: false, smallimg: false }) : null; }}
+onScrollEndDrag={event => {
+  console.log(event.nativeEvent.contentOffset.y); 
+}}
+          //fadeOutForeground
+          renderHeader={() => <Image blurRadius={this.state.blur} source={{ uri: this.state.pic }} style={styles.image} />}
+          renderFixedForeground={() => (
+            <Animatable.View
+              style={styles.navTitleView}
+              ref={navTitleView => {
+                this.navTitleView = navTitleView;
+              }}
+            >
+              <Text style={styles.navTitle}>
+              {this.state.name}
+                </Text>
+              <Text note style={styles.keyword}>{this.state.country}</Text>
+            </Animatable.View>
+          )}
+          renderForeground={() => (
+            this.state.smallimg ? null :
+            <View style={styles.titleContainer}>
+              <Text style={[styles.imageTitle, { marginVertical: 5 }]}>{this.state.name}</Text>
+              <Text note style={styles.keyword}>{this.state.country}</Text>
+              <StarRating
+                containerStyle={{ marginVertical: 5 }}
+                disabled
+                maxStars={5}
+                rating={4}
+                starSize={14}
+                fullStarColor='#fff'
+              />
+              <LinearGradient
+                colors={[Colors.darkblue, Colors.sky2]}
+                start={[0, 1]}
+                end={[1, 0]}
+                style={{ width: Dimensions.get('window').width, height: 50, marginTop: 15 }}
+              >
+                <Button iconLeft full onPress={() => alert('ok')} transparent style={{ flex: 1 }}>
+                  <Micon name='account-plus-outline' color='#fff' />
+                  <Text style={{ color: '#fff' }}>Connect</Text>
+                </Button>
+              </LinearGradient>
 
-	onContactTouched = (contact) => {
-		const messages = {
-			phone: 'Sorry, Adam Smith is not available right now. 😀',
-			email: 'Really!, The man probably haven\'t even thought about sending and receiving messages that fast.',
-		};
+            </View>
+          )}
+        >
+          <TriggeringView
+            //style={styles.section}
+            
+            onHide={() => { this.navTitleView.fadeInUp(200); this.setState({ smallimg: true, blur: 5 }); }}
+            onDisplay={() => { this.navTitleView.fadeOut(100); this.setState({ maximg: true, blur: 0 }); }}
+            onBeginHidden={() => { this.state.maximg ? this.setState({ maximg: false, stopscrollbhide: true, stopscrollthide: false }) : null; }}
+            onBeginDisplayed={() => { this.state.smallimg ? this.setState({ smallimg: false, stopscrollthide: true, stopscrollbhide: false }) : null; }}
+          //  onTouchTop={() => { console.log('top'); this.setState({ stopscrollhide: false }); }}
+          //  onTouchBottom={() => { console.log('b'); this.setState({ stopscrollhide: false }); }}
+          >
 
-		alert(messages[contact]);
-	};
+            {/* <Text style={styles.title}>
+                <Text style={styles.name}>Stephanie Cole</Text>, (2009)
+              </Text> */}
+          </TriggeringView>
+          <View style={[styles.container, { paddingHorizontal: 22, marginTop: 15 }]}>
+          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.sky }} locked >
 
-	onContactLongTouched = (contact) => {
-		const messages = {
-			phone: 'Adam Smith\'s phone number is copied',
-			email: 'Adam Smith\'s email address is copied',
-		};
+<Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{' '}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>About</Text></TabHeading>}>
 
-		alert(messages[contact]);
-	};
-
-	onWorksTouched = (work) => {
-
-	};
-
-	onEnableRecommendationsSwitched = () => {
-		const { enabledRecommendations } = this.state;
-		this.setState({ enabledRecommendations: !enabledRecommendations });
-	};
-
-	onReminderTouched = (index) => {
-		this.setState({ selectedBook: index });
-	};
-
-	onLogoutTouched = () => {
-
-	};
-
-	render() {
-		const { theme, enabledRecommendations } = this.state;
-		const palette = getColorPalette(theme);
-
-	
-		const getIcon = (name, tint) => (
-      <Icon.FontAwesome
-      name={name}
-      color={tint || palette.icons}
-      />
-		);
-		const learn = () =>
-		['Cooking', 'Coding', 'Piano', 'CRM']
-			.map((title, index) =>
-				<StaticCell
-					key={index}
-					title={title}
-					//disabled={!this.state.enabledRecommendations}
-					//accessory={this.state.selectedBook === index ? 'checkmark' : ''}
-					hideAccessorySeparator
-					onPress={this.onReminderTouched.bind(this, index)}
-				/>);
-				const canmentor = () =>
-				['Guitar', 'Fitness', 'Yoga']
-					.map((title, index) =>
-						<StaticCell
-							key={index}
-							title={title}
-							//disabled={!this.state.enabledRecommendations}
-							//accessory={this.state.selectedBook === index ? 'checkmark' : ''}
-							//hideAccessorySeparator
-							onPress={this.onReminderTouched.bind(this, index)}
-						/>);
-		const getBooks = () =>
-			['The Wealth of Nations', 'The Theory of Moral Sentiments', 'Lectures on Jurisprudence', 'Essays on Philosophical Subjects', 'The Essential Adam Smith']
-				.map((title, index) =>
-					<StaticCell
-						key={index}
-						title={title}
-						disabled={!this.state.enabledRecommendations}
-						accessory={this.state.selectedBook === index ? 'checkmark' : ''}
-						hideAccessorySeparator
-						onPress={this.onReminderTouched.bind(this, index)}
-					/>);
-
-
-		let generalHeader = 'General';
-		const generalFooter = 'All materials about Adam Smith are brought to you from wikipedia.org';
-		if (Platform.OS === 'ios') {
-			generalHeader = generalHeader.toUpperCase();
-		}
-
-		return (
-			<View style={{ backgroundColor: '#fff', flex: 1 }}>
-				<StatusBar
-					backgroundColor={palette.statusBar}
-					barStyle={Platform.OS === 'android' || theme === 'dark' ? 'light-content' : 'dark-content'}
-				/>
-
-				<Table				
-				accentColor='#DF001D'
-				//	accentColor={palette.accent}
-					theme={theme}
-					blendAccent={false}
-					style={styles.container}
-					scrollable
-				>
-
-					<Section>
-						<BioCell
-							title={this.state.name}
-							subtitle='Nigeria'
-							photoSource={{ uri: this.state.moji }}
-							//accessory='details'
-							onPress={this.onBioTouched}
-						/>
-
-						<KeyValueCell
-							style={styles.email}
-							title={this.state.phone}
-							iconComponent={getIcon('phone')}
-							accessory='disclosure' loading={false}
-							onPress={this.onContactTouched.bind(this, 'phone')}
-							onLongPress={this.onContactLongTouched.bind(this, 'phone')}
-						/>
-
-						<KeyValueCell
-							style={styles.email}
-							title={this.state.city}
-							iconComponent={getIcon('building-o')}
-							accessory='disclosure'
-							onPress={this.onContactTouched.bind(this, 'email')}
-							onLongPress={this.onContactLongTouched.bind(this, 'email')}
-						/>
-            	<KeyValueCell
-							style={styles.email}
-							title={this.state.birth}
-							iconComponent={getIcon('birthday-cake')}
-							accessory='disclosure'
-							onPress={this.onContactTouched.bind(this, 'email')}
-							onLongPress={this.onContactLongTouched.bind(this, 'email')}
-            	/>
-					<KeyValueCell
-							title='Mentee Requests'
-							value='3'
-							iconComponent={getIcon('user-secret')}
-							accessory='disclosure'
-							customAction='www.google.com'
-							customActionType='openUrl'
-							customActionTrigger='onPress'
-							onPress={this.onWorksTouched.bind(this, 'books')}
-					/>
-					</Section>
-					<Section header='I want to Learn'>
-					
-
-						{learn()}
-					</Section>
-					<Section header='I can Mentor'>
-					
-
-					{canmentor()}
-				</Section>
-				{/*	<Section header={generalHeader} footer={generalFooter} separatorInsetLeft={54}>
-					
-					 	<KeyValueCell
-							title='Articles'
-							value='238 articles'
-							iconComponent={getIcon('article')}
-							accessory='disclosure'
-							onPress={this.onWorksTouched.bind(this, 'books')}
-						/>
-
-						<KeyValueCell
-							title='Projects'
-							value='8 projects'
-							iconComponent={getIcon('project')}
-							accessory='disclosure'
-							onPress={this.onWorksTouched.bind(this, 'books')}
-						/>
-					</Section>
-
-					<Section header='Select Your favorite book:'>
-						<SwitchCell
-							title='Enable Recommendations'
-							value={enabledRecommendations}
-							onSwitch={this.onEnableRecommendationsSwitched}
-						/>
-
-						{getBooks()}
-					</Section> */}
-
-					<Section>
-						<TouchableCell
-							title='Log Out'
-							accentColor={'#DF001D'}
-							onPress={this.onLogoutTouched}
-						/>
-					</Section>
-				</Table>
-			</View>
-		);
-	}
+<About />
+</Tab>
+{/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
+</Tab> */}
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.mentors.request.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
+ <Connections />
+</Tab>
+{/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyleConnections={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >4</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Interests</Text></TabHeading>}>
+   <Tab3 /> 
+</Tab> */}
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.posts.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Posts</Text></TabHeading>}>
+<Posts post={this.state.posts} />
+</Tab>
+</Tabs>
+</View>
+        
+        </HeaderImageScrollView>
+        {this.state.maximg && <Animatable.View
+          ref={maxView => {
+            this.maxView = maxView;
+          }}
+          style={{
+            width: 60,
+            height: 60,
+            position: 'absolute',
+            zIndex: 1,
+            left: 40,
+            top: MAX_HEIGHT - 40,
+            borderWidth: 3,
+            borderColor: '#fff',
+            borderRadius: 5,
+            backgroundColor: '#ccc'
+          }}
+        >
+          <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: this.state.moji }} />
+        </Animatable.View>}
+        {this.state.smallimg && <Animatable.View
+          ref={smallView => {
+            this.smallView = smallView;
+          }}
+          style={{
+            width: 60,
+            height: 60,
+            position: 'absolute',
+            zIndex: 1,
+            left: 40,
+            top: MIN_HEIGHT - 30,
+            borderWidth: 3,
+            borderColor: '#fff',
+            borderRadius: 5,
+            backgroundColor: '#ccc'
+          }}
+        >
+          <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: this.state.moji }} />
+        </Animatable.View>}
+        <TouchableOpacity
+          style={{
+            maxWidth: 60,
+            position: 'absolute',
+            zIndex: 1,
+            left: 25,
+            top: Header.HEIGHT - 20,
+            
+          }}
+          onPress={() => { this.props.navigation.goBack(null); }}
+        >
+           <Micon name='arrow-left' style={{ flex: 1 }} color='#fff' />
+        </TouchableOpacity>
+        </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		marginBottom: 30,
-	},
-	email: {
-		//backgroundColor: '#fbfbfb',
-	},
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
+  image: {
+    height: MAX_HEIGHT,
+    width: Dimensions.get('window').width,
+    alignSelf: 'stretch',
+    resizeMode: 'cover',
+  },
+  title: {
+    fontSize: 20,
+  },
+  name: {
+    fontWeight: 'bold',
+  },
+  section: {
+    flex: 1,
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+    backgroundColor: 'white',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  sectionContent: {
+    fontSize: 16,
+    textAlign: 'justify',
+  },
+  keywords: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+  keywordContainer: {
+    backgroundColor: '#999999',
+    borderRadius: 10,
+    margin: 10,
+    padding: 10,
+  },
+  keyword: {
+    fontSize: 18,
+    color: '#ccc',
+  },
+  titleContainer: {
+    zIndex: 0,
+    flex: 1,
+    // alignSelf: 'stretch',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    //marginBottom: 25
+  },
+  imageTitle: {
+    color: 'white',
+    backgroundColor: 'transparent',
+    fontSize: 24,
+  },
+  navTitleView: {
+    zIndex: 0,
+    height: MIN_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 16,
+    opacity: 0,
+  },
+  navTitle: {
+    color: 'white',
+    fontSize: 18,
+    backgroundColor: 'transparent',
+  },
+  sectionLarge: {
+    height: 600,
+  }, 
+welcomeContainer: {
+    flex: 1,
+    marginVertical: 15,
+   // paddingHorizontal: 25
+  },
 });
+export default SettingsScreen;

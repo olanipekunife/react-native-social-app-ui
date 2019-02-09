@@ -10,7 +10,8 @@ import {
   AsyncStorage,
   Modal,
   ActivityIndicator,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
@@ -68,8 +69,7 @@ export default class HomeScreen extends React.Component {
       method: 'get'
     }).then(async ({ data }) => {
       this.setState({ posts: data, userid: stat._id, load: false, moji: stat.moji });
-
-      console.log(data);
+      
     }).catch(err => {
       console.log(err.response);
     });
@@ -211,8 +211,9 @@ style={{ flex: 1 }} source={{ uri: item.user.moji }} animation='bounce' duration
 
 </Body>
 </CardItem> */}
-                    <CardItem cardBody>
-                      <Image source={{ uri: item.media }} style={{ height: 290, width: null, flex: 1 }} />
+                    <CardItem  style={{ height: 290, flex:1}} cardBody>
+                  
+                      <Image source={{ uri: item.media }} resizeMode='stretch' style={{ height: 290, width: null, flex: 1, alignSelf:'stretch' }} />
                     </CardItem>
 
                     <CardItem style={{ paddingBottom: 0 }}>
