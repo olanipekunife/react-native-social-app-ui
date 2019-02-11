@@ -14,7 +14,7 @@ import Micon from '../components/Micon';
 import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
 import Colors from '../constants/Colors';
 import { Bitmoji } from '../components/Bitmoji';
-import axios from 'axios'
+import axios from 'axios';
 import Ip from '../constants/Ip';
 
 const star = require('../assets/images/star.png');
@@ -26,23 +26,23 @@ class SettingsScreen extends Component {
     header: null,
   };
 
-    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts:[], mentors:{requests:[]}, bio:'', head:'' };
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '' };
  async componentDidMount() {
     let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
- const {data} = await axios({
+ const { data } = await axios({
       url: `http://${Ip.ip}:4001/postbyuser/${user._id}`,
       method: 'get'
-    })
+    });
 
 
       console.log(data);
- const mentors =  await axios({
+ const mentors = await axios({
   url: `http://${Ip.ip}:4001/mentor/${user._id}`,
   method: 'get'
-})
-this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts:data, mentors:mentors.data,bio: user.bio, head: user.headline });
- console.log(mentors.data)
+});
+this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors: mentors.data, bio: user.bio, head: user.headline });
+ console.log(mentors.data);
   }
   
   render() {
@@ -84,14 +84,14 @@ onScrollEndDrag={event => {
             <View style={styles.titleContainer}>
               <Text style={[styles.imageTitle, { marginVertical: 5 }]}>{this.state.name}</Text>
               <Text note style={styles.keyword}>{this.state.country}</Text>
-              <StarRating
+              {/* <StarRating
                 containerStyle={{ marginVertical: 5 }}
                 disabled
                 maxStars={5}
                 rating={4}
                 starSize={14}
                 fullStarColor='#fff'
-              />
+              /> */}
               <LinearGradient
                 colors={[Colors.darkblue, Colors.sky2]}
                 start={[0, 1]}
@@ -127,7 +127,7 @@ onScrollEndDrag={event => {
 
 <Tab style={{ }} tabStyle={{ backgroundColor: Colors.noticeText, }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{' '}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>About</Text></TabHeading>}>
 
-<About bio={this.state.bio} head={this.state.head}  />
+<About bio={this.state.bio} head={this.state.head} />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}

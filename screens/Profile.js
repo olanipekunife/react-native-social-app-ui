@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, StatusBar, TouchableOpacity, AsyncStorage, Alert, ToastAndroid } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import StarRating from 'react-native-star-rating';
 import { LinearGradient } from 'expo';
@@ -13,7 +13,7 @@ import { Text } from '../components/Text';
 import Micon from '../components/Micon';
 import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
 import Colors from '../constants/Colors';
-import axios from 'axios'
+import axios from 'axios';
 import Ip from '../constants/Ip';
 const star = require('../assets/images/star.png');
 const MIN_HEIGHT = 130;
@@ -24,25 +24,62 @@ class Profile extends Component {
     header: null,
   };
 
-    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts:[], mentors:{requests:[]}, bio:'', head:'' };
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '' };
  async componentDidMount() {
   let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
- const {data} = await axios({
+    const d = await axios({
+      url: `http://${Ip.ip}:4001/user/${user._id}`,
+      method: 'get'
+    });
+
+ const { data } = await axios({
       url: `http://${Ip.ip}:4001/postbyuser/${this.props.navigation.getParam('user')}`,
       method: 'get'
-    })
+    });
 
 
       console.log(data);
- const mentors =  await axios({
+ const mentors = await axios({
   url: `http://${Ip.ip}:4001/mentor/${this.props.navigation.getParam('user')}`,
   method: 'get'
-})
-this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.navigation.getParam('pic'), country: this.props.navigation.getParam('userCountry'), name: this.props.navigation.getParam('name'), posts:data, mentors:mentors.data,bio: this.props.navigation.getParam('bio'), head: this.props.navigation.getParam('headline') });
- console.log(mentors.data)
+});
+this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.navigation.getParam('pic'), country: this.props.navigation.getParam('userCountry'), name: this.props.navigation.getParam('name'), posts: data, mentors: mentors.data, bio: this.props.navigation.getParam('bio'), head: this.props.navigation.getParam('headline'), connections: d.data.connections, loggeduser: user._id });
+ console.log(mentors.data);
   }
+  connect = async (userid) => {
+    ToastAndroid.show('Connecting....', ToastAndroid.SHORT);
+    const dataa = await axios({
+      url: `http://${Ip.ip}:4001/connect`,
+      method: 'post',
+      data: { userid: this.state.loggeduser, connecting: userid }
+    });
+    ToastAndroid.show('Connected', ToastAndroid.SHORT);
+
   
+    const d = await axios({
+      url: `http://${Ip.ip}:4001/user/${this.state.userid}`,
+      method: 'get'
+    });
+    this.setState({ connections: d.data.connections });
+  }
+  disconnect = async (userid) => {
+    ToastAndroid.show('Disconnecting....', ToastAndroid.SHORT);
+
+    const dataa = await axios({
+      url: `http://${Ip.ip}:4001/disconnect`,
+      method: 'post',
+      data: { userid: this.state.loggeduser, connecting: userid }
+    });
+    ToastAndroid.show('Disconnected', ToastAndroid.SHORT);
+
+  
+    const d = await axios({
+      url: `http://${Ip.ip}:4001/user/${this.state.userid}`,
+      method: 'get'
+    });
+    this.setState({ connections: d.data.connections });
+  }
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -82,23 +119,23 @@ onScrollEndDrag={event => {
             <View style={styles.titleContainer}>
               <Text style={[styles.imageTitle, { marginVertical: 5 }]}>{this.state.name}</Text>
               <Text note style={styles.keyword}>{this.state.country}</Text>
-              <StarRating
+              {/* <StarRating
                 containerStyle={{ marginVertical: 5 }}
                 disabled
                 maxStars={5}
                 rating={4}
                 starSize={14}
                 fullStarColor='#fff'
-              />
+              /> */}
               <LinearGradient
                 colors={[Colors.darkblue, Colors.sky2]}
                 start={[0, 1]}
                 end={[1, 0]}
                 style={{ width: Dimensions.get('window').width, height: 50, marginTop: 15 }}
               >
-                <Button iconLeft full onPress={() => alert('ok')} transparent style={{ flex: 1 }}>
+                <Button iconLeft full onPress={() => { this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? this.connect(this.props.navigation.getParam('user')) : this.disconnect(this.props.navigation.getParam('user')); }} transparent style={{ flex: 1 }}>
                   <Micon name='account-plus-outline' color='#fff' />
-                  <Text style={{ color: '#fff' }}>Connect</Text>
+                  <Text style={{ color: '#fff' }}>{this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? 'Connect' : 'Disconnect'}}</Text>
                 </Button>
               </LinearGradient>
 

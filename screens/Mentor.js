@@ -16,12 +16,11 @@ import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header
 import Colors from '../constants/Colors';
 import { Bitmoji } from '../components/Bitmoji';
 export default class Mentor extends Component {
-    state={ text: '', category: 'photography', load: false, userid: '' }
+    state={ text: '', category: 'photography', load: false, userid: '', pic: 'https://via.placeholder.com/800', name: '' }
     async componentDidMount() {
         this.setState({ load: true });
         const stat = JSON.parse(await AsyncStorage.getItem('user'));
-        this.setState({ userid: stat._id, load: false });
-    
+        this.setState({ userid: stat._id, load: false, pic: stat.pic, name: stat.name, category: stat.category });
         //navigation.getParam('itemId', 'NO-ID');
       }
     creatementor = () => {
@@ -57,10 +56,10 @@ export default class Mentor extends Component {
                 >
                     <Micon name='arrow-left' style={{ flex: 1 }} color='#fff' />
                 </TouchableOpacity>
-                <ImageBackground source={require('../assets/images/profile.jpeg')} style={styles.top} >
+                <ImageBackground source={{ uri: this.state.pic }} style={styles.top} >
                     <View style={styles.overlay} />
-                    <Text style={styles.name}>Stephanie Cole</Text>
-                    <Text style={styles.work}>Photography</Text>
+                    <Text style={styles.name}>{this.state.name}</Text>
+                    <Text style={styles.work}>{this.state.category}</Text>
                     <Button iconLeft light style={{ borderRadius: 5, alignSelf: 'center', padding: 20, marginVertical: 15 }}>
 
                         <Micon name='check' color='rgb(85,116,247)' />

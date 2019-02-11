@@ -61,6 +61,21 @@ export default class HomeScreen extends React.Component {
   }
   async componentDidMount() {
     this.setState({ load: true });
+//         try {
+//        const daata = await axios({
+//       url: `http://${Ip.ip}:4001/user/09030841956/hdbd`,
+//       method: 'get'
+//     });
+// console.log(daata.data);
+//   await AsyncStorage.removeItem('user');
+//   await AsyncStorage.setItem('user', JSON.stringify(daata.data));
+//   const b = await AsyncStorage.getItem('user');
+//   console.log(b);
+//     } catch (error) {
+//       console.log(error.response);
+//     }
+   
+//     return;
     const stat = JSON.parse(await AsyncStorage.getItem('user'));
 
 
@@ -68,10 +83,10 @@ export default class HomeScreen extends React.Component {
       url: `http://${Ip.ip}:4001/post`,
       method: 'get'
     }).then(async ({ data }) => {
+      console.log(data);
       this.setState({ posts: data, userid: stat._id, load: false, moji: stat.moji });
-      
     }).catch(err => {
-      console.log(err.response);
+      console.log(err);
     });
     //navigation.getParam('itemId', 'NO-ID');
   }
@@ -182,7 +197,7 @@ export default class HomeScreen extends React.Component {
 
                     <TouchableOpacity
                       onPress={() => {
-                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length !== 3 ? this.props.navigation.navigate('Profile', {user:item.user._id, moji:item.user.moji, pic:item.user.pic,userCountry:item.user.userCountry, name:item.user.name,headline:item.user.headline,bio:item.user.bio}) : Alert.alert(
+                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length !== 3 ? this.props.navigation.navigate('Profile', { user: item.user._id, moji: item.user.moji, pic: item.user.pic, userCountry: item.user.userCountry, name: item.user.name, headline: item.user.headline, bio: item.user.bio }) : Alert.alert(
                           'You cannot View this Profile',
                           'Please like this user post 3 times to unlock')
                           ;
@@ -210,9 +225,9 @@ style={{ flex: 1 }} source={{ uri: item.user.moji }} animation='bounce' duration
 
 </Body>
 </CardItem> */}
-                    <CardItem  style={{ height: 290, flex:1}} cardBody>
+                    <CardItem style={{ height: 290, flex: 1 }} cardBody>
                   
-                      <Image source={{ uri: item.media }} resizeMode='stretch' style={{ height: 290, width: null, flex: 1, alignSelf:'stretch' }} />
+                      <Image source={{ uri: item.media }} resizeMode='stretch' style={{ height: 290, width: null, flex: 1, alignSelf: 'stretch' }} />
                     </CardItem>
 
                     <CardItem style={{ paddingBottom: 0 }}>
