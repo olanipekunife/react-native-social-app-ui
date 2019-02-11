@@ -24,12 +24,12 @@ class Profile extends Component {
     header: null,
   };
 
-    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '' };
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '', connections: [], loggeduser: '' };
  async componentDidMount() {
   let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${user._id}`,
+      url: `http://${Ip.ip}:4001/user/${this.props.navigation.getParam('user')}`,
       method: 'get'
     });
 
@@ -52,13 +52,13 @@ this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.na
     const dataa = await axios({
       url: `http://${Ip.ip}:4001/connect`,
       method: 'post',
-      data: { userid: this.state.loggeduser, connecting: userid }
+      data: { userid, connecting: this.state.loggeduser }
     });
     ToastAndroid.show('Connected', ToastAndroid.SHORT);
 
   
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${this.state.userid}`,
+      url: `http://${Ip.ip}:4001/user/${userid}`,
       method: 'get'
     });
     this.setState({ connections: d.data.connections });
@@ -69,13 +69,13 @@ this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.na
     const dataa = await axios({
       url: `http://${Ip.ip}:4001/disconnect`,
       method: 'post',
-      data: { userid: this.state.loggeduser, connecting: userid }
+      data: { userid, connecting: this.state.loggeduser, }
     });
     ToastAndroid.show('Disconnected', ToastAndroid.SHORT);
 
   
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${this.state.userid}`,
+      url: `http://${Ip.ip}:4001/user/${userid}`,
       method: 'get'
     });
     this.setState({ connections: d.data.connections });
@@ -134,8 +134,8 @@ onScrollEndDrag={event => {
                 style={{ width: Dimensions.get('window').width, height: 50, marginTop: 15 }}
               >
                 <Button iconLeft full onPress={() => { this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? this.connect(this.props.navigation.getParam('user')) : this.disconnect(this.props.navigation.getParam('user')); }} transparent style={{ flex: 1 }}>
-                  <Micon name='account-plus-outline' color='#fff' />
-                  <Text style={{ color: '#fff' }}>{this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? 'Connect' : 'Disconnect'}}</Text>
+              
+                {this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? <Text style={{ color: '#fff' }}><Micon name='account-plus-outline' color='#fff' />  Connect</Text> : <Text style={{ color: '#fff' }}><Micon name='account-remove-outline' color='#fff' />  Disconnect</Text>}
                 </Button>
               </LinearGradient>
 
@@ -166,8 +166,8 @@ onScrollEndDrag={event => {
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}
-<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.mentors.requests.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
- <Connections />
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.connections.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
+ <Connections connects={this.state.connections} />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyleConnections={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >4</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Interests</Text></TabHeading>}>
   <Tab3 />

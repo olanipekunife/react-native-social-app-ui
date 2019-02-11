@@ -99,6 +99,9 @@ export default class Requests extends React.Component {
     });
     this.setState({ mentors: data, connections: d.data.connections });
   }
+  chat = (userid, name, moji) => {
+    this.props.navigation.navigate('Chat', { userid, name, moji });
+  }
   // static navigationOptions = ({ navigation }) => ({
   //   headerTitle: 'Pick a Lane',
   //   headerStyle: {
@@ -128,7 +131,7 @@ export default class Requests extends React.Component {
               onRef={ref => this.swipeable = ref}
               onSwipeStart={() => this.setState({ isSwiping: true })}
               onSwipeRelease={() => this.setState({ isSwiping: false })} rightButtonWidth={60} rightActionActivationDistance={110} rightButtons={[
-                <Button style={{ backgroundColor: Colors.sky, padding: 10, borderRadius: 8 }} onPress={() => { this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(item.userid._id) : false)).length < 1 ? this.connect(item.userid._id) : this.chat(item.userid._id); }}>
+                <Button style={{ backgroundColor: Colors.sky, padding: 10, borderRadius: 8 }} onPress={() => { this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(item.userid._id) : false)).length < 1 ? this.connect(item.userid._id) : this.chat(item.userid._id, item.userid.name, item.userid.moji); }}>
                   <Micon name='comment-outline' color='#fff' />
                 </Button>,
                 <Button danger style={{ padding: 10, borderRadius: 8 }} onPress={() => this.disconnect(item.userid._id)}>

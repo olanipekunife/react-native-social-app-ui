@@ -25,6 +25,7 @@
     "react-native-image-header-scroll-view": "^0.10.0",
     "react-native-js-tableview": "^2.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-keyboard-spacer": "^0.4.1",
     "react-native-star-rating": "^1.1.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-thumbnail-video": "^0.1.1",

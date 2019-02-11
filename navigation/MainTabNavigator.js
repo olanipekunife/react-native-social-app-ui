@@ -12,6 +12,7 @@ import Mentee from '../screens/Mentee';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import Requests from '../screens/Requests';
+import Chat from '../screens/Chat';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -63,7 +64,8 @@ LinksStack.navigationOptions = {
 };
 
 const RequestsStack = createStackNavigator({
-  Requests
+  Requests,
+ // Chat
 });
 
 RequestsStack.navigationOptions = {
@@ -110,5 +112,6 @@ export default createStackNavigator({
     header: null,
   } }, 
   News,
+  Chat
     /* any other route you want to render above the tab bar */
 });

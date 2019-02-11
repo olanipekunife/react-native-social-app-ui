@@ -26,7 +26,7 @@ class SettingsScreen extends Component {
     header: null,
   };
 
-    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '' };
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '',connections:[] };
  async componentDidMount() {
     let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
@@ -36,13 +36,17 @@ class SettingsScreen extends Component {
     });
 
 
-      console.log(data);
+    const d = await axios({
+      url: `http://${Ip.ip}:4001/user/${user._id}`,
+      method: 'get'
+    });
+
  const mentors = await axios({
   url: `http://${Ip.ip}:4001/mentor/${user._id}`,
   method: 'get'
 });
-this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors: mentors.data, bio: user.bio, head: user.headline });
- console.log(mentors.data);
+this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors: mentors.data, bio: user.bio, head: user.headline , connections: d.data.connections });
+ console.log(d.data.connections);
   }
   
   render() {
@@ -92,7 +96,7 @@ onScrollEndDrag={event => {
                 starSize={14}
                 fullStarColor='#fff'
               /> */}
-              <LinearGradient
+              {/* <LinearGradient
                 colors={[Colors.darkblue, Colors.sky2]}
                 start={[0, 1]}
                 end={[1, 0]}
@@ -102,7 +106,7 @@ onScrollEndDrag={event => {
                   <Micon name='account-plus-outline' color='#fff' />
                   <Text style={{ color: '#fff' }}>Connect</Text>
                 </Button>
-              </LinearGradient>
+              </LinearGradient> */}
 
             </View>
           )}
@@ -131,8 +135,8 @@ onScrollEndDrag={event => {
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}
-<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.mentors.requests.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
- <Connections />
+<Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.connections.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
+ <Connections connects={this.state.connections} />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyleConnections={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >4</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Interests</Text></TabHeading>}>
    <Tab3 /> 
@@ -247,6 +251,7 @@ const styles = StyleSheet.create({
   keyword: {
     fontSize: 18,
     color: '#ccc',
+    marginBottom: 30
   },
   titleContainer: {
     zIndex: 0,
