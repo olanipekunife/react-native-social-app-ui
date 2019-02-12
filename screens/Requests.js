@@ -32,7 +32,7 @@ export default class Requests extends React.Component {
   componentDidMount = async () => {
 //     try {
 //        const daata = await axios({
-//       url: `http://${Ip.ip}:4001/user/09030841956/hdbd`,
+//       url: `${Ip.ip}/user/09030841956/hdbd`,
 //       method: 'get'
 //     });
 // console.log(daata.data);
@@ -49,12 +49,12 @@ export default class Requests extends React.Component {
 
 
     const { data } = await axios({
-      url: `http://${Ip.ip}:4001/mentor/${stat._id}`,
+      url: `${Ip.ip}/mentor/${stat._id}`,
       method: 'get'
     });
     console.log('requests', data.requests);
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${stat._id}`,
+      url: `${Ip.ip}/user/${stat._id}`,
       method: 'get'
     });
     console.log('connections', d.data.connections);
@@ -63,18 +63,18 @@ export default class Requests extends React.Component {
   connect = async (userid) => {
     ToastAndroid.show('Connecting....', ToastAndroid.SHORT);
     const dataa = await axios({
-      url: `http://${Ip.ip}:4001/connect`,
+      url: `${Ip.ip}/connect`,
       method: 'post',
       data: { userid: this.state.userid, connecting: userid }
     });
     ToastAndroid.show('Connected', ToastAndroid.SHORT);
 
     const { data } = await axios({
-      url: `http://${Ip.ip}:4001/mentor/${this.state.userid}`,
+      url: `${Ip.ip}/mentor/${this.state.userid}`,
       method: 'get'
     });
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${this.state.userid}`,
+      url: `${Ip.ip}/user/${this.state.userid}`,
       method: 'get'
     });
     this.setState({ mentors: data, connections: d.data.connections });
@@ -83,18 +83,18 @@ export default class Requests extends React.Component {
     ToastAndroid.show('Disconnecting....', ToastAndroid.SHORT);
 
     const dataa = await axios({
-      url: `http://${Ip.ip}:4001/disconnect`,
+      url: `${Ip.ip}/disconnect`,
       method: 'post',
       data: { userid: this.state.userid, connecting: userid }
     });
     ToastAndroid.show('Disconnected', ToastAndroid.SHORT);
 
     const { data } = await axios({
-      url: `http://${Ip.ip}:4001/mentor/${this.state.userid}`,
+      url: `${Ip.ip}/mentor/${this.state.userid}`,
       method: 'get'
     });
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${this.state.userid}`,
+      url: `${Ip.ip}/user/${this.state.userid}`,
       method: 'get'
     });
     this.setState({ mentors: data, connections: d.data.connections });

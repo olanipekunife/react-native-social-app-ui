@@ -58,7 +58,7 @@ componentDidMount = async() => {
 //  this.setState({ load: true });
   const stat = JSON.parse(await AsyncStorage.getItem('user'));
   axios({
-    url: `http://${Ip.ip}:4001/mentor`,
+    url: `${Ip.ip}/mentor`,
     method: 'get'
   }).then(async ({ data }) => {
     this.setState({ mentors: data, load: false, userid: stat._id, category: data[0].category, name: data[0].user.name, mentor: data[0]._id });
@@ -70,7 +70,7 @@ componentDidMount = async() => {
 }
 sendRequest = (mentor, userid, mentorname) => {
   axios({
-    url: `http://${Ip.ip}:4001/mentor`,
+    url: `${Ip.ip}/mentor`,
     method: 'patch',
     data: { mentor, userid }
   }).then(async ({ data }) => {

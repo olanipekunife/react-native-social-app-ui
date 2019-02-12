@@ -26,7 +26,7 @@ export default class Mentor extends Component {
     creatementor = () => {
         this.setState({ load: true });
         axios({
-          url: `http://${Ip.ip}:4001/mentor`,
+          url: `${Ip.ip}/mentor`,
           method: 'post',
           data: { ...this.state, user: this.state.userid }
         }).then(async ({ data }) => {

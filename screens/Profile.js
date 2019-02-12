@@ -29,19 +29,19 @@ class Profile extends Component {
   let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${this.props.navigation.getParam('user')}`,
+      url: `${Ip.ip}/user/${this.props.navigation.getParam('user')}`,
       method: 'get'
     });
 
  const { data } = await axios({
-      url: `http://${Ip.ip}:4001/postbyuser/${this.props.navigation.getParam('user')}`,
+      url: `${Ip.ip}/postbyuser/${this.props.navigation.getParam('user')}`,
       method: 'get'
     });
 
 
       console.log(data);
  const mentors = await axios({
-  url: `http://${Ip.ip}:4001/mentor/${this.props.navigation.getParam('user')}`,
+  url: `${Ip.ip}/mentor/${this.props.navigation.getParam('user')}`,
   method: 'get'
 });
 this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.navigation.getParam('pic'), country: this.props.navigation.getParam('userCountry'), name: this.props.navigation.getParam('name'), posts: data, mentors: mentors.data, bio: this.props.navigation.getParam('bio'), head: this.props.navigation.getParam('headline'), connections: d.data.connections, loggeduser: user._id });
@@ -50,7 +50,7 @@ this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.na
   connect = async (userid) => {
     ToastAndroid.show('Connecting....', ToastAndroid.SHORT);
     const dataa = await axios({
-      url: `http://${Ip.ip}:4001/connect`,
+      url: `${Ip.ip}/connect`,
       method: 'post',
       data: { userid, connecting: this.state.loggeduser }
     });
@@ -58,7 +58,7 @@ this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.na
 
   
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${userid}`,
+      url: `${Ip.ip}/user/${userid}`,
       method: 'get'
     });
     this.setState({ connections: d.data.connections });
@@ -67,7 +67,7 @@ this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.na
     ToastAndroid.show('Disconnecting....', ToastAndroid.SHORT);
 
     const dataa = await axios({
-      url: `http://${Ip.ip}:4001/disconnect`,
+      url: `${Ip.ip}/disconnect`,
       method: 'post',
       data: { userid, connecting: this.state.loggeduser, }
     });
@@ -75,7 +75,7 @@ this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.na
 
   
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${userid}`,
+      url: `${Ip.ip}/user/${userid}`,
       method: 'get'
     });
     this.setState({ connections: d.data.connections });

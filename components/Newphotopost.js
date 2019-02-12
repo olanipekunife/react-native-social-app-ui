@@ -31,7 +31,7 @@ export default class Newphotopost extends Component {
     });
     ToastAndroid.show('Uploading Image...', ToastAndroid.SHORT);
     axios({
-      url: `http://${Ip.ip}:4001/uploadpic/post`,
+      url: `${Ip.ip}/uploadpic/post`,
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -48,7 +48,7 @@ export default class Newphotopost extends Component {
         ToastAndroid.show('Sending your Post...', ToastAndroid.SHORT);
 
             axios({
-        url: `http://${Ip.ip}:4001/post`,
+        url: `${Ip.ip}/post`,
         method: 'post',
         data: this.state
       }).then(res => {

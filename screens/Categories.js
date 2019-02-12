@@ -19,7 +19,7 @@ export default class Categories extends Component {
   signup = () => {
     this.setState({ load: true });
     axios({
-      url: `http://${Ip.ip}:4001/signup`,
+      url: `${Ip.ip}/signup`,
       method: 'post',
       data: { ...this.props.navigation.state.params, ...this.state }
     }).then(async ({ data }) => {

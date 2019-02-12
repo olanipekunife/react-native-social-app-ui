@@ -31,18 +31,18 @@ class SettingsScreen extends Component {
     let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
  const { data } = await axios({
-      url: `http://${Ip.ip}:4001/postbyuser/${user._id}`,
+      url: `${Ip.ip}/postbyuser/${user._id}`,
       method: 'get'
     });
 
 
     const d = await axios({
-      url: `http://${Ip.ip}:4001/user/${user._id}`,
+      url: `${Ip.ip}/user/${user._id}`,
       method: 'get'
     });
 
  const mentors = await axios({
-  url: `http://${Ip.ip}:4001/mentor/${user._id}`,
+  url: `${Ip.ip}/mentor/${user._id}`,
   method: 'get'
 });
 this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors: mentors.data, bio: user.bio, head: user.headline , connections: d.data.connections });

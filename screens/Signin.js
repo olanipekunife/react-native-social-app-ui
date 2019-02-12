@@ -11,6 +11,7 @@ import Buttonnextwhite from '../components/Buttonnextwhite';
 import { Text } from '../components/Text';
 import Micon from '../components/Micon';
 import Colors from '../constants/Colors';
+import Ip from '../constants/Ip';
 
 const json = require('../assets/countries.json');
 
@@ -38,11 +39,11 @@ if (this.state.password !== this.state.passwordused) {
 return ToastAndroid.show('Wrong password', ToastAndroid.SHORT);
 }
     this.props.navigation.navigate('Main');
-    }else {
+    } else {
      ToastAndroid.show('Please Wait', ToastAndroid.LONG);
 
        const daata = await axios({
-      url: `http://${Ip.ip}:4001/user/${this.state.phone}/${this.state.password}`,
+      url: `${Ip.ip}/user/${this.state.phone}/${this.state.password}`,
       method: 'get'
     });
 console.log(daata.data);
@@ -51,7 +52,7 @@ if (daata.data) {
   await AsyncStorage.removeItem('user');
   await AsyncStorage.setItem('user', JSON.stringify(daata.data));
   this.props.navigation.navigate('Main');
-}else {
+} else {
   ToastAndroid.show('Wrong Credentials', ToastAndroid.LONG);
 }
     }

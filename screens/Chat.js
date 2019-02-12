@@ -45,7 +45,7 @@ export default class Chat extends Component {
         let user = await AsyncStorage.getItem('user');
         user = JSON.parse(user);
         const { data } = await axios({
-            url: `http://${Ip.ip}:4001/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
+            url: `${Ip.ip}/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
             method: 'get'
           });
           console.log(data.messages);
@@ -68,7 +68,7 @@ export default class Chat extends Component {
         });
         setInterval(async() => {
             const { data } = await axios({
-                url: `http://${Ip.ip}:4001/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
+                url: `${Ip.ip}/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
                 method: 'get'
               });
               console.log(data.messages);
@@ -110,7 +110,7 @@ export default class Chat extends Component {
             messages: GiftedChat.append(previousState.messages, messages),
         }), async() => {
             await axios({
-            url: `http://${Ip.ip}:4001/chat/${this.state.user}/${this.props.navigation.getParam('userid')}`,
+            url: `${Ip.ip}/chat/${this.state.user}/${this.props.navigation.getParam('userid')}`,
             method: 'post',
             data: { msg: messages }
           });

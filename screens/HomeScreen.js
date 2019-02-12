@@ -63,7 +63,7 @@ export default class HomeScreen extends React.Component {
     this.setState({ load: true });
 //         try {
 //        const daata = await axios({
-//       url: `http://${Ip.ip}:4001/user/09030841956/hdbd`,
+//       url: `${Ip.ip}/user/09030841956/hdbd`,
 //       method: 'get'
 //     });
 // console.log(daata.data);
@@ -80,7 +80,7 @@ export default class HomeScreen extends React.Component {
 
 
     axios({
-      url: `http://${Ip.ip}:4001/post`,
+      url: `${Ip.ip}/post`,
       method: 'get'
     }).then(async ({ data }) => {
       console.log(data);
@@ -118,12 +118,12 @@ export default class HomeScreen extends React.Component {
     console.log(this.state.userid);
     this.setState({ load: true });
     axios({
-      url: `http://${Ip.ip}:4001/comment`,
+      url: `${Ip.ip}/comment`,
       method: 'post',
       data: { postid, userid: this.state.userid, comment: this.state.usercomment }
     }).then(async ({ data }) => {
       axios({
-        url: `http://${Ip.ip}:4001/post`,
+        url: `${Ip.ip}/post`,
         method: 'get'
       }).then(async ({ data }) => {
         this.setState({ posts: data, load: false });
@@ -141,12 +141,12 @@ export default class HomeScreen extends React.Component {
     console.log(this.state.userid);
     this.setState({ load: true });
     axios({
-      url: `http://${Ip.ip}:4001/like`,
+      url: `${Ip.ip}/like`,
       method: 'post',
       data: { postid, userid: this.state.userid }
     }).then(async ({ data }) => {
       axios({
-        url: `http://${Ip.ip}:4001/post`,
+        url: `${Ip.ip}/post`,
         method: 'get'
       }).then(async ({ data }) => {
         this.setState({ posts: data, load: false });

@@ -52,7 +52,7 @@ export default class MoreInfo extends Component {
         name: `${`${this.props.navigation.getParam('name')}-${this.props.navigation.getParam('phone')}`}.${result.uri.split('.').pop()}`
        });
       axios({
-        url: `http://${Ip.ip}:4001/uploadpic/profile`,
+        url: `${Ip.ip}/uploadpic/profile`,
         method: 'post',
         headers: {
          Accept: 'application/json',
