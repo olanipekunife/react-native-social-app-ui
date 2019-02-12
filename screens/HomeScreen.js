@@ -207,7 +207,7 @@ export default class HomeScreen extends React.Component {
                         height: 50,
                         zIndex: 1,
                         borderWidth: 1,
- 
+                        borderColor: '#ccc',
                         borderRadius: 5,
                         backgroundColor: '#ccc'
                       }}
