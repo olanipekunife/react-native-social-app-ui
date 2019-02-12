@@ -33,7 +33,7 @@ export default class HomeScreen extends React.Component {
     headerTitle: 'News Feed',
     headerStyle: {
       backgroundColor: Colors.noticeText,
-    //  elevation: 0,
+      elevation: 0,
     },
     headerTintColor: Colors.sky2,
     headerTitleStyle: {
@@ -188,7 +188,9 @@ export default class HomeScreen extends React.Component {
         />
       </List> */}
 
-       
+          <Tabs tabContainerStyle={{ backgroundColor: Colors.noticeText, elevation: 0, borderBottomWidth: 1, borderBottomColor: '#ccc' }} tabBarUnderlineStyle={{ borderBottomWidth: 1, backgroundColor: Colors.noticeText, borderBottomColor: Colors.sky }} locked >
+
+            <Tab style={{ paddingTop: 10 }} tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Music">
               <View style={styles.welcomeContainer}>
                 {this.state.posts.map((item, i) => (
                   <Card key={item._id} style={{ zIndex: 0, marginTop: 20 }}>
@@ -207,7 +209,7 @@ export default class HomeScreen extends React.Component {
                         height: 50,
                         zIndex: 1,
                         borderWidth: 1,
- 
+                        borderColor: '#ccc',
                         borderRadius: 5,
                         backgroundColor: '#ccc'
                       }}
@@ -327,7 +329,17 @@ style={{ flex: 1 }} source={{ uri: item.user.moji }} animation='bounce' duration
 
 
               </View>
+            </Tab>
+            <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
+              {/* <Tab3 /> */}
+            </Tab>
+            <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Photography">
+              {/* <Tab3 /> */}
+            </Tab>
+          </Tabs>
 
+
+          {/* </View> */}
 
         </ScrollView>
         <Fab
@@ -400,8 +412,8 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     flex: 1,
-     marginVertical: 5,
-    paddingHorizontal: 20
+    // marginVertical: 5,
+    paddingHorizontal: 15
   },
   welcomeImage: {
     width: 100,

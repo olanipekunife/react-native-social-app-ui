@@ -287,7 +287,8 @@ return (
                          <Micon name='square-edit-outline' color='rgb(85,116,247)' />
             <Text style={{ color: 'rgb(85,116,247)' }}>REGISTER</Text>
                          </Button>
-                    {/* <View style={styles.inner}>
+                         {/* <Text>Sign IN</Text> */}
+                    <View style={styles.inner}>
                           <TouchableOpacity 
                             onPress={() => this.props.navigation.navigate('Signin')}
                           >
@@ -296,7 +297,7 @@ return (
                                 </Text>
                           </TouchableOpacity>
                       </View>
-                    <View style={styles.inner1}>
+                    {/* <View style={styles.inner1}>
                           <TouchableOpacity
 style={styles.checkbox}
                           onPress={() => this.signup(true)
@@ -375,14 +376,15 @@ const styles = StyleSheet.create({
       },
       hold: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
         marginBottom: 5,
         },
       inner: {
-        width: 50,
-        height: 50,
+        // width: 50,
+        // height: 50,
         justifyContent: 'center',
-        flex: 1,
+        marginTop: 10,
+      //  flex: 1,
       },
         inner1: {
         flex: 1,

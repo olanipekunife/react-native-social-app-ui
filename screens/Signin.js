@@ -1,256 +1,256 @@
 import React, { Component } from 'react';
-import { Platform, View, StyleSheet, Image, KeyboardAvoidingView, Alert, ImageBackground, AsyncStorage, TouchableHighlight, TouchableOpacity } from 'react-native';
-import { Container, Header, Button, Item, Input, Icon, Text, Label, Toast } from 'native-base';
-import axios from 'axios';
+import { Platform, View, StyleSheet, Alert, ActivityIndicator, ImageBackground, AsyncStorage, TouchableOpacity, Modal, Image, WebView, StatusBar, ToastAndroid } from 'react-native';
+import { Root, Icon, Header, Content, Item, Input, Form, Label, Picker, DatePicker, Button } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import screen from '../constants/Layout';
+import { LinearGradient, Constants } from 'expo';
+import axios from 'axios';
+import BrandButton from '../components/BrandButton';
+import Checkbox from '../components/Checkbox';
+import { Bitmoji } from '../components/Bitmoji';
+import Buttonnextwhite from '../components/Buttonnextwhite';
+import { Text } from '../components/Text';
+import Micon from '../components/Micon';
+import Colors from '../constants/Colors';
+
+const json = require('../assets/countries.json');
 
 export default class Signin extends Component {
   static navigationOptions = {
-    headerTitle: 'Sign In',
-    headerLeft: null,
-    headerStyle: {
-      backgroundColor: '#DF001D',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
+    header: null,
   };
-  state = { email: '', password: '', modalVisible: false }
+  state = { email: '', password: '', modalVisible: false, passwordused: '', phone: '', moji: '', exist: false }
 
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   }
+  async componentDidMount() {
+    const stat = JSON.parse(await AsyncStorage.getItem('user'));
+    if (stat !== null) {
+      this.setState({ moji: stat.moji, phone: stat.phone, passwordused: stat.password, exist: true });
+    }
+  }
+  signIn = async() => {
+    if (!this.state.phone || !this.state.password) {
+      return ToastAndroid.show('Please fill all details', ToastAndroid.SHORT);
+    }
+    if (this.state.exist) {
+if (this.state.password !== this.state.passwordused) {
+return ToastAndroid.show('Wrong password', ToastAndroid.SHORT);
+}
+    this.props.navigation.navigate('Main');
+    }else {
+     ToastAndroid.show('Please Wait', ToastAndroid.LONG);
 
-  signIn = () => {
-    return Toast.show({
-        text: 'Loading, Please Wait',
-       // type: 'warning',
-        duration: 3000
-      });
-    //console.log('c')
-    AsyncStorage.removeItem('api-token');
-   // console.log('b')
-
-      const { navigate } = this.props.navigation;
-      if (this.state.phone < 4 || this.state.password.length < 4) {
-        Alert.alert('Error', 'Please fill up all details');
-      } else {
-        this.setModalVisible(true);
-
-        axios({
-          url: 'http://dev.mygiro.co/usersmicroservice/login',
-          method: 'post',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          data: {
-            username: this.state.phone,
-            password: this.state.password
-          },
-        })
-          .then(async (response) => {
-            try {
-              console.log(response.data);
-             
-            if (response.data.status == 'success') {
-              await AsyncStorage.setItem('api-token', response.data['api-token']);
-             
-              const userResp = await axios({
-                url: 'http://dev.mygiro.co/usersmicroservice/users',
-                headers: {
-                  'api-token': response.data['api-token'],
-                  'Content-Type': 'application/json'
-                }
-              });
-              
-              this.setModalVisible(false);
-              await AsyncStorage.setItem('user', JSON.stringify(userResp.data['data   ']));
-             navigate('Dashboardindex');
-            } else {
-              Alert.alert('Error', response.data.message[0], [
-                {
-                  text: 'OK',
-onPress: () => {
-                    setTimeout(() => { this.setModalVisible(false); }, 100);
-                  }
-                },
-              ], );
-            }
-            } catch (error) {
-              setTimeout(() => { this.setModalVisible(false); }, 100);
-            Alert.alert('Error', `Please try logging in -> ${error}`);
-          }
-          })
-          .catch((error) => {
-            console.log('y', error);
-            console.log(error.response);
-            setTimeout(() => {
-              this.setModalVisible(false);
-            }, 100);
-            let content = '';
-            if (error.response.data) {
-            content = error.response.data.message[0];
-              Alert.alert('Error', content);
-              // Alert.alert("Error", content, [
-              //   { text: 'OK' }
-              //  // { text: 'OK', onPress: () => setTimeout(function () { this.setModalVisible(false) }, 100) }
-              // ])
-            }
-          });
-      }
+       const daata = await axios({
+      url: `http://${Ip.ip}:4001/user/${this.state.phone}/${this.state.password}`,
+      method: 'get'
+    });
+console.log(daata.data);
+if (daata.data) {
+  ToastAndroid.show('Logged In', ToastAndroid.LONG);
+  await AsyncStorage.removeItem('user');
+  await AsyncStorage.setItem('user', JSON.stringify(daata.data));
+  this.props.navigation.navigate('Main');
+}else {
+  ToastAndroid.show('Wrong Credentials', ToastAndroid.LONG);
+}
+    }
   }
 
-  render() {  
+  render() {
     const { goBack } = this.props.navigation;
+    let exist = null;
+    if (this.state.exist) {
+      exist = (<View style={{ alignItems: 'center', alignSelf: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 10, height: 100, width: 100, backgroundColor: '#fff' }}>
+        <Image source={{ uri: this.state.moji }} resizeMode='contain' style={{ height: 99, width: 99 }} />
+      </View>
+      );
+    } else {
+      exist = (
+        <Item floatingLabel style={styles.inputorange}>
+          <Label style={{ color: '#fff', }}>Phone Number</Label>
+          <Input
+            placeholderTextColor="#fff"
+            // placeholder="Phone Number"
+            autoCapitalize="none"
+            keyboardType='numeric'
+            selectionColor="#fff"
+            style={{ color: '#fff', }}
+            onChangeText={(phone) => this.setState({ phone })}
+            value={this.state.phone}
+          />
+        </Item>
+      );
+    }
     return (
-  
-      <View
-      style={styles.container}
-      >
-           
-          <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} enableOnAndroid keyboardOpeningTime={50} extraHeight={Platform.select({ android: 10 })} style={{ flex: 1, paddingBottom: 20}}>
-            <View style={styles.contentid}> 
-                   
 
-                           <Item floatingLabel style={styles.inputorange}>
-                                  <Label style={styles.white}>Email</Label>
-                                <Input
-                                  selectionColor="#fff"
-                                  style={{ color: '#fff' }}
-                                  onChangeText={(email) => this.setState({ email })}
-                                  value={this.state.email}
-                                />
-                            </Item>
-                            <Item floatingLabel style={styles.inputorange}>
-                                <Label style={styles.white}>Password</Label>
-                              <Input
-style={{ color: '#fff' }}
-                                selectionColor="#fff"
-                                secureTextEntry
-                                onChangeText={(password) => this.setState({ password })}
-                                value={this.state.password}
-                                secureTextEntry
-                              />
-                            </Item>
-                            <View style={styles.hold}>
-                            <Button rounded block style={{ backgroundColor: '#992c39' }} onPress={this.signIn}>
-        <Text>Login</Text>
-    </Button>
-                                 
-                            </View>
-                  
+      <View
+        style={{ flex: 1, paddingHorizontal: 20 }}
+      >
+        {/* <StatusBar hidden={false} /> */}
+        {/* <View style={styles.overlay} /> */}
+        <LinearGradient
+          colors={['rgb(96,195,255)', 'rgb(85,116,247)']}
+          style={styles.overlay}
+        />
+
+        {/* <Loading modalVisible={this.state.modalVisible} /> */}
+
+        <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: '#fff', fontSize: 30 }}>Sign In</Text>
+        </View>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} enableOnAndroid keyboardOpeningTime={50} extraHeight={Platform.select({ android: 100 })} style={{ flex: 0.6, paddingBottom: 20 }}>
+
+          <View style={styles.contentid}>
+            {/*  <Text style={styles.title}>
+                  Sign Up
+            </Text>
+            <Text style={styles.titlesub}>
+                  Create your Frensei account.
+            </Text> */}
+            {exist}
+            <Item floatingLabel style={[styles.inputorange, { marginTop: this.state.exist ? 20 : 0 }]}>
+              <Label style={{ color: '#fff', }}>Password</Label>
+              <Input
+                placeholderTextColor="#fff"
+                // placeholder="Password"
+                style={{ color: '#fff', }}
+                selectionColor="#fff"
+                secureTextEntry
+                onChangeText={(password) => this.setState({ password })}
+                value={this.state.password}
+              />
+            </Item>
+
+
+            <View style={styles.hold}>
+              <Button iconLeft block onPress={() => this.signIn()} light style={{ flex: 1 }}>
+                <Text style={{ color: 'rgb(85,116,247)' }}>Log In</Text>
+              </Button>
+              <View style={styles.inner}>
+                          <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate('Signup')}
+                          >
+                                <Text style={styles.whitel}>
+                                    I do not have an account
+                                </Text>
+                          </TouchableOpacity>
+                      </View>
+
+            </View>
           </View>
-          <View style={styles.footer}>
-                  <TouchableOpacity 
-                  onPress={() => this.props.navigation.navigate('Signup')}
-                  > 
-                        <Text style={styles.titlesub2}>
-                            New user? create account
-                        </Text>
-                  </TouchableOpacity>
-          </View>
-       
-</KeyboardAwareScrollView>
-    </View>
-       
- 
+
+        </KeyboardAwareScrollView>
+      </View>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingHorizontal: 15,
-        flexDirection: 'row',
-        alignItems: 'center',
-      backgroundColor: '#ff1632'
-    },
-    icon: {
-      color: 'white',
-      },
-      navigate: {
-        paddingVertical: 40,
-        maxWidth: 40
-     },
-     contentid: {  paddingVertical: 40,
-       },
-       title: {
-        fontSize: 35,
-        color: 'white',
-        fontWeight: '900',
-         paddingLeft: 5,
-      },
-      titlesub: {
-        fontSize: 13,
-        color: 'white',
-        fontWeight: '400',
-        letterSpacing: 1,
-        marginTop: 25,
-        marginBottom: 15,
-         paddingLeft: 5, 
-      },
-    
-      white: {
-        color: 'white',
-   
-      },
-        whitel: {
-        color: 'white',
-         paddingLeft: 5,
-         fontSize: 13,
-         
-      },
-      hold: {
-           marginTop: 15,
-        
-        },
-      inner: {
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        flex: 1,
-      },
-        inner1: {
-        flex: 1,
-        width: 50,
-        height: 50,
-        paddingLeft: 35, 
-      },
-      checkbox: {
-        alignItems: 'flex-end',
+  container: {
+    flex: 1,
+    width: null,
+    height: null,
   },
-  titlesub2: {
-    fontSize: 10,
+  // overlay: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   right: 0,
+  //   bottom: 0,
+  //   left: 0,
+  //   backgroundColor: '#000',
+  //   opacity: 0.5
+  // },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  icon: {
+    color: 'white',
+    fontSize: 20
+  },
+  navigate: {
+    paddingVertical: 30,
+    maxWidth: 40
+  },
+  inputorange: {
+    marginBottom: 15
+  },
+  contentid: {
+    marginTop: 10
+  },
+  title: {
+    fontSize: 25,
+    color: 'white',
+    fontWeight: '500',
+    marginTop: 30,
+  },
+  titlesub: {
+
     color: 'white',
     fontWeight: '400',
     letterSpacing: 1,
     marginTop: 25,
     marginBottom: 15,
-    paddingLeft: 5,
-   
-  
-      //  alignSelf: 'flex-end'
-      },
-    footer: {
-      flex: 1,
-      // marginLeft: 50,
-      // marginRight: 50,
-      // borderTopColor: 'white',
-      // borderColor: 'transparent',
-      // borderWidth: 1,
-    
-    },
-    itemorange: {
-      borderColor: '#d66c04',
+    // paddingLeft: 1, 
   },
-  inputorange: {
-    marginBottom: 10,
-}
 
+  white: {
+    color: 'white',
+  },
+  hold: {
+    flex: 1,
+    flexDirection: 'column',
+    marginBottom: 5,
+  },
+  inner: {
+    // width: 50,
+    // height: 50,
+    justifyContent: 'center',
+    marginTop: 10,
+    //  flex: 1,
+  },
+  inner1: {
+    flex: 1,
+    width: 50,
+    height: 50,
+  },
+  // hold: {
+  //   flexDirection: 'row',
+  //   paddingVertical: 20,
+  //   },
+  // inner: {
+  //   width: 50,
+  //   height: 50,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   alignSelf: 'center',
+  //   flex: 1,
+  // }, 
+  //   inner1: {
+  //   flex: 1,
+  //   alignSelf: 'center'
+  // },
+  checkbox: {
+    alignItems: 'flex-end',
+  },
+  footer: {
+    flex: 1,
+    borderTopColor: 'white',
+    borderColor: 'transparent',
+    borderWidth: 1,
+  },
+  itemorange: {
+    borderColor: '#d66c04'
+  },
+  whitel: {
+    color: 'white',
+    paddingLeft: 5,
+  },
 
 });
 

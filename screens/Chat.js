@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { Platform, View, Image, Dimensions, StatusBar, TouchableOpacity, AsyncStorage, Alert, ToastAndroid } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Colors from '../constants/Colors';
 import { Thumbnail } from 'native-base';
 import { Text } from '../components/Text';
+import axios from 'axios';
+import Ip from '../constants/Ip';
 
 class LogoTitle extends React.Component {
     render() {
@@ -35,39 +37,83 @@ export default class Chat extends Component {
     });
     state = {
         messages: [],
+        user: '',
+        name: ''
     };
 
-    componentWillMount() {
+    componentDidMount = async() => {
+        let user = await AsyncStorage.getItem('user');
+        user = JSON.parse(user);
+        const { data } = await axios({
+            url: `http://${Ip.ip}:4001/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
+            method: 'get'
+          });
+          console.log(data.messages);
         this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                   //     avatar: 'https://sdk.bitmoji.com/render/panel/e0dd4272-6166-423e-a54c-3ea1c7a824c6-AU0zNWNUxbvey5ZjA3BSqYYI2unFOw-v1.png?transparent=1&palette=1',
-                    },
-                },  
-                 {
-                    _id: 5,
-                    text: 'i need helpr',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                   //     avatar: 'https://sdk.bitmoji.com/render/panel/e0dd4272-6166-423e-a54c-3ea1c7a824c6-AU0zNWNUxbvey5ZjA3BSqYYI2unFOw-v1.png?transparent=1&palette=1',
-                    },
-                },
-            ],
+            user: user._id,
+            name: user.name,
+            messages: data.messages
+            // messages: [
+            //     {
+            //         _id: 1,
+            //         text: 'Hello Joshua, Thanks for accepting, i need help',
+            //         createdAt: new Date(),
+            //         user: {
+            //             _id: 2,
+            //             name: 'React Native',
+            //        //     avatar: 'https://sdk.bitmoji.com/render/panel/e0dd4272-6166-423e-a54c-3ea1c7a824c6-AU0zNWNUxbvey5ZjA3BSqYYI2unFOw-v1.png?transparent=1&palette=1',
+            //         },
+            //     },
+            // ],
         });
+        setInterval(async() => {
+            const { data } = await axios({
+                url: `http://${Ip.ip}:4001/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
+                method: 'get'
+              });
+              console.log(data.messages);
+            this.setState({
+                user: user._id,
+                name: user.name,
+                messages: data.messages
+                // messages: [
+                //     {
+                //         _id: 1,
+                //         text: 'Hello Joshua, Thanks for accepting, i need help',
+                //         createdAt: new Date(),
+                //         user: {
+                //             _id: 2,
+                //             name: 'React Native',
+                //        //     avatar: 'https://sdk.bitmoji.com/render/panel/e0dd4272-6166-423e-a54c-3ea1c7a824c6-AU0zNWNUxbvey5ZjA3BSqYYI2unFOw-v1.png?transparent=1&palette=1',
+                //         },
+                //     },
+                // ],
+            });
+        }, 3000);
     }
 
-    onSend(messages = []) {
+    renderBubble = (props) => (
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              left: {
+                backgroundColor: '#fff',
+              },
+              right: {
+                  backgroundColor: 'rgb(96,195,255)'
+              }
+            }}
+          />
+        )
+    onSend = async(messages = []) => {
         this.setState((previousState) => ({
             messages: GiftedChat.append(previousState.messages, messages),
-        }), () => {
+        }), async() => {
+            await axios({
+            url: `http://${Ip.ip}:4001/chat/${this.state.user}/${this.props.navigation.getParam('userid')}`,
+            method: 'post',
+            data: { msg: messages }
+          });
             console.log(this.state.messages);
         });
     }
@@ -77,10 +123,13 @@ export default class Chat extends Component {
             <View style={{ flex: 1 }}>
                 <GiftedChat
                     //    showUserAvatar
+                  //  inverted={false}
+                    renderBubble={this.renderBubble}
                     messages={this.state.messages}
                     onSend={(messages) => this.onSend(messages)}
                     user={{
-                        _id: 1,
+                        _id: this.state.user,
+                        name: this.state.name
                     }}
                      renderAvatar={() => null}
                 />
