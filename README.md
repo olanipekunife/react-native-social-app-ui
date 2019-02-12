@@ -13,7 +13,7 @@ $ npm install
 
 ```
 $ expo start
-
+```
 ## Sample Screens
 
 ![Login](https://res.cloudinary.com/nipek/image/upload/v1549979846/Screenshot_2019-02-12-14-40-56.png)
