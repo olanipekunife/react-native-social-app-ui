@@ -53,9 +53,9 @@ export default class News extends Component {
 {/* <Tab tabStyle={{ backgroundColor: Colors.sky, borderBottomWidth: 1 }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around', }}><Micon name='play' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Video</Text></TabHeading>}>
   <Newvideopost />
 </Tab> */}
- <Tab tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around' }}><Micon name='wifi' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Link</Text></TabHeading>}>
+ {/* <Tab tabStyle={{ backgroundColor: Colors.sky }} textStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.sky }} activeTextStyle={{ color: '#fff', fontWeight: 'normal', fontFamily: 'gibson' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.sky, justifyContent: 'space-around' }}><Micon name='wifi' color='#fff' /><Text style={{ fontSize: 12, color: '#fff', textAlign: 'center', fontWeight: 'normal' }}>Link</Text></TabHeading>}>
  <Newlinkpost />
-</Tab> 
+</Tab>  */}
 </Tabs>
            
            

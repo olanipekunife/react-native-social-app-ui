@@ -24,7 +24,7 @@ class Profile extends Component {
     header: null,
   };
 
-    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '', connections: [], loggeduser: '' };
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '', connections: [], loggeduser: '', currentuserconnect: [] };
  async componentDidMount() {
   let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
@@ -32,7 +32,10 @@ class Profile extends Component {
       url: `${Ip.ip}/user/${this.props.navigation.getParam('user')}`,
       method: 'get'
     });
-
+    const cd = await axios({
+      url: `${Ip.ip}/user/${user._id}`,
+      method: 'get'
+    });
  const { data } = await axios({
       url: `${Ip.ip}/postbyuser/${this.props.navigation.getParam('user')}`,
       method: 'get'
@@ -44,7 +47,7 @@ class Profile extends Component {
   url: `${Ip.ip}/mentor/${this.props.navigation.getParam('user')}`,
   method: 'get'
 });
-this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.navigation.getParam('pic'), country: this.props.navigation.getParam('userCountry'), name: this.props.navigation.getParam('name'), posts: data, mentors: mentors.data, bio: this.props.navigation.getParam('bio'), head: this.props.navigation.getParam('headline'), connections: d.data.connections, loggeduser: user._id });
+this.setState({ moji: this.props.navigation.getParam('moji'), pic: this.props.navigation.getParam('pic'), country: this.props.navigation.getParam('userCountry'), name: this.props.navigation.getParam('name'), posts: data, mentors: mentors.data, bio: this.props.navigation.getParam('bio'), head: this.props.navigation.getParam('headline'), connections: d.data.connections, loggeduser: user._id, currentuserconnect: cd.data.connections });
  console.log(mentors.data);
   }
   connect = async (userid) => {
@@ -135,7 +138,7 @@ onScrollEndDrag={event => {
               >
                 <Button iconLeft full onPress={() => { this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? this.connect(this.props.navigation.getParam('user')) : this.disconnect(this.props.navigation.getParam('user')); }} transparent style={{ flex: 1 }}>
               
-                {this.state.connections.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? <Text style={{ color: '#fff' }}><Micon name='account-plus-outline' color='#fff' />  Connect</Text> : <Text style={{ color: '#fff' }}><Micon name='account-remove-outline' color='#fff' />  Disconnect</Text>}
+                {this.state.currentuserconnect.filter(itemm => ('user' in itemm ? itemm.user._id.includes(this.props.navigation.getParam('user')) : false)).length < 1 ? <Text style={{ color: '#fff' }}><Micon name='account-plus-outline' color='#fff' />  Connect</Text> : <Text style={{ color: '#fff' }}><Micon name='account-remove-outline' color='#fff' />  Disconnect</Text>}
                 </Button>
               </LinearGradient>
 
