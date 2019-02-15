@@ -27,16 +27,16 @@ export default class Newlinkpost extends Component {
   render() {
     return (
       <ImageBackground
-        source={require('../assets/images/profile.jpeg')}
+        source={require('../assets/images/frensei.jpeg')}
         style={[styles.container, { paddingTop: 20 }]}
       >
         <View style={styles.overlay} />
-        <Item floatingLabel style={{marginLeft:15,marginRight:15, borderColor:'#fff'}}>
+        <Item floatingLabel style={{ marginLeft: 15, marginRight: 15, borderColor: '#fff' }}>
                   <Label style={{ color: '#fff', }}>Link</Label>
               <Input 
               autoCapitalize="none"
               selectionColor="#fff"
-              style={{ color: '#fff', fontFamily: 'gibson'}} 
+              style={{ color: '#fff', fontFamily: 'gibson' }} 
               onChangeText={(email) => this.setState({ email })}
               
               />
@@ -45,7 +45,7 @@ export default class Newlinkpost extends Component {
           <View style={{ width: Layout.window.width, flex: 0.8 }}>    
           <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: this.state.img }} /></View>
 
-          <Button iconLeft full onPress={() => this.signup(true)} light style={{height:20, flex: 0.15 }}>
+          <Button iconLeft full onPress={() => this.signup(true)} light style={{ height: 20, flex: 0.15 }}>
             <Micon name='plus-circle-outline' color='rgb(85,116,247)' />
             <Text style={{ color: 'rgb(85,116,247)' }}>POST</Text>
           </Button>

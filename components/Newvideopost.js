@@ -27,7 +27,7 @@ export default class Newvideopost extends Component {
   render() {
     return (
         <ImageBackground
-        source={require('../assets/images/profile.jpeg')}
+        source={require('../assets/images/frensei.jpeg')}
             style={[styles.container, { paddingTop: 20 }]}
         >
          <View style={styles.overlay} />

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View, ImageBackground, NativeModulesStatic, Modal, ActivityIndicator, Platform, FlatList, AsyncStorage } from 'react-native';
 import { List, Thumbnail, Text, ListItem, Left, Right, Radio, Card, CardItem, Body, Textarea, Button, Toast } from 'native-base';
 import { Icon, ImagePicker } from 'expo';
-import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import Colors from '../constants/Colors';

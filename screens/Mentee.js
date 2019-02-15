@@ -5,7 +5,6 @@ import { Header } from 'react-navigation';
 import Micon from '../components/Micon';
 
 import { LinearGradient, ImagePicker } from 'expo';
-import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Colors from '../constants/Colors';
 import { Bitmoji } from '../components/Bitmoji';
@@ -14,26 +13,7 @@ import axios from 'axios';
 import { Text } from '../components/Text';
 import Ip from '../constants/Ip';
 
-const cards = [
-  {
-    text: 'I have been trying to play the guitar for 1 year. I need motivation and consistent guidance. I want to get better really quickly. I am a mature beginner',
-    name: 'Angelina Costa',
-    image: require('../assets/images/carde.jpeg'),
-    thumbnail: Bitmoji()
-  },
-  {
-      text: 'I have been trying to play the guitar for 1 year. I need motivation and consistent guidance. I want to get better really quickly. I am a mature beginner',
-      name: 'Melinda Jones',
-      image: require('../assets/images/cardg.jpeg'),
-      thumbnail: Bitmoji()
-    },
-    {
-      text: 'I have been trying to play the guitar for 1 year. I need motivation and consistent guidance. I want to get better really quickly. I am a mature beginner',
-      name: 'Julius Berger',
-      image: require('../assets/images/cardp.jpeg'),
-      thumbnail: Bitmoji()
-    },
-];
+
 export default class Mentee extends React.Component {
   // static navigationOptions = {
   //   header: null,

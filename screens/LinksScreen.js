@@ -4,7 +4,6 @@ import { Text as Ntext, ListItem, Left, Right, Radio, Card, CardItem, Body, Text
 import { Header } from 'react-navigation';
 
 import { Icon, ImagePicker } from 'expo';
-import ProfileCards from '../components/ProfileCards';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Colors from '../constants/Colors';
 import { Text } from '../components/Text';
