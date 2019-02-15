@@ -18,6 +18,7 @@ export default class Signup extends Component {
   static navigationOptions = {
     header: null,
   };
+
   // static navigationOptions = {
   //   title: 'Sign Up',
   //   headerLeft: null,

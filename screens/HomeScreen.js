@@ -11,7 +11,8 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
-  ImageBackground
+  ImageBackground,
+  RefreshControl
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
@@ -42,7 +43,7 @@ export default class HomeScreen extends React.Component {
     },
     // headerRight: (
     //   <TouchableOpacity
-    //     onPress={() => alert('search!')}
+    //     onPress={() => this.reload()}
     //     style={{ marginRight: 20 }}
     //   >
     //     <Micon name='find-replace' />
@@ -57,7 +58,8 @@ export default class HomeScreen extends React.Component {
     comment: null,
     usercomment: '',
     userid: '',
-    load: false
+    load: false,
+    refreshing: true
   }
   async componentDidMount() {
     this.setState({ load: true });
@@ -84,11 +86,27 @@ export default class HomeScreen extends React.Component {
       method: 'get'
     }).then(async ({ data }) => {
       console.log(data);
-      this.setState({ posts: data, userid: stat._id, load: false, moji: stat.moji });
+      this.setState({ posts: data, userid: stat._id, load: false, moji: stat.moji, refreshing: false });
     }).catch(err => {
       console.log(err);
     });
     //navigation.getParam('itemId', 'NO-ID');
+  }
+  reload = async() => {
+    this.setState({ refreshing: true });
+    const d = await axios({
+      url: `${Ip.ip}/user/${this.state.userid}`,
+      method: 'get'
+    });
+    axios({
+      url: `${Ip.ip}/post`,
+      method: 'get'
+    }).then(async ({ data }) => {
+      console.log(data);
+      this.setState({ posts: data, refreshing: false });
+    }).catch(err => {
+      console.log(err);
+    });
   }
   renderItem = ({ item }) => (
     <ListItem avatar>
@@ -137,13 +155,13 @@ export default class HomeScreen extends React.Component {
       console.log(err.response);
     });
   }
-  like = (postid) => {
+  like = (postid, postowner) => {
     console.log(this.state.userid);
     this.setState({ load: true });
     axios({
       url: `${Ip.ip}/like`,
       method: 'post',
-      data: { postid, userid: this.state.userid }
+      data: { postid, userid: this.state.userid, postowner }
     }).then(async ({ data }) => {
       axios({
         url: `${Ip.ip}/post`,
@@ -175,7 +193,16 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
 
 
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView
+style={styles.container} contentContainerStyle={styles.contentContainer}
+         refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.reload}
+            colors={['#60c3ff', '#5887f9']}
+          />
+        }
+        >
           {/* <List>
         <ListItem itemHeader style={{ paddingBottom: 10 }}>
               <Text>CATEGORIES</Text>
@@ -195,7 +222,7 @@ export default class HomeScreen extends React.Component {
 
                     <TouchableOpacity
                       onPress={() => {
-                        item.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length !== 3 ? this.props.navigation.navigate('Profile', { user: item.user._id, moji: item.user.moji, pic: item.user.pic, userCountry: item.user.userCountry, name: item.user.name, headline: item.user.headline, bio: item.user.bio }) : Alert.alert(
+                        item.user.likes.filter(itemm => itemm.userid.includes(this.state.userid)).length === 3 ? this.props.navigation.navigate('Profile', { user: item.user._id, moji: item.user.moji, pic: item.user.pic, userCountry: item.user.userCountry, name: item.user.name, headline: item.user.headline, bio: item.user.bio }) : Alert.alert(
                           'You cannot View this Profile',
                           'Please like this user post 3 times to unlock')
                           ;
@@ -234,7 +261,7 @@ style={{ flex: 1 }} source={{ uri: item.user.moji }} animation='bounce' duration
                           <Button transparent >
                             <ActivityIndicator style={{ alignSelf: 'center', textAlign: 'center' }} size="small" color='#000' />
                           </Button>
-                          : <Button transparent onPress={() => this.like(item._id)}>
+                          : <Button transparent onPress={() => this.like(item._id, item.user._id)}>
                             <Micon name='heart' size={20} color={item.likes.filter(iteem => iteem.userid.includes(this.state.userid)).length < 1 ? Colors.tabIconDefault : Colors.tabIconSelected} />
                             <Text style={{ color: Colors.tabIconSelected, paddingLeft: 5 }}>{item.likes.length}</Text>
                           </Button>}

@@ -24,6 +24,7 @@ export default class Mentor extends Component {
         //navigation.getParam('itemId', 'NO-ID');
       }
     creatementor = () => {
+        if (!this.state.text) return ToastAndroid.show('Tell us about your skills', ToastAndroid.SHORT);
         this.setState({ load: true });
         axios({
           url: `${Ip.ip}/mentor`,

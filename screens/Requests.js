@@ -52,7 +52,8 @@ export default class Requests extends React.Component {
       url: `${Ip.ip}/mentor/${stat._id}`,
       method: 'get'
     });
-    console.log('requests', data.requests);
+    console.log('requests', data);
+  
     const d = await axios({
       url: `${Ip.ip}/user/${stat._id}`,
       method: 'get'
@@ -124,7 +125,7 @@ export default class Requests extends React.Component {
         <Text style={{ marginTop: Header.HEIGHT - 20, marginBottom: 15, textAlign: 'center', color: Colors.sky, fontSize: 20 }}>They Want You! Have Your Pick!</Text>
         <ScrollView style={styles.container} scrollEnabled={!this.state.isSwiping}>
 
-          {this.state.mentors.requests.map((item, i) => (
+          {(typeof this.state.mentors === 'object' && this.state.mentors.requests.length > 0) && this.state.mentors.requests.map((item, i) => (
             <Swipeable
               rightButtonContainerStyle={{ paddingTop: 20 }}
               key={i}

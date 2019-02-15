@@ -86,7 +86,7 @@ export default class Newphotopost extends Component {
         style={[styles.container, { paddingTop: 20 }]}
       >
         <View style={styles.overlay} />
-        <Textarea placeholderTextColor='#fff' maxLength={80} style={{ color: '#fff', fontFamily: 'gibson', fontSize: 18 }} selectionColor='#fff' rowSpan={5} onChangeText={(text) => this.setState({ text })} placeholder="What do you want to talk about?" />
+        <Textarea placeholderTextColor='#fff' maxLength={180} style={{ color: '#fff', fontFamily: 'gibson', fontSize: 18 }} selectionColor='#fff' rowSpan={5} onChangeText={(text) => this.setState({ text })} placeholder="What do you want to talk about?" />
         <View style={{ flex: 1, justifyContent: 'space-between', marginBottom: 15 }}>
           <View style={{ width: Layout.window.width, flex: 0.8 }}>
             <Image style={{ flex: 1 }} resizeMode='contain' source={{ uri: this.state.uri }} /></View>
