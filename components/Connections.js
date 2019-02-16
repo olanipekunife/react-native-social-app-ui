@@ -5,10 +5,15 @@ import { Container, Content, List, Fab, ListItem, Left, Body, Right, Thumbnail, 
 import { Bitmoji } from '../components/Bitmoji';
 import { Text } from '../components/Text';
 
+import Micon from '../components/Micon';
+import Colors from '../constants/Colors';
 const Connections = (props) => {
   console.log(props);
+  const chat = (userid, name, moji) => {
+    props.navigation.navigate('Chat', { userid, name, moji });
+  };
   return (
-  <View style={{}}>
+  <View style={{ marginTop: 10 }}>
       {props.connects.map((item, i) => (
         'user' in item ? 
         <CardItem key={i} style={{ paddingTop: 0, paddingBottom: 0 }}>
@@ -31,7 +36,9 @@ const Connections = (props) => {
                     </Body>
                 </Left>
                 <Right>
-                <Text note >{item.user.userCountry}</Text>
+               <Button transparent icon onPress={() => { chat(item.user._id, item.user.name, item.user.moji); }}>
+                  <Micon name='comment-outline' size={18} color='#000' />
+                </Button>
                 </Right>
       </CardItem> : null
    

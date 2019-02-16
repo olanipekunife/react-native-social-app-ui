@@ -26,7 +26,7 @@ class SettingsScreen extends Component {
     header: null,
   };
 
-    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '',connections:[] };
+    state = { showNavTitle: false, blur: 0, maximg: true, smallimg: false, stopscrollbhide: false, stopscrollthide: true, moji: 'https://via.placeholder.com/100', pic: 'https://via.placeholder.com/800', country: '', name: '', posts: [], mentors: { requests: [] }, bio: '', head: '', connections: [] };
  async componentDidMount() {
     let user = await AsyncStorage.getItem('user');
     user = JSON.parse(user);
@@ -45,7 +45,7 @@ class SettingsScreen extends Component {
   url: `${Ip.ip}/mentor/${user._id}`,
   method: 'get'
 });
-this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors: mentors.data, bio: user.bio, head: user.headline , connections: d.data.connections });
+this.setState({ moji: user.moji, pic: user.pic, country: user.userCountry, name: user.name, posts: data, mentors: mentors.data, bio: user.bio, head: user.headline, connections: d.data.connections });
  console.log(d.data.connections);
   }
   
@@ -136,7 +136,7 @@ onScrollEndDrag={event => {
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson' }} heading="Spanish">
 </Tab> */}
 <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2 }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center', marginLeft: 2, marginRight: 2, }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >{this.state.connections.length}</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Connections</Text></TabHeading>}>
- <Connections connects={this.state.connections} />
+ <Connections connects={this.state.connections} {...this.props} />
 </Tab>
 {/* <Tab tabStyle={{ backgroundColor: Colors.noticeText }} textStyleConnections={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} activeTabStyle={{ backgroundColor: Colors.noticeText }} activeTextStyle={{ color: '#000', fontWeight: 'normal', fontFamily: 'gibson', textAlign: 'center' }} heading={<TabHeading style={{ flexDirection: 'column', backgroundColor: Colors.noticeText, justifyContent: 'space-around' }}><Text style={{ color: '#000', textAlign: 'center' }} >4</Text><Text style={{ fontSize: 12, color: '#000', textAlign: 'center', fontWeight: 'normal' }}>Interests</Text></TabHeading>}>
    <Tab3 /> 

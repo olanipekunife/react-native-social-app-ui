@@ -42,6 +42,7 @@ export default class Chat extends Component {
     };
 
     componentDidMount = async() => {
+        try {
         let user = await AsyncStorage.getItem('user');
         user = JSON.parse(user);
         const { data } = await axios({
@@ -65,8 +66,10 @@ export default class Chat extends Component {
             //         },
             //     },
             // ],
+      
         });
-        setInterval(async() => {
+    
+       this.inter = setInterval(async() => {
             const { data } = await axios({
                 url: `${Ip.ip}/chat/${user._id}/${this.props.navigation.getParam('userid')}`,
                 method: 'get'
@@ -90,8 +93,14 @@ export default class Chat extends Component {
                 // ],
             });
         }, 3000);
+    } catch (error) {
+        console.log(error);
+        console.log(error.response);
     }
-
+    }
+    componentWillUnmount() {
+        clearInterval(this.inter);
+    }
     renderBubble = (props) => (
           <Bubble
             {...props}
