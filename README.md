@@ -3,8 +3,7 @@
 To start the project, clone the repository from GitHub and install the dependencies.
 
 ```
-$ git clone https://github.com/nipek/frensei-mvp.git ./yourProjectName 
-$ cd yourProjectName
+$ cd ProjectName
 $ npm install
 ```
 
